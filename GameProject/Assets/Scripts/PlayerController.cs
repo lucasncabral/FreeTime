@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour {
         myRigidBody = GetComponent<Rigidbody>();
 	}
 	
-    public void FixedUpdate(){
+    void FixedUpdate(){
         myRigidBody.MovePosition(myRigidBody.position + velocity * Time.fixedDeltaTime);
     }
 

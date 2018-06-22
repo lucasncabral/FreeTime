@@ -7,29 +7,101 @@ using UnityEngine.AI;
 [RequireComponent (typeof (NavMeshAgent))]
 public class Enemy : LivingEntity
 {
+    public enum State {Idle, Chasing, Attacking};
+    State currentState;
+
     NavMeshAgent pathfinder;
+    LivingEntity targetEntity;
     Transform target;
 
+    float attackDistanceThreshold = .5f;
+    float timeBetweenAttacks = 1;
+    float damage = 1;
+
+    float nextTimeAttack;
+    float myCollisionRadius;
+    float targetCollisionRadius;
+
+    bool hasTarget;
     // Use this for initialization
     protected override void Start () {
         base.Start();
         pathfinder = GetComponent<NavMeshAgent>();
-        target = GameObject.FindGameObjectWithTag("Player").transform;
+
+        if(GameObject.FindGameObjectWithTag("Player") != null) {
+            currentState = State.Chasing;
+            hasTarget = true;
+            target = GameObject.FindGameObjectWithTag("Player").transform;
+            targetEntity = target.GetComponent<LivingEntity>();
+            Action OnTargetDeathAction = () => OnTargetDeath();
+            targetEntity.OnDeath += OnTargetDeathAction;
+
+        myCollisionRadius = GetComponent<CapsuleCollider>().radius;
+        targetCollisionRadius = target.GetComponent<CapsuleCollider>().radius;
         StartCoroutine(UpdatePath());
+        }
+    }
+
+    void OnTargetDeath()
+    {
+        hasTarget = false;
+        currentState = State.Idle;
     }
 	
 	// Update is called once per frame
 	void Update () {
-	}
+        if (hasTarget) {
+        if(Time.time > nextTimeAttack) { 
+        float sqrDsToTarget = (target.position - transform.position).sqrMagnitude;
+        if(sqrDsToTarget < Mathf.Pow(attackDistanceThreshold + myCollisionRadius + targetCollisionRadius, 2)){
+                nextTimeAttack = Time.time + timeBetweenAttacks;
+                StartCoroutine(Attack());
+        }
+        }
+        }
+    }
 
+    IEnumerator Attack()
+    {
+        currentState = State.Attacking;
+        pathfinder.enabled = false;
+
+        Vector3 dirToTarget = (target.position - transform.position).normalized;
+        Vector3 attackPosition = target.position;
+        Vector3 originPosition = transform.position;
+
+        float attackSpeed = 3;
+        float percent = 0;
+        bool hasApplieDamage = false;
+
+        while (percent <= 1) {
+
+            if(percent >=.5f && !hasApplieDamage)
+            {
+                hasApplieDamage = true;
+                targetEntity.TakeDamage(damage);
+            }
+
+            percent += Time.deltaTime * attackSpeed;
+            float interpolation = 4 * (-Mathf.Pow(percent, 2) + percent);
+            transform.position = Vector3.Lerp(originPosition, attackPosition, interpolation);
+            yield return null;
+        }
+
+        pathfinder.enabled = true;
+        currentState = State.Chasing;
+    }
 
     IEnumerator UpdatePath() {
         float refreshRate = .25f;   
 
-        while (target != null) {
-            Vector3 targetPosition = new Vector3(target.position.x, 0, target.position.z);
+        while (hasTarget) {
+            if(currentState == State.Chasing) {
+                Vector3 dirToTarget = (target.position - transform.position).normalized;
+                Vector3 targetPosition = target.position - dirToTarget * (myCollisionRadius - targetCollisionRadius + attackDistanceThreshold/2);
             if(!dead) 
                 pathfinder.SetDestination(targetPosition);
+            }
             yield return new WaitForSeconds(refreshRate);
         }
     }

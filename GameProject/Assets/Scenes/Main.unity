@@ -496,7 +496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47de14614b5103b41ad120fffe3b06e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 2
+  startingHealth: 10
   moveSpeed: 5
 --- !u!23 &1724397837
 MeshRenderer:

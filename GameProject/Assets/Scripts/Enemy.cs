@@ -51,7 +51,7 @@ public class Enemy : LivingEntity
 	// Update is called once per frame
 	void Update () {
         if (hasTarget) {
-        if(Time.time > nextTimeAttack) { 
+        if(Time.time > nextTimeAttack) {
         float sqrDsToTarget = (target.position - transform.position).sqrMagnitude;
         if(sqrDsToTarget < Mathf.Pow(attackDistanceThreshold + myCollisionRadius + targetCollisionRadius, 2)){
                 nextTimeAttack = Time.time + timeBetweenAttacks;
@@ -67,7 +67,7 @@ public class Enemy : LivingEntity
         pathfinder.enabled = false;
 
         Vector3 dirToTarget = (target.position - transform.position).normalized;
-        Vector3 attackPosition = target.position;
+        Vector3 attackPosition = target.position - dirToTarget * (myCollisionRadius + targetCollisionRadius);
         Vector3 originPosition = transform.position;
 
         float attackSpeed = 3;
@@ -98,7 +98,7 @@ public class Enemy : LivingEntity
         while (hasTarget) {
             if(currentState == State.Chasing) {
                 Vector3 dirToTarget = (target.position - transform.position).normalized;
-                Vector3 targetPosition = target.position - dirToTarget * (myCollisionRadius - targetCollisionRadius + attackDistanceThreshold/2);
+                Vector3 targetPosition = target.position - dirToTarget * (myCollisionRadius + targetCollisionRadius + attackDistanceThreshold/2);
             if(!dead) 
                 pathfinder.SetDestination(targetPosition);
             }

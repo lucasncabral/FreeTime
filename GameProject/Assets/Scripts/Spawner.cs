@@ -51,7 +51,7 @@ public class Spawner : MonoBehaviour {
                 campPositionOld = playerT.position;
             }
 
-            if (enemiesRemainingToSpawn > 0 && Time.time > nextSpawnTime)
+            if ((enemiesRemainingToSpawn > 0 || currentWave.infinit) && Time.time > nextSpawnTime)
             {
                 enemiesRemainingToSpawn--;
                 nextSpawnTime = Time.time + currentWave.timeBetweenSpawns;
@@ -88,6 +88,8 @@ public class Spawner : MonoBehaviour {
         Enemy spawnedEnemy = Instantiate(enemy, randomTile.position + Vector3.up, Quaternion.identity) as Enemy;
         Action OnEnemyDeathAction = () => OnEnemyDeath();
         spawnedEnemy.OnDeath += OnEnemyDeathAction;
+
+        spawnedEnemy.SetCharacteristics(currentWave.moveSpeed, currentWave.hitsToKillPlayer, currentWave.enemyHealth);
     } 
 
 
@@ -125,7 +127,12 @@ public class Spawner : MonoBehaviour {
     [System.Serializable]
 	public class Wave
     {
+        public bool infinit;
         public int enemyCount;
         public float timeBetweenSpawns;
+
+        public float moveSpeed;
+        public int hitsToKillPlayer;
+        public float enemyHealth;
     }
 }

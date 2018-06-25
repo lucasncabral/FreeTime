@@ -10,6 +10,7 @@ public class MapGenerator : MonoBehaviour {
 
     public Transform tilePrefab;
     public Transform obstaclePrefab;
+    public Transform mapFloor;
     public Transform navmeshMaskPrefab;
     
     public Vector2 maxMapSize;
@@ -50,7 +51,6 @@ public class MapGenerator : MonoBehaviour {
         System.Random prng = new System.Random(currentMap.seed);
 
         // BOXCOLLIDER DO MAPA PARA O PLAYER
-        GetComponent<BoxCollider>().size = new Vector3(currentMap.mapSize.x * tileSize, .05f, currentMap.mapSize.y * tileSize);
 
         allTilesCoords = new List<Coord>();
         for (int x = 0; x < currentMap.mapSize.x; x++)
@@ -139,6 +139,7 @@ public class MapGenerator : MonoBehaviour {
         maskBottom.localScale = new Vector3(maxMapSize.x, 1, (maxMapSize.y - currentMap.mapSize.y) / 2f) * tileSize;
 
         navMeshFloor.localScale = new Vector3(maxMapSize.x, maxMapSize.y) * tileSize;
+        mapFloor.localScale = new Vector3(currentMap.mapSize.x * tileSize, currentMap.mapSize.y * tileSize);
     }
 
     // VERIFICA CONECTIVIDADE DO MAPA

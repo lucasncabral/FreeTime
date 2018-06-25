@@ -25,21 +25,34 @@ public class Enemy : LivingEntity
     public GameObject deathEffect;
 
     bool hasTarget;
-    // Use this for initialization
-    protected override void Start () {
-        base.Start();
+
+    void Awake()
+    {
         pathfinder = GetComponent<NavMeshAgent>();
 
-        if(GameObject.FindGameObjectWithTag("Player") != null) {
-            currentState = State.Chasing;
+        if (GameObject.FindGameObjectWithTag("Player") != null)
+        {
             hasTarget = true;
+
             target = GameObject.FindGameObjectWithTag("Player").transform;
             targetEntity = target.GetComponent<LivingEntity>();
             Action OnTargetDeathAction = () => OnTargetDeath();
             targetEntity.OnDeath += OnTargetDeathAction;
 
-        myCollisionRadius = GetComponent<CapsuleCollider>().radius;
-        targetCollisionRadius = target.GetComponent<CapsuleCollider>().radius;
+            myCollisionRadius = GetComponent<CapsuleCollider>().radius;
+            targetCollisionRadius = target.GetComponent<CapsuleCollider>().radius;
+        }
+
+    }
+
+    // Use this for initialization
+    protected override void Start () {
+        base.Start();
+        
+        if(hasTarget) {
+            currentState = State.Chasing;
+            Action OnTargetDeathAction = () => OnTargetDeath();
+            targetEntity.OnDeath += OnTargetDeathAction;
         StartCoroutine(UpdatePath());
         }
     }
@@ -114,5 +127,17 @@ public class Enemy : LivingEntity
             Destroy(Instantiate(deathEffect, hitPoint, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 2);
         }
         base.TakeHit(damage, hitPoint, hitDirection);
+    }
+
+    public void SetCharacteristics(float moveSpeed, int hitsToKillPlayer, float enemyHealth)
+    {
+        pathfinder.speed = moveSpeed;
+        if (hasTarget)
+        {
+            damage = Mathf.Ceil(targetEntity.startingHealth / hitsToKillPlayer);
+        }
+
+        startingHealth = enemyHealth;
+
     }
 }

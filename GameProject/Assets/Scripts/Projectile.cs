@@ -19,6 +19,7 @@ public class Projectile : MonoBehaviour {
         {
             OnHitObject(initialCollisions[0], transform.position);
         }
+        
     }
 
     public void SetSpeed(float newSpeed) {

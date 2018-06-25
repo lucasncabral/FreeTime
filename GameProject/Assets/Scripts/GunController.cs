@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GunController : MonoBehaviour {
+public class GunController : MonoBehaviour
+{
     public Transform weaponHold;
     public Gun startingGun;
     Gun equippedGun;
@@ -24,14 +25,22 @@ public class GunController : MonoBehaviour {
 
         this.equippedGun = Instantiate(gunToEquip, weaponHold.position, weaponHold.rotation) as Gun;
         this.equippedGun.transform.parent = weaponHold;
-        
+
     }
 
-    public void Shoot()
+    public void OnTriggerHold()
     {
         if (equippedGun != null)
         {
-            equippedGun.Shoot();
+            equippedGun.OnTriggerHolde();
+        }
+    }
+
+    public void OntriggerRelease()
+    {
+        if (equippedGun != null)
+        {
+            equippedGun.OnTriggerRelease();
         }
     }
 }

@@ -38,7 +38,11 @@ public class Player : LivingEntity {
 
         // ATIRAR
         if(Input.GetMouseButton(0)){
-            gunController.Shoot();
+            gunController.OnTriggerHold();
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            gunController.OntriggerRelease();
         }
     }
 

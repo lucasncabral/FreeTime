@@ -3,20 +3,65 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Gun : MonoBehaviour {
-    public Transform muzzle;
+    public enum FireMode {Auto, Burst, Single};
+    public FireMode fireMode;
+    bool triggerReleasedSinceLastShot;
+    public int burstCount;
+    int shotsRemainingInBurst;
+
+    public Transform[] projectileSpawn;
     public Projectile projectile;
     public float msBetweenShots = 100;
     public float muzzleVelocity = 35;
 
     float nextShotTime;
 
-    public void Shoot()
+    public Transform shell;
+    public Transform shellEjection;
+    MuzzleFlash muzzleFlash;
+
+    private void Start()
+    {
+        muzzleFlash = GetComponent<MuzzleFlash>();
+        shotsRemainingInBurst = burstCount;
+    }
+
+    void Shoot()
     {
         if (Time.time > nextShotTime)
         {
+            if(fireMode == FireMode.Burst)
+            {
+                if (shotsRemainingInBurst == 0)
+                    return;
+                shotsRemainingInBurst--;
+            }
+            else if(fireMode == FireMode.Single)
+            {
+                if (!triggerReleasedSinceLastShot)
+                    return;
+            }
+
+
+            for (int i=0; i < projectileSpawn.Length; i++) { 
             nextShotTime = Time.time + msBetweenShots / 1000;
-            Projectile newProjectile = Instantiate(projectile, muzzle.position, muzzle.rotation) as Projectile;
+            Projectile newProjectile = Instantiate(projectile, projectileSpawn[i].position, projectileSpawn[i].rotation) as Projectile;
             newProjectile.SetSpeed(muzzleVelocity);
+            }
+            Instantiate(shell, shellEjection.position, shellEjection.rotation);
+            muzzleFlash.Activate();
         }
+    }
+
+    public void OnTriggerHolde()
+    {
+        Shoot();
+        triggerReleasedSinceLastShot = false;
+    }
+
+    public void OnTriggerRelease()
+    {
+        triggerReleasedSinceLastShot = true;
+        shotsRemainingInBurst = burstCount;
     }
 }

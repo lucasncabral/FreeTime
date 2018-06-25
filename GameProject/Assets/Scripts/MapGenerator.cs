@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,13 +26,25 @@ public class MapGenerator : MonoBehaviour {
 
     Map currentMap;
 
+    // enemy random
+    Transform[,] tileMap;
+    Queue<Coord> shuffledOpenTileCoords;
+
     private void Start()
     {
         GenerateMap();
     }
 
+    // change map
+    public void OnNewWave(int waveNumber)
+    {
+        mapIndex = waveNumber - 1;
+        GenerateMap();
+    }
+
     public void GenerateMap(){
         currentMap = maps[mapIndex];
+        tileMap = new Transform[currentMap.mapSize.x, currentMap.mapSize.y];
 
         // TAMANHO DO OBSTACULO
         System.Random prng = new System.Random(currentMap.seed);
@@ -68,6 +81,7 @@ public class MapGenerator : MonoBehaviour {
                 Transform newTile = Instantiate(tilePrefab, tilePosition, Quaternion.Euler(Vector3.right * 90)) as Transform;
                 newTile.localScale = Vector3.one * (1 - outlinePercent) * tileSize;
                 newTile.parent = mapHolder;
+                tileMap[x, y] = newTile;
             }
         }
 
@@ -75,6 +89,8 @@ public class MapGenerator : MonoBehaviour {
 
         int obstacleCount = (int)(currentMap.mapSize.x * currentMap.mapSize.y * currentMap.obstaclePercent);
         int currentObstacleCount = 0;
+
+        List<Coord> allOpenCoords = new List<Coord>(allTilesCoords);
         for (int i=0; i < obstacleCount; i++)
         {
             Coord randomCoord = GetRandomCoord();
@@ -95,12 +111,16 @@ public class MapGenerator : MonoBehaviour {
                 float colourPercent = randomCoord.y / (float) currentMap.mapSize.y;
                 obstacleMaterial.color = Color.Lerp(currentMap.foregroundColour, currentMap.backgroundColour, colourPercent);
                 obstacleRenderer.sharedMaterial = obstacleMaterial;
+
+                allOpenCoords.Remove(randomCoord);
             } else
             {
                 obstacleMap[randomCoord.x, randomCoord.y] = false;
                 currentObstacleCount--;
             }
         }
+        
+        shuffledOpenTileCoords = new Queue<Coord>(Utility.ShuffleArray(allOpenCoords.ToArray(), currentMap.seed));
 
         Transform maskLeft = Instantiate(navmeshMaskPrefab, Vector3.left * (currentMap.mapSize.x + maxMapSize.x) / 4f * tileSize, Quaternion.identity) as Transform;
         maskLeft.parent = mapHolder;
@@ -164,6 +184,24 @@ public class MapGenerator : MonoBehaviour {
         Coord randomCoord = shuffledTileCoords.Dequeue();
         shuffledTileCoords.Enqueue(randomCoord);
         return randomCoord;
+    }
+
+    // random spawner
+    public Transform GetRandomOpenTile()
+    {
+        Coord randomCoord = shuffledOpenTileCoords.Dequeue();
+        shuffledOpenTileCoords.Enqueue(randomCoord);
+        return tileMap[randomCoord.x, randomCoord.y];
+    }
+
+    public Transform GetTileFromPosition(Vector3 position){
+        int x = Mathf.RoundToInt(position.x / tileSize + (currentMap.mapSize.x - 1) / 2f);
+        int y = Mathf.RoundToInt(position.z / tileSize + (currentMap.mapSize.y - 1) / 2f);
+
+        x = Mathf.Clamp(x, 0, tileMap.GetLength(0) -1);
+        y = Mathf.Clamp(y, 0, tileMap.GetLength(1) -1);
+        return tileMap[x, y];
+
     }
 
     Vector3 CoordToPosition(int x, int y)

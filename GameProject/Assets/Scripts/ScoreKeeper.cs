@@ -5,7 +5,7 @@ using UnityEngine;
 public class ScoreKeeper : MonoBehaviour {
     public static int score { get; private set; }
     float lastEnemyKillTime;
-    int streakCount;
+    public static int streakCount;
     float streakExpiryTime = 1f;
 
     private void Start()
@@ -13,18 +13,35 @@ public class ScoreKeeper : MonoBehaviour {
         score = 0;
     }
 
-    public void OnEnemyKilled()
+    private void Update()
     {
-        if(Time.time < lastEnemyKillTime + streakExpiryTime)
-        {
-            streakCount++;
-        } else
+        if(lastEnemyKillTime + streakExpiryTime < Time.time)
         {
             streakCount = 0;
         }
-        lastEnemyKillTime = Time.time;
+    }
 
-        score += 3 + 2 * streakCount;
+    public void OnEnemyKilled()
+    {
+        if (Time.time != lastEnemyKillTime)
+        {
+            if (Time.time < lastEnemyKillTime + streakExpiryTime)
+            {
+                streakCount++;
+            }
+            else
+            {
+                streakCount = 0;
+            }
+            lastEnemyKillTime = Time.time;
+
+            score += 3 + 2 * streakCount;
+        }
+    }
+
+    public void OnFlagCaptured()
+    {
+        score += 100;
     }
     
 

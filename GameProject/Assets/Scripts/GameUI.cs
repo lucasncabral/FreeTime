@@ -15,12 +15,23 @@ public class GameUI : MonoBehaviour {
     public Text newWaveTitle;
     public Text newWaveEnemyCount;
     public Text scoreUI;
+    public Text streakUI;
     public RectTransform healthBar;
 
     public Text gameOverScoreUI;
 
+    public RectTransform fireModeChange;
+    public Text fireModeTxt;
+
     Spawner spawner;
     // Use this for initialization
+
+    // Banners
+    float delayTime = 1.5f;
+    float speed = 2.5f;
+    float endDelayTime;
+    bool isChangingFireMode = false;
+
     void Start ()
     {
         playerEntitity = FindObjectOfType<Player>();
@@ -37,18 +48,43 @@ public class GameUI : MonoBehaviour {
     private void Update()
     {
         scoreUI.text = ScoreKeeper.score.ToString("D6");
+        if (ScoreKeeper.streakCount == 0)
+            streakUI.text = "";
+        else
+            streakUI.text = "x" + ScoreKeeper.streakCount;
+
         float healthPercent = 0;
         if(playerEntitity != null) { 
             healthPercent = playerEntitity.health / playerEntitity.startingHealth;
         }
         healthBar.localScale = new Vector3(healthPercent, 1, 1);
     }
+    
+    IEnumerator AnimateNewFireMode()
+    {
+        isChangingFireMode = true;
+        float animatePercent = 0;
+        int dir = 1;
+        endDelayTime = Time.time + 1 / speed + delayTime;
+        while (animatePercent >= 0)
+        {
+            animatePercent += Time.deltaTime * speed * dir;
 
+            if (animatePercent >= 1)
+            {
+                animatePercent = 1;
+                if (Time.time > endDelayTime) {
+                    dir = -1;
+                    isChangingFireMode = false;
+                }
+            }
+            fireModeChange.anchoredPosition = Vector2.up * Mathf.Lerp(-160, 0, animatePercent);
+            yield return null;
+        }
+    }
 
     IEnumerator AnimateNewWaveBanner()
     {
-        float delayTime = 1.5f;
-        float speed = 2.5f;
         float animatePercent = 0;
         int dir = 1;
 
@@ -66,6 +102,19 @@ public class GameUI : MonoBehaviour {
             }
             newWaveBanner.anchoredPosition = Vector2.up * Mathf.Lerp(-160, 0, animatePercent);
             yield return null;
+        }
+    }
+
+    public void OnNewFireMode(string fireMode)
+    {
+        fireModeTxt.text = "Fire mode: " + fireMode;
+        if(isChangingFireMode)
+        {
+            endDelayTime = (Time.time + 1 / 2.5f) + 1.5f;
+        } else {
+            endDelayTime = 1.5f;
+            StopCoroutine("AnimateNewFireMode");
+            StartCoroutine("AnimateNewFireMode");
         }
     }
 

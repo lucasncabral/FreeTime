@@ -80,6 +80,8 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Crosshairs.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\Flag.cs" />
+    <Compile Include="Assets\Scripts\FlagController.cs" />
     <Compile Include="Assets\Scripts\GameUI.cs" />
     <Compile Include="Assets\Scripts\Gun.cs" />
     <Compile Include="Assets\Scripts\GunController.cs" />

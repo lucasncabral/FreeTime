@@ -29,6 +29,9 @@ public class Gun : MonoBehaviour {
     int projectilesRemainingInMag;
     bool isReloading;
 
+    GameUI gameUi;
+    bool flagFirstTime = true;
+
     private void Start()
     {
         fireModeSelect = 0;
@@ -36,6 +39,11 @@ public class Gun : MonoBehaviour {
         muzzleFlash = GetComponent<MuzzleFlash>();
         shotsRemainingInBurst = burstCount;
         projectilesRemainingInMag = projectilesPerMag;
+    }
+
+    private void Awake()
+    {
+        gameUi = FindObjectOfType<GameUI>();
     }
 
     private void Update()
@@ -121,24 +129,32 @@ public class Gun : MonoBehaviour {
         triggerReleasedSinceLastShot = true;
         shotsRemainingInBurst = burstCount;
     }
+    
 
     public void ChangeFireMod()
     {
-        // TODO 
-        // UI INFORMANDO A MUDANÇA
-
         int i = ((fireModeSelect++) % 3);
+        string type = "";
         switch (i)
         {
             case 0:
                 fireMode = FireMode.Auto;
+                type = "Automatic";
                 break;
             case 1:
                 fireMode = FireMode.Burst;
+                type = "Burst";
                 break;
             case 2:
                 fireMode = FireMode.Single;
+                type = "Single";
                 break;
         }
+
+        if(!flagFirstTime)
+        {
+            gameUi.OnNewFireMode(type);
+        }
+        flagFirstTime = false;
     }
 }

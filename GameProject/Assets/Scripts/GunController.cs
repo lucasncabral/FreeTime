@@ -25,7 +25,7 @@ public class GunController : MonoBehaviour
 
     public void EquipGun(int gunIndex)
     {
-        Debug.Log(gunIndex % allGuns.Length);
+       // Debug.Log(gunIndex % allGuns.Length);
         EquipGun(allGuns[gunIndex % allGuns.Length]);
     }
 

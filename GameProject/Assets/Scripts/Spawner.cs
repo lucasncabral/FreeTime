@@ -121,12 +121,20 @@ public class Spawner : MonoBehaviour {
             // changeMap
             map.OnNewWave(currentWaveNumber);
             ResetPlayerPosition();
+
+            FindObjectOfType<FlagController>().nextWave();
         }
     }
 
     void ResetPlayerPosition()
     {
         playerT.position = map.GetTileFromPosition(Vector3.zero).position + Vector3.up * 3;
+    }
+
+    // Time Between Flags
+    public float timeFlags()
+    {
+        return (waves[currentWaveNumber].enemyCount / (float)(enemiesRemainingAlive + enemiesRemainingToSpawn));
     }
 
     [System.Serializable]

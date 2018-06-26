@@ -23,6 +23,7 @@ public class Enemy : LivingEntity
     float targetCollisionRadius;
 
     public GameObject deathEffect;
+    private ScoreKeeper score;
 
     bool hasTarget;
 
@@ -42,6 +43,8 @@ public class Enemy : LivingEntity
             myCollisionRadius = GetComponent<CapsuleCollider>().radius;
             targetCollisionRadius = target.GetComponent<CapsuleCollider>().radius;
         }
+
+        score = FindObjectOfType<ScoreKeeper>();
 
     }
 
@@ -124,7 +127,11 @@ public class Enemy : LivingEntity
     public override void TakeHit(float damage, Vector3 hitPoint, Vector3 hitDirection)
     {
         if(damage >= health) {
-            Destroy(Instantiate(deathEffect, hitPoint, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 2);
+            if (score != null)
+            {
+                score.OnEnemyKilled();
+            }
+                Destroy(Instantiate(deathEffect, hitPoint, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 2);
         }
         base.TakeHit(damage, hitPoint, hitDirection);
     }

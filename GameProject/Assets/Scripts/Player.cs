@@ -62,5 +62,10 @@ public class Player : LivingEntity {
         {
             gunController.EquipGun(gunNumber++);
         }
+
+        if(transform.position.y < -10)
+        {
+            TakeDamage(health);
+        }
     }
 }

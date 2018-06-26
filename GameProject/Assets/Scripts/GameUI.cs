@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameUI : MonoBehaviour {
-    LivingEntity playerEntitity;
+    Player playerEntitity;
 
     public Image fadePlane;
     public GameObject gameOverUI;
@@ -13,6 +14,10 @@ public class GameUI : MonoBehaviour {
     public RectTransform newWaveBanner;
     public Text newWaveTitle;
     public Text newWaveEnemyCount;
+    public Text scoreUI;
+    public RectTransform healthBar;
+
+    public Text gameOverScoreUI;
 
     Spawner spawner;
     // Use this for initialization
@@ -23,10 +28,20 @@ public class GameUI : MonoBehaviour {
         playerEntitity.OnDeath += OnPlayerDeathAction;
     }
 
-    private void Awake()
+    void Awake()
     {
         spawner = FindObjectOfType<Spawner>();
 
+    }
+
+    private void Update()
+    {
+        scoreUI.text = ScoreKeeper.score.ToString("D6");
+        float healthPercent = 0;
+        if(playerEntitity != null) { 
+            healthPercent = playerEntitity.health / playerEntitity.startingHealth;
+        }
+        healthBar.localScale = new Vector3(healthPercent, 1, 1);
     }
 
 
@@ -68,7 +83,11 @@ public class GameUI : MonoBehaviour {
 
     void OnGameOver()
     {
-        StartCoroutine(Fade(Color.clear, Color.black, 1));
+        Cursor.visible = true;
+        StartCoroutine(Fade(Color.clear, new Color(0,0,0,.90f), 1));
+        gameOverScoreUI.text = scoreUI.text;
+        scoreUI.gameObject.SetActive(false);
+        healthBar.transform.parent.gameObject.SetActive(false);
         gameOverUI.SetActive(true);
     }
 
@@ -88,6 +107,6 @@ public class GameUI : MonoBehaviour {
     // UI Input
     public void StartNewGame()
     {
-        Application.LoadLevel("Main");
+        SceneManager.LoadScene("Main");
     }
 }

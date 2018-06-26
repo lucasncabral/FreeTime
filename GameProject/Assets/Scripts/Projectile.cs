@@ -52,4 +52,5 @@ public class Projectile : MonoBehaviour {
         }
         GameObject.Destroy(gameObject);
     }
- }
+    
+}

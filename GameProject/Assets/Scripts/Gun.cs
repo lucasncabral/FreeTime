@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Gun : MonoBehaviour {
     public enum FireMode {Auto, Burst, Single};
     public FireMode fireMode;
+    int fireModeSelect;
     bool triggerReleasedSinceLastShot;
     public int burstCount;
     int shotsRemainingInBurst;
@@ -20,15 +22,36 @@ public class Gun : MonoBehaviour {
     public Transform shellEjection;
     MuzzleFlash muzzleFlash;
 
+    Vector3 recoilSmoothDampVelocity;
+
+    public int projectilesPerMag;
+    public float reloadTime = .3f;
+    int projectilesRemainingInMag;
+    bool isReloading;
+
     private void Start()
     {
+        fireModeSelect = 0;
+        ChangeFireMod();
         muzzleFlash = GetComponent<MuzzleFlash>();
         shotsRemainingInBurst = burstCount;
+        projectilesRemainingInMag = projectilesPerMag;
+    }
+
+    private void Update()
+    {
+        // animate recoil
+        transform.localPosition = Vector3.SmoothDamp(transform.localPosition, Vector3.zero, ref recoilSmoothDampVelocity, .1f);
+
+        if(!isReloading && projectilesRemainingInMag == 0)
+        {
+            Reload();
+        }
     }
 
     void Shoot()
     {
-        if (Time.time > nextShotTime)
+        if (!isReloading && Time.time > nextShotTime && projectilesRemainingInMag > 0)
         {
             if(fireMode == FireMode.Burst)
             {
@@ -43,14 +66,48 @@ public class Gun : MonoBehaviour {
             }
 
 
-            for (int i=0; i < projectileSpawn.Length; i++) { 
+            for (int i=0; i < projectileSpawn.Length; i++) {
+                if (projectilesRemainingInMag == 0)
+                    break;
+                projectilesRemainingInMag--;
             nextShotTime = Time.time + msBetweenShots / 1000;
             Projectile newProjectile = Instantiate(projectile, projectileSpawn[i].position, projectileSpawn[i].rotation) as Projectile;
             newProjectile.SetSpeed(muzzleVelocity);
             }
             Instantiate(shell, shellEjection.position, shellEjection.rotation);
             muzzleFlash.Activate();
+            transform.localPosition -= Vector3.forward * .2f;
         }
+    }
+
+    public void Reload()
+    {
+        if(!isReloading && projectilesRemainingInMag != projectilesPerMag)
+            StartCoroutine(AnimateReload());
+    }
+
+    IEnumerator AnimateReload()
+    {
+        isReloading = true;
+        yield return new WaitForSeconds(.2f);
+
+        float reloadSpeed = 1f/reloadTime;
+        float percent = 0;
+        Vector3 initialRot = transform.localEulerAngles;
+        float maxReloadAngle = 30;
+        
+        while(percent < 1)
+        {
+            percent += Time.deltaTime * reloadSpeed;
+            float interpolation = 4 * (-Mathf.Pow(percent, 2) + percent);
+            float reloadAngle = Mathf.Lerp(0, maxReloadAngle, interpolation);
+            transform.localEulerAngles = initialRot + Vector3.left * reloadAngle;
+
+            yield return null;
+        }
+
+        isReloading = false;
+        projectilesRemainingInMag = projectilesPerMag;
     }
 
     public void OnTriggerHolde()
@@ -63,5 +120,25 @@ public class Gun : MonoBehaviour {
     {
         triggerReleasedSinceLastShot = true;
         shotsRemainingInBurst = burstCount;
+    }
+
+    public void ChangeFireMod()
+    {
+        // TODO 
+        // UI INFORMANDO A MUDANÇA
+
+        int i = ((fireModeSelect++) % 3);
+        switch (i)
+        {
+            case 0:
+                fireMode = FireMode.Auto;
+                break;
+            case 1:
+                fireMode = FireMode.Burst;
+                break;
+            case 2:
+                fireMode = FireMode.Single;
+                break;
+        }
     }
 }

@@ -25,6 +25,7 @@ public class Spawner : MonoBehaviour {
 
     MapGenerator map;
     bool isDisabled;
+    GameUI gameUi;
 
     private void Start()
     {
@@ -37,6 +38,7 @@ public class Spawner : MonoBehaviour {
         playerEntitity.OnDeath += OnPlayerDeathAction;
 
         map = FindObjectOfType<MapGenerator>();
+        gameUi = FindObjectOfType<GameUI>();
         NextWave();
     }
 
@@ -75,7 +77,9 @@ public class Spawner : MonoBehaviour {
 
 
         Material tileMat = randomTile.GetComponent<Renderer>().material;
-        Color initialColour = tileMat.color;
+        // Bug de se iniciar enquanto pisca, ele vai entender que a cor initcial é vermelho
+        //Color initialColour = tileMat.color;
+        Color initialColour = Color.white;
         Color flashColour = Color.red;
         float spawnTimer = 0;
 
@@ -112,6 +116,7 @@ public class Spawner : MonoBehaviour {
         currentWave = waves[currentWaveNumber - 1];
         enemiesRemainingToSpawn = currentWave.enemyCount;
         enemiesRemainingAlive = enemiesRemainingToSpawn;
+            gameUi.OnNewWave(currentWaveNumber);
             
             // changeMap
             map.OnNewWave(currentWaveNumber);

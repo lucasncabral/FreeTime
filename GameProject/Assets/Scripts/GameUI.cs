@@ -12,16 +12,19 @@ public class GameUI : MonoBehaviour {
     public GameObject gameOverUI;
 
     public RectTransform newWaveBanner;
+    public RectTransform bulletsUI;
     public Text newWaveTitle;
     public Text newWaveEnemyCount;
     public Text scoreUI;
     public Text streakUI;
+    public Text bulletsInMag;
     public RectTransform healthBar;
 
     public Text gameOverScoreUI;
 
     public RectTransform fireModeChange;
     public Text fireModeTxt;
+    Gun currentGun;
 
     Spawner spawner;
     // Use this for initialization
@@ -53,6 +56,9 @@ public class GameUI : MonoBehaviour {
         else
             streakUI.text = "x" + ScoreKeeper.streakCount;
 
+        currentGun = FindObjectOfType<Gun>();
+        if(currentGun != null)
+            bulletsInMag.text = currentGun.projectilesRemainingInMag + "/" + currentGun.projectilesPerMag; 
         float healthPercent = 0;
         if(playerEntitity != null) { 
             healthPercent = playerEntitity.health / playerEntitity.startingHealth;
@@ -136,6 +142,7 @@ public class GameUI : MonoBehaviour {
         StartCoroutine(Fade(Color.clear, new Color(0,0,0,.90f), 1));
         gameOverScoreUI.text = scoreUI.text;
         scoreUI.gameObject.SetActive(false);
+        bulletsUI.gameObject.SetActive(false);
         healthBar.transform.parent.gameObject.SetActive(false);
         gameOverUI.SetActive(true);
     }

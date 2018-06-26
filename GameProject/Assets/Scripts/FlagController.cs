@@ -10,14 +10,14 @@ public class FlagController : MonoBehaviour
 
     public float minFlagTime;
     public float maxFlagTime;
-    public float countFlags;
+    float countFlags;
     float nextFlagTime;
     public float timeBaseBetweenFlags;
 
     Player playerEntitity;
     Spawner spawner;
-
-
+    bool generatingFlag;
+    
     private void Awake()
     {
         map = FindObjectOfType<MapGenerator>();
@@ -27,6 +27,7 @@ public class FlagController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        generatingFlag = false;
         playerEntitity = FindObjectOfType<Player>();
         System.Action OnPlayerDeathAction = () => nextWave();
         playerEntitity.OnDeath += OnPlayerDeathAction;
@@ -38,26 +39,62 @@ public class FlagController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Time.time > nextFlagTime && FindObjectOfType<Flag>() == null)
+        if (Time.time > nextFlagTime && FindObjectOfType<Flag>() == null && !generatingFlag)
         {
-            Transform randomTile = map.GetRandomOpenTile();
-            Instantiate(flag, randomTile.position + Vector3.up, Quaternion.identity);
+            StartCoroutine("spawnFlag");
+
         }
     }
     
+    IEnumerator spawnFlag()
+    {
+        generatingFlag = true;
+        float spawnDelay = 1;
+        float tileFlhshSpeed = 4;
+
+        Transform randomTile = map.GetRandomOpenTile();
+
+        Material tileMat = randomTile.GetComponent<Renderer>().material;
+        // Bug de se iniciar enquanto pisca, ele vai entender que a cor initcial é vermelho
+        //Color initialColour = tileMat.color;
+        Color initialColour = Color.white;
+        Color flashColour = Color.blue;
+        float spawnTimer = 0;
+
+        while (spawnTimer < spawnDelay)
+        {
+            tileMat.color = Color.Lerp(initialColour, flashColour, Mathf.PingPong(spawnTimer * tileFlhshSpeed, 1));
+            spawnTimer += Time.deltaTime;
+            yield return null;
+        }
+
+        generatingFlag = false;
+        Flag currentFlag = Instantiate(flag, randomTile.position + Vector3.up, Quaternion.identity) as Flag;
+        currentFlag.GetComponent<Transform>().rotation = Quaternion.Euler(new Vector3(0, Random.Range(0, 360), 0));
+    }
 
     public void nextWave()
     {
-        Flag currentFlag = FindObjectOfType<Flag>();
-        nextFlagTime = nextFlagTimeCount();
-        if (currentFlag != null)
-            currentFlag.nextWave();
+        countFlags = 0;
+        if (generatingFlag) {
+            StopCoroutine("spawnFlag");
+            generatingFlag = false;
+        }
+        nextFlag();
     }
 
     public void captureFlag()
     {
         countFlags++;
-        nextWave();
+        nextFlag();
+    }
+
+    void nextFlag()
+    {
+        Flag currentFlag = FindObjectOfType<Flag>();
+        nextFlagTime = nextFlagTimeCount();
+        if (currentFlag != null)
+            currentFlag.nextWave();
     }
 
     float nextFlagTimeCount()

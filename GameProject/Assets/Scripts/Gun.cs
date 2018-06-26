@@ -26,7 +26,7 @@ public class Gun : MonoBehaviour {
 
     public int projectilesPerMag;
     public float reloadTime = .3f;
-    int projectilesRemainingInMag;
+    public int projectilesRemainingInMag;
     bool isReloading;
 
     GameUI gameUi;
@@ -38,7 +38,7 @@ public class Gun : MonoBehaviour {
         ChangeFireMod();
         muzzleFlash = GetComponent<MuzzleFlash>();
         shotsRemainingInBurst = burstCount;
-        projectilesRemainingInMag = projectilesPerMag;
+        //projectilesRemainingInMag = projectilesPerMag;
     }
 
     private void Awake()

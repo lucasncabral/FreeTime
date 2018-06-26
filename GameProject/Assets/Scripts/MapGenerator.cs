@@ -190,8 +190,13 @@ public class MapGenerator : MonoBehaviour {
     // random spawner
     public Transform GetRandomOpenTile()
     {
-        Coord randomCoord = shuffledOpenTileCoords.Dequeue();
-        shuffledOpenTileCoords.Enqueue(randomCoord);
+        Coord randomCoord = new Coord();
+        int randomNumber = UnityEngine.Random.Range(0, 5);
+        for (int i = 0; i < randomNumber; i++)
+        {
+            randomCoord = shuffledOpenTileCoords.Dequeue();
+            shuffledOpenTileCoords.Enqueue(randomCoord);
+        }
         return tileMap[randomCoord.x, randomCoord.y];
     }
 

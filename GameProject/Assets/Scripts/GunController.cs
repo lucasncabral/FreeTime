@@ -6,10 +6,29 @@ public class GunController : MonoBehaviour
 {
     public Transform weaponHold;
     public Gun[] allGuns;
+
+    public int[] gunsBullets;
     Gun equippedGun;
+    int equippedGunIndex = 0;
+
+    private void Awake()
+    {
+        gunsBullets = new int[allGuns.Length];
+        int i = 0;
+        foreach (Gun gun in allGuns)
+        {
+            gunsBullets[i] = gun.projectilesPerMag;
+            i++;
+        }
+    }
 
     void Start()
     {
+    }
+
+    private void Update()
+    {
+        gunsBullets[equippedGunIndex] = equippedGun.projectilesRemainingInMag;
     }
 
     public void EquipGun(Gun gunToEquip)
@@ -21,12 +40,14 @@ public class GunController : MonoBehaviour
 
         this.equippedGun = Instantiate(gunToEquip, weaponHold.position, weaponHold.rotation) as Gun;
         this.equippedGun.transform.parent = weaponHold;
+        this.equippedGun.projectilesRemainingInMag = gunsBullets[equippedGunIndex];
     }
 
     public void EquipGun(int gunIndex)
     {
        // Debug.Log(gunIndex % allGuns.Length);
-        EquipGun(allGuns[gunIndex % allGuns.Length]);
+       equippedGunIndex = gunIndex % allGuns.Length;
+        EquipGun(allGuns[equippedGunIndex]);
     }
 
 

@@ -134,7 +134,7 @@ public class Spawner : MonoBehaviour {
     // Time Between Flags
     public float timeFlags()
     {
-        return (waves[currentWaveNumber].enemyCount / (float)(enemiesRemainingAlive + enemiesRemainingToSpawn));
+        return (waves[currentWaveNumber-1].enemyCount / (float)(enemiesRemainingAlive + enemiesRemainingToSpawn));
     }
 
     [System.Serializable]

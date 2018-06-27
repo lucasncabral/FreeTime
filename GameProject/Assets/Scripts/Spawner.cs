@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour {
 
-    public Wave[] waves;
-    public Enemy enemy;
+    public Mission[] missions;
+    Enemy enemy;
 
     LivingEntity playerEntitity;
     Transform playerT;
@@ -16,16 +16,30 @@ public class Spawner : MonoBehaviour {
     Vector3 campPositionOld;
     bool isCamping;
 
-    Wave currentWave;
+    Mission currentMission;
+    int currentMissionNumber;
     int currentWaveNumber;
 
     int enemiesRemainingToSpawn;
     int enemiesRemainingAlive;
     float nextSpawnTime;
+    float timeBetweenSpawn;
+    float reasonSpawnerTime;
+    float reasonSpawnerCount;
 
     MapGenerator map;
     bool isDisabled;
     GameUI gameUi;
+
+    private void Awake()
+    {
+        currentMissionNumber = 0;
+        currentMission = missions[currentMissionNumber];
+        timeBetweenSpawn = currentMission.timeBetweenSpawns;
+        reasonSpawnerCount = currentMission.reasonSpawnerCount;
+        reasonSpawnerTime = currentMission.reasonSpawnerTime;
+        enemy = currentMission.prefabEnemy;
+    }
 
     private void Start()
     {
@@ -53,10 +67,10 @@ public class Spawner : MonoBehaviour {
                 campPositionOld = playerT.position;
             }
 
-            if ((enemiesRemainingToSpawn > 0 || currentWave.infinit) && Time.time > nextSpawnTime)
+            if ((enemiesRemainingToSpawn > 0) && Time.time > nextSpawnTime)
             {
                 enemiesRemainingToSpawn--;
-                nextSpawnTime = Time.time + currentWave.timeBetweenSpawns;
+                nextSpawnTime = Time.time + timeBetweenSpawn;
 
                 StartCoroutine(SpawnEnemy());
             }
@@ -112,18 +126,18 @@ public class Spawner : MonoBehaviour {
     void NextWave()
     {
         currentWaveNumber++;
-        if(currentWaveNumber -1 < waves.Length) { 
-        currentWave = waves[currentWaveNumber - 1];
-        enemiesRemainingToSpawn = currentWave.enemyCount;
+        currentMission = missions[currentMissionNumber];
+        enemiesRemainingToSpawn = (int) Mathf.Ceil(currentMission.enemyCount * reasonSpawnerCount * currentWaveNumber);
         enemiesRemainingAlive = enemiesRemainingToSpawn;
-        gameUi.OnNewWave(currentWaveNumber);
+        timeBetweenSpawn *= reasonSpawnerTime;
+        gameUi.OnNewWave(currentWaveNumber, enemiesRemainingAlive);
             
             // changeMap
             //map.OnNewWave(currentWaveNumber);
             //ResetPlayerPosition();
 
-            FindObjectOfType<FlagController>().nextWave();
-        }
+         //FindObjectOfType<FlagController>().nextWave();
+        
     }
 
     void ResetPlayerPosition()
@@ -134,18 +148,21 @@ public class Spawner : MonoBehaviour {
     // Time Between Flags
     public float timeFlags()
     {
-        return (waves[currentWaveNumber-1].enemyCount / (float)(enemiesRemainingAlive + enemiesRemainingToSpawn));
+        return (missions[currentMissionNumber].enemyCount / (float)(enemiesRemainingAlive + enemiesRemainingToSpawn));
     }
 
     [System.Serializable]
-	public class Wave
+	public class Mission
     {
         public bool infinit;
         public int enemyCount;
         public float timeBetweenSpawns;
+        [Range (0,1)]
+        public float reasonSpawnerTime;
+        public float reasonSpawnerCount;
 
-        //public float moveSpeed;
-        //public int hitsToKillPlayer;
-        //public float enemyHealth;
+        public Enemy prefabEnemy;
+
+
     }
 }

@@ -3536,38 +3536,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b818643608d243c4b983d2e3a8eec7b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waves:
+  missions:
   - infinit: 0
-    enemyCount: 20
-    timeBetweenSpawns: 0.7
-    moveSpeed: 2.2
-    hitsToKillPlayer: 10
-    enemyHealth: 1
+    enemyCount: 1
+    timeBetweenSpawns: 1
+    reasonSpawnerTime: 0.938
+    reasonSpawnerCount: 2.5
+    prefabEnemy: {fileID: 114247634366420274, guid: be160bcaeaa34fa4e888648c20fea52b,
+      type: 2}
   - infinit: 0
-    enemyCount: 40
-    timeBetweenSpawns: 0.5
-    moveSpeed: 2.5
-    hitsToKillPlayer: 8
-    enemyHealth: 2
-  - infinit: 0
-    enemyCount: 60
-    timeBetweenSpawns: 0.6
-    moveSpeed: 2.8
-    hitsToKillPlayer: 5
-    enemyHealth: 2
-  - infinit: 0
-    enemyCount: 150
-    timeBetweenSpawns: 0.55
-    moveSpeed: 3.2
-    hitsToKillPlayer: 3
-    enemyHealth: 1
-  - infinit: 1
-    enemyCount: -1
-    timeBetweenSpawns: 0.5
-    moveSpeed: 3.5
-    hitsToKillPlayer: 1
-    enemyHealth: 2
-  enemy: {fileID: 114247634366420274, guid: be160bcaeaa34fa4e888648c20fea52b, type: 2}
+    enemyCount: 5
+    timeBetweenSpawns: 2
+    reasonSpawnerTime: 0.789
+    reasonSpawnerCount: 1.33
+    prefabEnemy: {fileID: 114373459964064580, guid: def20f8aa4a962d4d8b4fd27db936ed7,
+      type: 2}
 --- !u!1 &410056890
 GameObject:
   m_ObjectHideFlags: 0

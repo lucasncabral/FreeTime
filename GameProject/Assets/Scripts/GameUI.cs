@@ -28,8 +28,7 @@ public class GameUI : MonoBehaviour {
     public RectTransform fireModeChange;
     public Text fireModeTxt;
     Gun currentGun;
-
-    Spawner spawner;
+    
     // Use this for initialization
 
     // Banners
@@ -48,7 +47,6 @@ public class GameUI : MonoBehaviour {
 
     void Awake()
     {
-        spawner = FindObjectOfType<Spawner>();
 
     }
 
@@ -133,11 +131,22 @@ public class GameUI : MonoBehaviour {
         }
     }
 
-    public void OnNewWave(int waveNumber)
+    public void OnNewWave(int waveNumber, int enemies)
     {
-        string[] numbers = { "One", "Two", "Three", "Four", "Five" };
-        newWaveTitle.text = "- Wave " + numbers[waveNumber - 1] + " -";
-        string enemyCountString = ((spawner.waves[waveNumber - 1].infinit) ? "Infinite" : spawner.waves[waveNumber - 1].enemyCount + "");
+        string[] numbers = { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve" };
+        if(waveNumber > numbers.Length)
+        {
+            newWaveTitle.text = "- Wave Infinite -";
+        } else
+            newWaveTitle.text = "- Wave " + numbers[waveNumber - 1] + " - ";
+
+        String enemyCountString;
+
+        enemyCountString = enemies + "";
+        if (enemies == -1)
+        {
+            enemyCountString = "Infinite";
+        }
         newWaveEnemyCount.text = "Enemies: " + enemyCountString;
 
         StopCoroutine("AnimateNewWaveBanner");

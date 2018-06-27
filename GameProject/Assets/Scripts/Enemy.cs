@@ -142,8 +142,8 @@ public class Enemy : LivingEntity
             }
             Destroy(Instantiate(deathEffect, hitPoint, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 2);
 
-            // Drop Item
-            int luckyItem = UnityEngine.Random.Range(0, 20);
+            // Drop Iten
+            int luckyItem = UnityEngine.Random.Range(0, 30);
 
             if (luckyItem == 3)
             //if (luckyItem >= 0)

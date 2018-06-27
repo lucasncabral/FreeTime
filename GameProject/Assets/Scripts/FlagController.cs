@@ -80,7 +80,7 @@ public class FlagController : MonoBehaviour
             StopCoroutine("spawnFlag");
             generatingFlag = false;
         }
-        nextFlag();
+       nextFlag();
     }
 
     public void captureFlag()

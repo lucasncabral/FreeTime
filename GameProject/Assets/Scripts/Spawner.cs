@@ -93,7 +93,7 @@ public class Spawner : MonoBehaviour {
         Action OnEnemyDeathAction = () => OnEnemyDeath();
         spawnedEnemy.OnDeath += OnEnemyDeathAction;
 
-        spawnedEnemy.SetCharacteristics(currentWave.moveSpeed, currentWave.hitsToKillPlayer, currentWave.enemyHealth);
+        //spawnedEnemy.SetCharacteristics(currentWave.moveSpeed, currentWave.hitsToKillPlayer, currentWave.enemyHealth);
     } 
 
 
@@ -144,8 +144,8 @@ public class Spawner : MonoBehaviour {
         public int enemyCount;
         public float timeBetweenSpawns;
 
-        public float moveSpeed;
-        public int hitsToKillPlayer;
-        public float enemyHealth;
+        //public float moveSpeed;
+        //public int hitsToKillPlayer;
+        //public float enemyHealth;
     }
 }

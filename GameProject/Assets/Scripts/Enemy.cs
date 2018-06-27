@@ -16,7 +16,6 @@ public class Enemy : LivingEntity
 
     float attackDistanceThreshold = .5f;
     float timeBetweenAttacks = 1;
-    float damage = 1;
 
     float nextTimeAttack;
     float myCollisionRadius;
@@ -29,6 +28,12 @@ public class Enemy : LivingEntity
 
     // itens
     public Transform[] itens;
+    
+    float damage = 1;
+
+    public int hitsToKill;
+    public float speed;
+    public float startingHealthBase;
 
     void Awake()
     {
@@ -48,6 +53,7 @@ public class Enemy : LivingEntity
         }
 
         score = FindObjectOfType<ScoreKeeper>();
+        SetCharacteristics(speed, hitsToKill, startingHealthBase);
 
     }
 
@@ -137,7 +143,7 @@ public class Enemy : LivingEntity
             Destroy(Instantiate(deathEffect, hitPoint, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 2);
 
             // Drop Item
-            int luckyItem = UnityEngine.Random.Range(0, 10);
+            int luckyItem = UnityEngine.Random.Range(0, 20);
 
             if (luckyItem == 3)
             //if (luckyItem >= 0)

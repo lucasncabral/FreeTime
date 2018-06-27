@@ -37,6 +37,7 @@ public class GameUI : MonoBehaviour {
     float speed = 2.5f;
     float endDelayTime;
     bool isChangingFireMode = false;
+    bool gameOver = false;
 
     void Start ()
     {
@@ -53,11 +54,12 @@ public class GameUI : MonoBehaviour {
 
     private void Update()
     {
+        if (!gameOver) {
         scoreUI.text = ScoreKeeper.score.ToString("D6");
         if (ScoreKeeper.streakCount == 0)
             streakUI.text = "";
         else
-            streakUI.text = "x" + ScoreKeeper.streakCount;
+            streakUI.text = "x" + (ScoreKeeper.streakCount + 1);
 
         currentGun = FindObjectOfType<Gun>();
         if(currentGun != null)
@@ -70,6 +72,7 @@ public class GameUI : MonoBehaviour {
             healthPercent = playerEntitity.health / playerEntitity.startingHealth;
         }
         healthBar.localScale = new Vector3(healthPercent, 1, 1);
+        }
     }
     
     IEnumerator AnimateNewFireMode()
@@ -144,6 +147,7 @@ public class GameUI : MonoBehaviour {
 
     void OnGameOver()
     {
+        gameOver = true;
         Cursor.visible = true;
         StartCoroutine(Fade(Color.clear, new Color(0,0,0,.90f), 1));
         gameOverScoreUI.text = scoreUI.text;

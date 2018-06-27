@@ -34,6 +34,6 @@ public class LivingEntity : MonoBehaviour , IDamageable{
 
     public void getItem()
     {
-        health = Mathf.Min(health+ 10, startingHealth);
+        health = Mathf.Min(health + 10, startingHealth);
     }
 }

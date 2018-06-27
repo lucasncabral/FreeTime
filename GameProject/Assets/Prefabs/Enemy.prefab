@@ -102,6 +102,9 @@ MonoBehaviour:
   - {fileID: 4380203194707044, guid: 0f8057f78af7c9f4cb9319cc59b4ed82, type: 2}
   - {fileID: 4910003115815258, guid: 4b5e19b4a2ef30f41b246764ffc30756, type: 2}
   - {fileID: 4965621667331296, guid: 1d738d1e64b995749960a094398b7f50, type: 2}
+  hitsToKill: 5
+  speed: 3
+  startingHealthBase: 1
 --- !u!136 &136264577880573392
 CapsuleCollider:
   m_ObjectHideFlags: 1

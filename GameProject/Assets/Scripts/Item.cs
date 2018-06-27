@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Item : MonoBehaviour {
     Player player;
+    bool used = false;
 
     private void Start()
     {
@@ -14,9 +15,12 @@ public class Item : MonoBehaviour {
     {
         if(collision.gameObject.tag == "Player")
         {
+            if (!used) {
+            player.getItem();            
             GameObject.Destroy(gameObject);
-            player.getItem();
+            }
 
+            used = true;
         }
     }
 }

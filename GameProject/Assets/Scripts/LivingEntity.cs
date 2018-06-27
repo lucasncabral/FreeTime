@@ -31,4 +31,9 @@ public class LivingEntity : MonoBehaviour , IDamageable{
             OnDeath();
         GameObject.Destroy(gameObject);
     }
+
+    public void getItem()
+    {
+        health = Mathf.Min(health+ 10, startingHealth);
+    }
 }

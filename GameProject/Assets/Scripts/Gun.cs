@@ -31,6 +31,7 @@ public class Gun : MonoBehaviour {
 
     GameUI gameUi;
     bool flagFirstTime = true;
+    
 
     private void Start()
     {
@@ -81,6 +82,7 @@ public class Gun : MonoBehaviour {
             nextShotTime = Time.time + msBetweenShots / 1000;
             Projectile newProjectile = Instantiate(projectile, projectileSpawn[i].position, projectileSpawn[i].rotation) as Projectile;
             newProjectile.SetSpeed(muzzleVelocity);
+
             }
             Instantiate(shell, shellEjection.position, shellEjection.rotation);
             muzzleFlash.Activate();

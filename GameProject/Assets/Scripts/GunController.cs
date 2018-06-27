@@ -11,6 +11,11 @@ public class GunController : MonoBehaviour
     Gun equippedGun;
     int equippedGunIndex = 0;
 
+    private float numberBullets = 1;
+    private float numberHits = 1;
+    public float accuracy;
+
+
     private void Awake()
     {
         gunsBullets = new int[allGuns.Length];
@@ -29,6 +34,7 @@ public class GunController : MonoBehaviour
     private void Update()
     {
         gunsBullets[equippedGunIndex] = equippedGun.projectilesRemainingInMag;
+        accuracy = numberHits / (float)numberBullets;
     }
 
     public void EquipGun(Gun gunToEquip)
@@ -86,5 +92,15 @@ public class GunController : MonoBehaviour
         {
             equippedGun.ChangeFireMod();
         }
+    }
+
+    public void moreOneShoot()
+    {
+        numberBullets++;
+    }
+
+    public void moreOnHit()
+    {
+        numberHits++;
     }
 }

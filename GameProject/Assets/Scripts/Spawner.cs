@@ -116,11 +116,11 @@ public class Spawner : MonoBehaviour {
         currentWave = waves[currentWaveNumber - 1];
         enemiesRemainingToSpawn = currentWave.enemyCount;
         enemiesRemainingAlive = enemiesRemainingToSpawn;
-            gameUi.OnNewWave(currentWaveNumber);
+        gameUi.OnNewWave(currentWaveNumber);
             
             // changeMap
-            map.OnNewWave(currentWaveNumber);
-            ResetPlayerPosition();
+            //map.OnNewWave(currentWaveNumber);
+            //ResetPlayerPosition();
 
             FindObjectOfType<FlagController>().nextWave();
         }

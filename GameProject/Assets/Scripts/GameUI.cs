@@ -20,6 +20,9 @@ public class GameUI : MonoBehaviour {
     public Text bulletsInMag;
     public RectTransform healthBar;
 
+    public Text accuracyText;
+    public RectTransform accuracyUI;
+
     public Text gameOverScoreUI;
 
     public RectTransform fireModeChange;
@@ -58,7 +61,10 @@ public class GameUI : MonoBehaviour {
 
         currentGun = FindObjectOfType<Gun>();
         if(currentGun != null)
-            bulletsInMag.text = currentGun.projectilesRemainingInMag + "/" + currentGun.projectilesPerMag; 
+            bulletsInMag.text = currentGun.projectilesRemainingInMag + "/" + currentGun.projectilesPerMag;
+
+        accuracyText.text = ((FindObjectOfType<GunController>().accuracy) * 100).ToString("n2") + "%";
+
         float healthPercent = 0;
         if(playerEntitity != null) { 
             healthPercent = playerEntitity.health / playerEntitity.startingHealth;
@@ -143,6 +149,7 @@ public class GameUI : MonoBehaviour {
         gameOverScoreUI.text = scoreUI.text;
         scoreUI.gameObject.SetActive(false);
         bulletsUI.gameObject.SetActive(false);
+        accuracyUI.gameObject.SetActive(false);
         healthBar.transform.parent.gameObject.SetActive(false);
         gameOverUI.SetActive(true);
     }

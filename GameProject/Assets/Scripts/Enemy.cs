@@ -27,6 +27,9 @@ public class Enemy : LivingEntity
 
     bool hasTarget;
 
+    // itens
+    public Transform[] itens;
+
     void Awake()
     {
         pathfinder = GetComponent<NavMeshAgent>();
@@ -131,9 +134,23 @@ public class Enemy : LivingEntity
             {
                 score.OnEnemyKilled();
             }
-                Destroy(Instantiate(deathEffect, hitPoint, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 2);
+            Destroy(Instantiate(deathEffect, hitPoint, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 2);
+
+            // Drop Item
+            int luckyItem = UnityEngine.Random.Range(0, 10);
+
+            if (luckyItem == 3)
+            //if (luckyItem >= 0)
+            {
+                dropItem();
+            }
         }
         base.TakeHit(damage, hitPoint, hitDirection);
+    }
+
+    void dropItem()
+    {
+        Instantiate(itens[UnityEngine.Random.Range(0,itens.Length)], this.transform.position, this.transform.rotation);
     }
 
     public void SetCharacteristics(float moveSpeed, int hitsToKillPlayer, float enemyHealth)

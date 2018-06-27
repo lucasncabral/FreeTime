@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 224986820052474340}
   - component: {fileID: 114100044066375206}
   - component: {fileID: 65272042478828634}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Flag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224073835854143638}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: FlagObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}

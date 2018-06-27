@@ -13,7 +13,7 @@ public class Player : LivingEntity {
 
     public Crosshairs crossHairs;
     int gunNumber = 0;
-
+    
     // Use this for initialization
     protected override void Start () {
         base.Start();

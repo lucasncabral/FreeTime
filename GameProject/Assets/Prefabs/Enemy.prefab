@@ -38,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1094971238149308}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.82, y: 2.55, z: -0.29}
+  m_LocalPosition: {x: -0.025965214, y: 14.40778, z: -14.998892}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -97,6 +97,11 @@ MonoBehaviour:
   startingHealth: 5
   deathEffect: {fileID: 1358487152957512, guid: 1c840c2e7a791ec40a6499aa6331eb57,
     type: 2}
+  itens:
+  - {fileID: 4594766513118550, guid: c1575a441476f0945947644094913f22, type: 2}
+  - {fileID: 4380203194707044, guid: 0f8057f78af7c9f4cb9319cc59b4ed82, type: 2}
+  - {fileID: 4910003115815258, guid: 4b5e19b4a2ef30f41b246764ffc30756, type: 2}
+  - {fileID: 4965621667331296, guid: 1d738d1e64b995749960a094398b7f50, type: 2}
 --- !u!136 &136264577880573392
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -10,10 +10,13 @@ public class Projectile : MonoBehaviour {
     float lifeTime = 3;
     float skinWidth = .1f;
 
+    GunController gunController;
     private void Start()
     {
         Destroy(gameObject, lifeTime);
 
+        gunController = FindObjectOfType<GunController>();
+        gunController.moreOneShoot();
         Collider[] initialCollisions = Physics.OverlapSphere(transform.position, .1f, collisionMask);
         if(initialCollisions.Length > 0)
         {
@@ -49,6 +52,7 @@ public class Projectile : MonoBehaviour {
         if (damageableObject != null)
         {
             damageableObject.TakeHit(damage, hitPoint, transform.forward);
+            gunController.moreOnHit();
         }
         GameObject.Destroy(gameObject);
     }

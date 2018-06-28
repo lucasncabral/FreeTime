@@ -33,6 +33,7 @@ public class MapGenerator : MonoBehaviour {
 
     private void Start()
     {
+        mapIndex = PlayerPrefs.GetInt("missionChoose");
         GenerateMap();
     }
 
@@ -46,12 +47,10 @@ public class MapGenerator : MonoBehaviour {
     public void GenerateMap(){
         currentMap = maps[mapIndex];
         tileMap = new Transform[currentMap.mapSize.x, currentMap.mapSize.y];
-
-        // TAMANHO DO OBSTACULO
+        
         System.Random prng = new System.Random(currentMap.seed);
 
-        // BOXCOLLIDER DO MAPA PARA O PLAYER
-
+        
         allTilesCoords = new List<Coord>();
         for (int x = 0; x < currentMap.mapSize.x; x++)
         {
@@ -61,7 +60,7 @@ public class MapGenerator : MonoBehaviour {
             }
         }
 
-        shuffledTileCoords = new Queue<Coord>(Utility.ShuffleArray(allTilesCoords.ToArray(), currentMap.seed));
+        shuffledTileCoords = new Queue<Coord>(Utility.ShuffleArray(allTilesCoords.ToArray(), currentMap.getSeed()));
         
         // GERANDO A BASE DO MAPA
         string holderName = "Generated Map";
@@ -120,7 +119,7 @@ public class MapGenerator : MonoBehaviour {
             }
         }
         
-        shuffledOpenTileCoords = new Queue<Coord>(Utility.ShuffleArray(allOpenCoords.ToArray(), currentMap.seed));
+        shuffledOpenTileCoords = new Queue<Coord>(Utility.ShuffleArray(allOpenCoords.ToArray(), currentMap.getSeed()));
 
         Transform maskLeft = Instantiate(navmeshMaskPrefab, Vector3.left * (currentMap.mapSize.x + maxMapSize.x) / 4f * tileSize, Quaternion.identity) as Transform;
         maskLeft.parent = mapHolder;
@@ -256,6 +255,12 @@ public class MapGenerator : MonoBehaviour {
             {
                 return new Coord(mapSize.x / 2, mapSize.y / 2);
             }
+        }
+
+        public int getSeed()
+        {
+            return this.seed;
+            //return UnityEngine.Random.Range(0, 100);
         }
     }
 

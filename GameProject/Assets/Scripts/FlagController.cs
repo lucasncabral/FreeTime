@@ -69,7 +69,8 @@ public class FlagController : MonoBehaviour
         }
 
         generatingFlag = false;
-        Flag currentFlag = Instantiate(flag, randomTile.position + Vector3.up, Quaternion.identity) as Flag;
+        Flag currentFlag = Instantiate(flag, randomTile.position, Quaternion.identity) as Flag;
+        
         currentFlag.GetComponent<Transform>().rotation = Quaternion.Euler(new Vector3(0, Random.Range(0, 360), 0));
     }
 

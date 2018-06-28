@@ -311,7 +311,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1285015940346210}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.208475, y: 2.0448146, z: 14.036384}
+  m_LocalPosition: {x: 0.036415823, y: -1.3397541, z: -8.861773}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4518480044566632}
@@ -607,7 +607,7 @@ Light:
   serializedVersion: 8
   m_Type: 2
   m_Color: {r: 0.9903651, g: 1, b: 0.30147058, a: 1}
-  m_Intensity: 2
+  m_Intensity: 4
   m_Range: 2.3028295
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -677,6 +677,7 @@ MonoBehaviour:
   shellEjection: {fileID: 4716282286338850}
   projectilesPerMag: 25
   reloadTime: 0.5
+  projectilesRemainingInMag: 0
 --- !u!212 &212671677673910778
 SpriteRenderer:
   m_ObjectHideFlags: 1

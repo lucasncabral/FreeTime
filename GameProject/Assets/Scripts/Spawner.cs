@@ -33,7 +33,7 @@ public class Spawner : MonoBehaviour {
 
     private void Awake()
     {
-        currentMissionNumber = 0;
+        currentMissionNumber = PlayerPrefs.GetInt("missionChoose");
         currentMission = missions[currentMissionNumber];
         timeBetweenSpawn = currentMission.timeBetweenSpawns;
         reasonSpawnerCount = currentMission.reasonSpawnerCount;

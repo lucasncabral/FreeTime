@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "connectionTest", "connectionTest.csproj", "{A2D71561-11B4-A03C-BD35-CD58419AB372}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "connectionTest.Plugins", "connectionTest.Plugins.csproj", "{6747FBFE-A739-BEE7-6A1B-525DB89EA1DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "connectionTest.Editor.Plugins", "connectionTest.Editor.Plugins.csproj", "{C7EB6BAB-A1AE-285C-177D-524AAE4FBDB9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A2D71561-11B4-A03C-BD35-CD58419AB372}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2D71561-11B4-A03C-BD35-CD58419AB372}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2D71561-11B4-A03C-BD35-CD58419AB372}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2D71561-11B4-A03C-BD35-CD58419AB372}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6747FBFE-A739-BEE7-6A1B-525DB89EA1DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6747FBFE-A739-BEE7-6A1B-525DB89EA1DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6747FBFE-A739-BEE7-6A1B-525DB89EA1DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6747FBFE-A739-BEE7-6A1B-525DB89EA1DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7EB6BAB-A1AE-285C-177D-524AAE4FBDB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7EB6BAB-A1AE-285C-177D-524AAE4FBDB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7EB6BAB-A1AE-285C-177D-524AAE4FBDB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7EB6BAB-A1AE-285C-177D-524AAE4FBDB9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -185,4 +185,10 @@ public class GameUI : MonoBehaviour {
     {
         SceneManager.LoadScene("Main");
     }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene("Menu");
+
+    }
 }

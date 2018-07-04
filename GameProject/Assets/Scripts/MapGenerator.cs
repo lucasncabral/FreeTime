@@ -85,7 +85,7 @@ public class MapGenerator : MonoBehaviour {
         }
 
         bool[,] obstacleMap = new bool[(int)currentMap.mapSize.x, (int)currentMap.mapSize.y];
-
+        
         int obstacleCount = (int)(currentMap.mapSize.x * currentMap.mapSize.y * currentMap.obstaclePercent);
         int currentObstacleCount = 0;
 
@@ -102,7 +102,7 @@ public class MapGenerator : MonoBehaviour {
                 Vector3 obstaclePosition = CoordToPosition(randomCoord.x, randomCoord.y);
                 Transform newObstacle = Instantiate(obstaclePrefab, obstaclePosition + (Vector3.up * obstacleHeight / 2), Quaternion.identity) as Transform;
                 newObstacle.parent = mapHolder;
-                newObstacle.localScale = new Vector3((1 - outlinePercent) * tileSize, obstacleHeight, (1 - outlinePercent) * tileSize);
+                newObstacle.localScale = new Vector3(tileSize, obstacleHeight, tileSize);
 
                 // COR DOS OBSTACULOS
                 Renderer obstacleRenderer = newObstacle.GetComponent<Renderer>();

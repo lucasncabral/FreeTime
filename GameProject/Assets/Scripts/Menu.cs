@@ -26,7 +26,7 @@ public class Menu : MonoBehaviour {
         {
             resolutionToggles[i].isOn = i == activeScreenResIndex;
         }
-        fullscreenToggle.isOn = isFullscreenSave;
+        
         SetFullscreen(isFullscreenSave);
     }
 
@@ -69,14 +69,19 @@ public class Menu : MonoBehaviour {
 
     public void SetFullscreen(bool isFullscreen)
     {
-        isFullscreenSave = !isFullscreenSave;
+        //isFullscreenSave = !isFullscreenSave;
+        if (isFullscreen == isFullscreenSave)
+            isFullscreen = !isFullscreen;
+
+        fullscreenToggle.isOn = isFullscreen;
+        Debug.Log(isFullscreen);
         for (int i = 0; i < resolutionToggles.Length; i++)
         {
-            resolutionToggles[i].interactable = !isFullscreenSave;
+            resolutionToggles[i].interactable = !isFullscreen;
         }
         
 
-        if(isFullscreenSave)
+        if(isFullscreen)
         {
             Resolution[] allResolutions = Screen.resolutions;
             Resolution maxResolution = allResolutions[allResolutions.Length - 1];
@@ -86,8 +91,10 @@ public class Menu : MonoBehaviour {
             SetScreenResolution(activeScreenResIndex);
         }
 
-        PlayerPrefs.SetInt("fullscreen", ((isFullscreenSave) ? 1 : 0));
+        PlayerPrefs.SetInt("fullscreen", ((isFullscreen) ? 1 : 0));
         PlayerPrefs.Save();
+
+        isFullscreenSave = isFullscreen;
     }
 
     public void SetMasterVolume(float value)

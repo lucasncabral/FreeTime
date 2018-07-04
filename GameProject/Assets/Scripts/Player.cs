@@ -28,6 +28,8 @@ public class Player : LivingEntity {
         // MOVIMENTA O PERSONAGEM COM AS TECLAS
         Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         Vector3 moveVelocity = moveInput.normalized * moveSpeed;
+
+        // TODO AQUI
         controller.Move(moveVelocity);
 
         // O PERSONAGEM OLHA PARA ONDE O MOUSE ESTIVER

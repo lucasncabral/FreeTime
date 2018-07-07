@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 [RequireComponent (typeof (Rigidbody))]
-public class PlayerController : MonoBehaviour {
+public class PlayerController : NetworkBehaviour {
 
     Vector3 velocity;
     Rigidbody myRigidBody;
@@ -14,6 +15,12 @@ public class PlayerController : MonoBehaviour {
 	}
 	
     void FixedUpdate(){
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+
+
         myRigidBody.MovePosition(myRigidBody.position + velocity * Time.fixedDeltaTime);
     }
 
@@ -22,6 +29,11 @@ public class PlayerController : MonoBehaviour {
     }
 
     public void LookAt(Vector3 lookPoint){
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+
         Vector3 heightCorrectedPoint = new Vector3(lookPoint.x, transform.position.y, lookPoint.z);
         transform.LookAt(heightCorrectedPoint);
     }

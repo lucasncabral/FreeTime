@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Projectile : MonoBehaviour {
-    float speed = 10;
+public class Projectile : NetworkBehaviour{
+    float speed = 35;
     float damage = 1;
     public LayerMask collisionMask;
 

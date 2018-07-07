@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class GunController : MonoBehaviour
+public class GunController : NetworkBehaviour
 {
     public Transform weaponHold;
     public Gun[] allGuns;
 
     public int[] gunsBullets;
-    Gun equippedGun;
+    public Gun equippedGun;
     int equippedGunIndex = 0;
 
     private float numberBullets = 1;
@@ -27,33 +28,30 @@ public class GunController : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-    }
-
     private void Update()
     {
-        gunsBullets[equippedGunIndex] = equippedGun.projectilesRemainingInMag;
-        accuracy = numberHits / (float)numberBullets;
+       gunsBullets[equippedGunIndex] = equippedGun.projectilesRemainingInMag;
+       accuracy = numberHits / (float)numberBullets;
     }
 
-    public void EquipGun(Gun gunToEquip)
-    {
+    [Command]
+    public void CmdEquipGun(int gunIndex) {
+       equippedGunIndex = gunIndex % allGuns.Length;
+        Gun gunToEquip = allGuns[equippedGunIndex];
+
         if (equippedGun != null)
         {
             Destroy(equippedGun.gameObject);
         }
 
         this.equippedGun = Instantiate(gunToEquip, weaponHold.position, weaponHold.rotation) as Gun;
-        this.equippedGun.transform.parent = weaponHold;
-        this.equippedGun.projectilesRemainingInMag = gunsBullets[equippedGunIndex];
-    }
+        //this.equippedGun.transform.parent = weaponHold;
+        //equippedGun.parentNetId = weaponHold.GetComponent<NetworkIdentity>().netId;
+        equippedGun.parentNetId = this.GetComponentInChildren<NetworkIdentity>().netId;
 
-    public void EquipGun(int gunIndex)
-    {
-       // Debug.Log(gunIndex % allGuns.Length);
-       equippedGunIndex = gunIndex % allGuns.Length;
-        EquipGun(allGuns[equippedGunIndex]);
+        this.equippedGun.projectilesRemainingInMag = gunsBullets[equippedGunIndex];
+        
+        NetworkServer.SpawnWithClientAuthority(equippedGun.gameObject, FindObjectOfType<Player>().gameObject);
     }
 
 

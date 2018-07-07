@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class Gun : MonoBehaviour {
+public class Gun : NetworkBehaviour {
     public enum FireMode {Auto, Burst, Single};
     public FireMode fireMode;
     int fireModeSelect;
@@ -12,13 +13,13 @@ public class Gun : MonoBehaviour {
     int shotsRemainingInBurst;
 
     public Transform[] projectileSpawn;
-    public Projectile projectile;
+    public GameObject projectile;
     public float msBetweenShots = 100;
-    public float muzzleVelocity = 35;
+    public float muzzleVelocity;
 
     float nextShotTime;
 
-    public Transform shell;
+    public GameObject shell;
     public Transform shellEjection;
     MuzzleFlash muzzleFlash;
 
@@ -31,7 +32,18 @@ public class Gun : MonoBehaviour {
 
     GameUI gameUi;
     bool flagFirstTime = true;
-    
+
+    [SyncVar]
+    public NetworkInstanceId parentNetId;
+
+    public override void OnStartClient()
+    {
+        GameObject parentObject = ClientScene.FindLocalObject(parentNetId);
+        transform.SetParent(parentObject.transform.GetChild(0));
+        transform.rotation = parentObject.transform.GetChild(0).rotation;
+        parentObject.GetComponent<GunController>().equippedGun = this;
+        
+    }
 
     private void Start()
     {
@@ -58,7 +70,8 @@ public class Gun : MonoBehaviour {
         }
     }
 
-    void Shoot()
+    [Command]
+    void CmdShoot()
     {
         if (!isReloading && Time.time > nextShotTime && projectilesRemainingInMag > 0)
         {
@@ -79,12 +92,16 @@ public class Gun : MonoBehaviour {
                 if (projectilesRemainingInMag == 0)
                     break;
                 projectilesRemainingInMag--;
-            nextShotTime = Time.time + msBetweenShots / 1000;
-            Projectile newProjectile = Instantiate(projectile, projectileSpawn[i].position, projectileSpawn[i].rotation) as Projectile;
-            newProjectile.SetSpeed(muzzleVelocity);
 
+            nextShotTime = Time.time + msBetweenShots / 1000;
+            GameObject newProjectile = Instantiate(projectile, projectileSpawn[i].position, projectileSpawn[i].rotation) as GameObject;
+            newProjectile.GetComponent<Projectile>().SetSpeed(muzzleVelocity);
+            NetworkServer.Spawn(newProjectile);
             }
-            Instantiate(shell, shellEjection.position, shellEjection.rotation);
+
+            GameObject shellObject = Instantiate(shell, shellEjection.position, shellEjection.rotation) as GameObject;
+            NetworkServer.Spawn(shellObject);
+
             muzzleFlash.Activate();
             transform.localPosition -= Vector3.forward * .2f;
         }
@@ -122,7 +139,7 @@ public class Gun : MonoBehaviour {
 
     public void OnTriggerHolde()
     {
-        Shoot();
+        CmdShoot();
         triggerReleasedSinceLastShot = false;
     }
 

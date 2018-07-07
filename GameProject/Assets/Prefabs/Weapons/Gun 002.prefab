@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 4568295392242408}
   - component: {fileID: 114921094612733994}
   - component: {fileID: 114766319629931120}
+  - component: {fileID: 114418683555415134}
   m_Layer: 0
   m_Name: Gun 002
   m_TagString: Untagged
@@ -633,6 +634,38 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &114418683555415134
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1285015940346210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 86
+    i1: 30
+    i2: 129
+    i3: 183
+    i4: 197
+    i5: 236
+    i6: 55
+    i7: 212
+    i8: 11
+    i9: 41
+    i10: 161
+    i11: 243
+    i12: 43
+    i13: 189
+    i14: 148
+    i15: 188
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
 --- !u!114 &114766319629931120
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -669,11 +702,10 @@ MonoBehaviour:
   burstCount: 5
   projectileSpawn:
   - {fileID: 4974099692930268}
-  projectile: {fileID: 114090010833080942, guid: 833ffd044899a8b4b904d36d6e1cd452,
-    type: 2}
+  projectile: {fileID: 1606117276887816, guid: 833ffd044899a8b4b904d36d6e1cd452, type: 2}
   msBetweenShots: 100
   muzzleVelocity: 35
-  shell: {fileID: 4373380076835194, guid: 507aeba2adfd534498aff4f66fd1e90c, type: 2}
+  shell: {fileID: 1998724914631378, guid: 507aeba2adfd534498aff4f66fd1e90c, type: 2}
   shellEjection: {fileID: 4716282286338850}
   projectilesPerMag: 25
   reloadTime: 0.5

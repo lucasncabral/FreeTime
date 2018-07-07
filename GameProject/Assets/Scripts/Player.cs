@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 [RequireComponent (typeof (PlayerController))]
 [RequireComponent(typeof(GunController))]
@@ -13,18 +14,37 @@ public class Player : LivingEntity {
 
     public Crosshairs crossHairs;
     int gunNumber = 0;
+
+    public GameObject playerUIPrefab;
+    private GameObject playerUIInstance; 
     
     // Use this for initialization
-    protected override void Start () {
+    protected override void Start ()
+    {
+        if (!isLocalPlayer)
+            return;
+
         base.Start();
+        
         controller = GetComponent<PlayerController>();
         gunController = GetComponent<GunController>();
         viewCamera = Camera.main;
-        gunController.EquipGun(gunNumber++);
+        
+        gunController.CmdEquipGun(gunNumber++);
+
+        playerUIInstance = Instantiate(playerUIPrefab);
+        playerUIInstance.name = playerUIPrefab.name;
+        this.crossHairs = playerUIInstance.GetComponent<Crosshairs>();
     }
 
     // Update is called once per frame
     void Update () {
+        if (!isLocalPlayer)
+        {
+            this.crossHairs.enabled = false;
+            return;
+        }
+
         // MOVIMENTA O PERSONAGEM COM AS TECLAS
         Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         Vector3 moveVelocity = moveInput.normalized * moveSpeed;
@@ -62,7 +82,7 @@ public class Player : LivingEntity {
         }
         if (Input.GetKeyDown(KeyCode.T))
         {
-            gunController.EquipGun(gunNumber++);
+            gunController.CmdEquipGun(gunNumber++);
         }
 
         if(transform.position.y < -10)

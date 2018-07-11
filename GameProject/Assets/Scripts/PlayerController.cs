@@ -8,8 +8,8 @@ public class PlayerController : NetworkBehaviour {
 
     Vector3 velocity;
     Rigidbody myRigidBody;
+    
 
-	// Use this for initialization
 	void Start () {
         myRigidBody = GetComponent<Rigidbody>();
 	}

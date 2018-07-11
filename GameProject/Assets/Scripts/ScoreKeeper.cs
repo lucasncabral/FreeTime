@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class ScoreKeeper : MonoBehaviour {
-    public static int score { get; private set; }
+public class ScoreKeeper : NetworkBehaviour {
+    
+    public static int score;
     float lastEnemyKillTime;
     public static int streakCount;
     float streakExpiryTime = 1f;
@@ -19,6 +21,8 @@ public class ScoreKeeper : MonoBehaviour {
         {
             streakCount = 0;
         }
+
+        Debug.Log(score);
     }
 
     public void OnEnemyKilled()

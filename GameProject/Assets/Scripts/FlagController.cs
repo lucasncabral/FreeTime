@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class FlagController : MonoBehaviour
+public class FlagController : NetworkBehaviour
 {
     public Flag flag;
     MapGenerator map;
@@ -16,21 +17,21 @@ public class FlagController : MonoBehaviour
 
     Player playerEntitity;
     Spawner spawner;
-    bool generatingFlag;
+    public bool generatingFlag;
     
-    private void Awake()
+   
+    public Transform randomTile;
+
+    public override void OnStartServer()
     {
         map = FindObjectOfType<MapGenerator>();
         spawner = FindObjectOfType<Spawner>();
-    }
 
-    // Use this for initialization
-    void Start()
-    {
         generatingFlag = false;
-        playerEntitity = FindObjectOfType<Player>();
-        System.Action OnPlayerDeathAction = () => nextWave();
-        playerEntitity.OnDeath += OnPlayerDeathAction;
+
+        //playerEntitity = FindObjectOfType<Player>();
+        //System.Action OnPlayerDeathAction = () => nextWave();
+        //playerEntitity.OnDeath += OnPlayerDeathAction;
 
         nextFlagTime = timeBaseBetweenFlags;
         countFlags = 0;
@@ -39,24 +40,24 @@ public class FlagController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isServer)
+            return;
+
         if (Time.time > nextFlagTime && FindObjectOfType<Flag>() == null && !generatingFlag)
         {
-            StartCoroutine("spawnFlag");
-
+            generatingFlag = true;
+            
+            CmdSpawnFlag();
         }
     }
     
-    IEnumerator spawnFlag()
+    IEnumerator spawnFlag(Transform randomTile, float spawnDelay, float tileFlhshSpeed, GameObject player)
     {
-        generatingFlag = true;
-        float spawnDelay = 1;
-        float tileFlhshSpeed = 4;
-
-        Transform randomTile = map.GetRandomOpenTile();
-
+       
         Material tileMat = randomTile.GetComponent<Renderer>().material;
         // Bug de se iniciar enquanto pisca, ele vai entender que a cor initcial é vermelho
-        //Color initialColour = tileMat.color;
+        // Color initialColour = tileMat.color;
+
         Color initialColour = Color.white;
         Color flashColour = Color.blue;
         float spawnTimer = 0;
@@ -68,10 +69,31 @@ public class FlagController : MonoBehaviour
             yield return null;
         }
 
+        if (isServer)
+        {
+            Flag currentFlag = Instantiate(flag, randomTile.position, Quaternion.identity) as Flag;
+            currentFlag.GetComponent<Transform>().rotation = Quaternion.Euler(new Vector3(0, Random.Range(0, 360), 0));
+            NetworkServer.SpawnWithClientAuthority(currentFlag.gameObject, player);
+        }
         generatingFlag = false;
-        Flag currentFlag = Instantiate(flag, randomTile.position, Quaternion.identity) as Flag;
+    }
+    
+
+    [Command]
+    void CmdSpawnFlag()
+    {
+        randomTile = map.GetRandomOpenTile();
+        RpcDoTileEffect();
+    }
+
+    [ClientRpc]
+    void RpcDoTileEffect()
+    {
+        generatingFlag = true;
+        float spawnDelay = 1;
+        float tileFlhshSpeed = 4;
         
-        currentFlag.GetComponent<Transform>().rotation = Quaternion.Euler(new Vector3(0, Random.Range(0, 360), 0));
+        StartCoroutine(spawnFlag(randomTile, spawnDelay, tileFlhshSpeed, FindObjectOfType<Player>().gameObject)); 
     }
 
     public void nextWave()
@@ -100,7 +122,8 @@ public class FlagController : MonoBehaviour
 
     float nextFlagTimeCount()
     {
-        float time = Time.time + spawner.timeFlags() * timeBaseBetweenFlags + Random.Range(minFlagTime, maxFlagTime) * countFlags;
+        //float time = Time.time + spawner.timeFlags() * timeBaseBetweenFlags + Random.Range(minFlagTime, maxFlagTime) * countFlags;
+        float time = Time.time + 3f;
         return time;
     }
 }

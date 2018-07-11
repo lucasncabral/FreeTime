@@ -230,12 +230,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Target: {fileID: 4066741247563156}
   m_ChildIndex: 0
-  m_SendInterval: 0.1
+  m_SendInterval: 0.033333335
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0
   m_MovementThreshold: 0.001
-  m_InterpolateRotation: 0.5
-  m_InterpolateMovement: 0.5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &114641986648131040
 MonoBehaviour:
   m_ObjectHideFlags: 1

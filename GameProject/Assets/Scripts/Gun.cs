@@ -17,6 +17,7 @@ public class Gun : NetworkBehaviour {
     public float msBetweenShots = 100;
     public float muzzleVelocity;
 
+
     float nextShotTime;
 
     public GameObject shell;
@@ -40,7 +41,7 @@ public class Gun : NetworkBehaviour {
     {
         GameObject parentObject = ClientScene.FindLocalObject(parentNetId);
         transform.SetParent(parentObject.transform.GetChild(0));
-        transform.rotation = parentObject.transform.GetChild(0).rotation;
+        transform.rotation = parentObject.transform.GetChild(0).transform.rotation;
         parentObject.GetComponent<GunController>().equippedGun = this;
         
     }
@@ -51,7 +52,7 @@ public class Gun : NetworkBehaviour {
         ChangeFireMod();
         muzzleFlash = GetComponent<MuzzleFlash>();
         shotsRemainingInBurst = burstCount;
-        //projectilesRemainingInMag = projectilesPerMag;
+        projectilesRemainingInMag = projectilesPerMag;
     }
 
     private void Awake()
@@ -61,57 +62,82 @@ public class Gun : NetworkBehaviour {
 
     private void Update()
     {
-        // animate recoil
         transform.localPosition = Vector3.SmoothDamp(transform.localPosition, Vector3.zero, ref recoilSmoothDampVelocity, .1f);
 
         if(!isReloading && projectilesRemainingInMag == 0)
         {
-            Reload();
+                CmdReload();
         }
     }
 
     [Command]
-    void CmdShoot()
+    void CmdShoot(Vector3 projectilePosition, Quaternion rotation)
     {
-        if (!isReloading && Time.time > nextShotTime && projectilesRemainingInMag > 0)
-        {
-            if(fireMode == FireMode.Burst)
-            {
-                if (shotsRemainingInBurst == 0)
-                    return;
-                shotsRemainingInBurst--;
-            }
-            else if(fireMode == FireMode.Single)
-            {
-                if (!triggerReleasedSinceLastShot)
-                    return;
-            }
-
-
-            for (int i=0; i < projectileSpawn.Length; i++) {
-                if (projectilesRemainingInMag == 0)
-                    break;
-                projectilesRemainingInMag--;
-
-            nextShotTime = Time.time + msBetweenShots / 1000;
-            GameObject newProjectile = Instantiate(projectile, projectileSpawn[i].position, projectileSpawn[i].rotation) as GameObject;
+            GameObject newProjectile = Instantiate(projectile, projectilePosition, rotation) as GameObject;
             newProjectile.GetComponent<Projectile>().SetSpeed(muzzleVelocity);
             NetworkServer.Spawn(newProjectile);
-            }
 
-            GameObject shellObject = Instantiate(shell, shellEjection.position, shellEjection.rotation) as GameObject;
-            NetworkServer.Spawn(shellObject);
+            CmdShell();
+            // if (!isReloading && projectilesRemainingInMag != projectilesPerMag)
+            CmdOnShoot();
+        
+    }
 
-            muzzleFlash.Activate();
-            transform.localPosition -= Vector3.forward * .2f;
-        }
+    [Command]
+    void CmdShell()
+    {
+        GameObject shellObject = Instantiate(shell, shellEjection.position, shellEjection.rotation) as GameObject;
+        NetworkServer.Spawn(shellObject);
+    }
+
+    [Command]
+    void CmdRecoil()
+    {
+        RpcDoRecoilEffect();
+    }
+
+    [ClientRpc]
+    void RpcDoRecoilEffect()
+    {
+        transform.localPosition -= Vector3.forward * .2f;
+    }
+
+    [Command]
+    void CmdOnShoot()
+    {
+        RpcDoShootEffect();
+    }
+
+    [ClientRpc]
+    void RpcDoShootEffect()
+    {
+        muzzleFlash.Activate();
+    }
+
+    [Command]
+    public void CmdReload()
+    {
+        RpcDoReloadEffect();
+        CmdShell();
     }
 
     public void Reload()
     {
-        if(!isReloading && projectilesRemainingInMag != projectilesPerMag)
-            StartCoroutine(AnimateReload());
+        if(projectilesRemainingInMag != projectilesPerMag && !isReloading)
+        {
+            isReloading = true;
+            CmdReload();
+        }
+        isReloading = false;
     }
+
+
+    [ClientRpc]
+    void RpcDoReloadEffect()
+    {
+        StartCoroutine(AnimateReload());
+    }
+
 
     IEnumerator AnimateReload()
     {
@@ -132,14 +158,47 @@ public class Gun : NetworkBehaviour {
 
             yield return null;
         }
-
-        isReloading = false;
+        
+        transform.localEulerAngles = new Vector3(0, 0, 0);
         projectilesRemainingInMag = projectilesPerMag;
+
+        yield return new WaitForSeconds(.1f);
+        isReloading = false;
     }
 
     public void OnTriggerHolde()
     {
-        CmdShoot();
+        if (!isReloading && Time.time > nextShotTime && projectilesRemainingInMag > 0)
+        {
+            if (fireMode == FireMode.Burst)
+            {
+                if (shotsRemainingInBurst == 0)
+                    return;
+                shotsRemainingInBurst--;
+            }
+            else if (fireMode == FireMode.Single)
+            {
+                if (!triggerReleasedSinceLastShot)
+                    return;
+            }
+
+
+            for (int i = 0; i < projectileSpawn.Length; i++)
+            {
+                if (projectilesRemainingInMag == 0)
+                    break;
+                projectilesRemainingInMag--;
+
+                nextShotTime = Time.time + msBetweenShots / 1000;
+                CmdShoot(projectileSpawn[i].position, projectileSpawn[i].rotation);
+            }
+
+            CmdShell();
+
+            if (!isReloading && projectilesRemainingInMag != projectilesPerMag)
+                CmdOnShoot();
+            CmdRecoil();
+        }
         triggerReleasedSinceLastShot = false;
     }
 
@@ -169,8 +228,8 @@ public class Gun : NetworkBehaviour {
                 type = "Single";
                 break;
         }
-
-        if(!flagFirstTime)
+        
+        if (!flagFirstTime)
         {
             gameUi.OnNewFireMode(type);
         }

@@ -2,25 +2,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class MapGenerator : MonoBehaviour {
+public class MapGenerator : NetworkBehaviour
+{
 
     public Map[] maps;
     public int mapIndex;
 
     public Transform tilePrefab;
     public Transform obstaclePrefab;
-    public Transform mapFloor;
+    public Transform mapFloorPrefab;
     public Transform navmeshMaskPrefab;
-    
+    public Transform navMeshFloorPrefab;
+
     public Vector2 maxMapSize;
+    public float obstacleHeight;
 
     [Range(0,1)]
     public float outlinePercent;
 
     // mudar tamanho do mapa
     public float tileSize;
-    public Transform navMeshFloor;
 
     List<Coord> allTilesCoords;
     Queue<Coord> shuffledTileCoords;
@@ -31,7 +34,7 @@ public class MapGenerator : MonoBehaviour {
     Transform[,] tileMap;
     Queue<Coord> shuffledOpenTileCoords;
 
-    private void Start()
+    public override void OnStartServer()
     {
         mapIndex = PlayerPrefs.GetInt("missionChoose");
         GenerateMap();
@@ -81,6 +84,10 @@ public class MapGenerator : MonoBehaviour {
                 newTile.localScale = Vector3.one * (1 - outlinePercent) * tileSize;
                 newTile.parent = mapHolder;
                 tileMap[x, y] = newTile;
+
+                newTile.GetComponent<Resize>().localScaleVec = newTile.transform.localScale;
+                //AQUI
+                NetworkServer.Spawn(newTile.gameObject);
             }
         }
 
@@ -97,7 +104,7 @@ public class MapGenerator : MonoBehaviour {
             currentObstacleCount++;
 
             if((randomCoord != currentMap.mapCenter) && MapIsFullyAccessible(obstacleMap, currentObstacleCount)) {
-                float obstacleHeight = Mathf.Lerp(currentMap.minObstacleHeight, currentMap.maxObstacleHeight, (float)prng.NextDouble());
+                obstacleHeight = Mathf.Lerp(currentMap.minObstacleHeight, currentMap.maxObstacleHeight, (float)prng.NextDouble());
 
                 Vector3 obstaclePosition = CoordToPosition(randomCoord.x, randomCoord.y);
                 Transform newObstacle = Instantiate(obstaclePrefab, obstaclePosition + (Vector3.up * obstacleHeight / 2), Quaternion.identity) as Transform;
@@ -110,6 +117,9 @@ public class MapGenerator : MonoBehaviour {
                 float colourPercent = randomCoord.y / (float) currentMap.mapSize.y;
                 obstacleMaterial.color = Color.Lerp(currentMap.foregroundColour, currentMap.backgroundColour, colourPercent);
                 obstacleRenderer.sharedMaterial = obstacleMaterial;
+                newObstacle.GetComponent<Resize>().localScaleVec = newObstacle.transform.localScale;
+
+                NetworkServer.Spawn(newObstacle.gameObject);
 
                 allOpenCoords.Remove(randomCoord);
             } else
@@ -137,8 +147,33 @@ public class MapGenerator : MonoBehaviour {
         maskBottom.parent = mapHolder;
         maskBottom.localScale = new Vector3(maxMapSize.x, 1, (maxMapSize.y - currentMap.mapSize.y) / 2f) * tileSize;
 
+
+        Transform navMeshFloor = Instantiate(navMeshFloorPrefab, navMeshFloorPrefab.transform.position, navMeshFloorPrefab.transform.rotation) as Transform;
+        Transform mapFloor = Instantiate(mapFloorPrefab, mapFloorPrefab.transform.position, mapFloorPrefab.transform.rotation) as Transform;
+
+        navMeshFloor.parent = this.transform;
+        mapFloor.parent = this.transform;
+
+
         navMeshFloor.localScale = new Vector3(maxMapSize.x, maxMapSize.y) * tileSize;
         mapFloor.localScale = new Vector3(currentMap.mapSize.x * tileSize, currentMap.mapSize.y * tileSize);
+
+
+        navMeshFloor.GetComponent<Resize>().localScaleVec = navMeshFloor.transform.localScale;
+        mapFloor.GetComponent<Resize>().localScaleVec = mapFloor.transform.localScale;
+
+        NetworkServer.Spawn(navMeshFloor.gameObject);
+        NetworkServer.Spawn(mapFloor.gameObject);
+
+        maskLeft.GetComponent<Resize>().localScaleVec = maskLeft.transform.localScale;
+        maskRight.GetComponent<Resize>().localScaleVec = maskRight.transform.localScale;
+        maskTop.GetComponent<Resize>().localScaleVec = maskTop.transform.localScale;
+        maskBottom.GetComponent<Resize>().localScaleVec = maskBottom.transform.localScale;
+        
+        NetworkServer.Spawn(maskLeft.gameObject);
+        NetworkServer.Spawn(maskRight.gameObject);
+        NetworkServer.Spawn(maskTop.gameObject);
+        NetworkServer.Spawn(maskBottom.gameObject);
     }
 
     // VERIFICA CONECTIVIDADE DO MAPA

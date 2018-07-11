@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameUI : MonoBehaviour {
-    Player playerEntitity;
+    public Player playerEntitity;
 
     public Image fadePlane;
     public GameObject gameOverUI;
@@ -153,7 +153,6 @@ public class GameUI : MonoBehaviour {
         StartCoroutine("AnimateNewWaveBanner");
     }
 
-
     void OnGameOver()
     {
         gameOver = true;
@@ -178,7 +177,6 @@ public class GameUI : MonoBehaviour {
             yield return null;
         }
     }
-
 
     // UI Input
     public void StartNewGame()

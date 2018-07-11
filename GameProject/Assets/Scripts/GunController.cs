@@ -30,7 +30,8 @@ public class GunController : NetworkBehaviour
 
     private void Update()
     {
-       gunsBullets[equippedGunIndex] = equippedGun.projectilesRemainingInMag;
+       if(equippedGun != null)
+        gunsBullets[equippedGunIndex] = equippedGun.projectilesRemainingInMag;
        accuracy = numberHits / (float)numberBullets;
     }
 
@@ -45,8 +46,6 @@ public class GunController : NetworkBehaviour
         }
 
         this.equippedGun = Instantiate(gunToEquip, weaponHold.position, weaponHold.rotation) as Gun;
-        //this.equippedGun.transform.parent = weaponHold;
-        //equippedGun.parentNetId = weaponHold.GetComponent<NetworkIdentity>().netId;
         equippedGun.parentNetId = this.GetComponentInChildren<NetworkIdentity>().netId;
 
         this.equippedGun.projectilesRemainingInMag = gunsBullets[equippedGunIndex];

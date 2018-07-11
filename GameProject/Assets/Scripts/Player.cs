@@ -75,6 +75,7 @@ public class Player : LivingEntity {
         if (Input.GetKeyDown(KeyCode.R))
         {
             gunController.Reload();
+
         }
         if (Input.GetKeyDown(KeyCode.E))
         {

@@ -4,8 +4,10 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 
-public class GameUI : MonoBehaviour {
+public class GameUI : NetworkBehaviour
+{
     public Player playerEntitity;
 
     public Image fadePlane;
@@ -37,8 +39,9 @@ public class GameUI : MonoBehaviour {
     float endDelayTime;
     bool isChangingFireMode = false;
     bool gameOver = false;
-
-    void Start ()
+    ScoreKeeper scoreKeeper;
+    
+    public override void OnStartServer()
     {
         playerEntitity = FindObjectOfType<Player>();
         Action OnPlayerDeathAction = () => OnGameOver();
@@ -52,8 +55,12 @@ public class GameUI : MonoBehaviour {
 
     private void Update()
     {
+        if (scoreKeeper == null)
+            scoreKeeper = FindObjectOfType<ScoreKeeper>();
         if (!gameOver) {
-        scoreUI.text = ScoreKeeper.score.ToString("D6");
+
+        scoreUI.text = scoreKeeper.score.ToString("D6");
+
         if (ScoreKeeper.streakCount == 0)
             streakUI.text = "";
         else

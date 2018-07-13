@@ -4,16 +4,12 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class ScoreKeeper : NetworkBehaviour {
-    
-    public static int score;
+
+    [SyncVar]
+    public int score = 0;
     float lastEnemyKillTime;
     public static int streakCount;
     float streakExpiryTime = 1f;
-
-    private void Start()
-    {
-        score = 0;
-    }
 
     private void Update()
     {
@@ -21,8 +17,6 @@ public class ScoreKeeper : NetworkBehaviour {
         {
             streakCount = 0;
         }
-
-        Debug.Log(score);
     }
 
     public void OnEnemyKilled()
@@ -43,10 +37,18 @@ public class ScoreKeeper : NetworkBehaviour {
         }
     }
 
-    public void OnFlagCaptured()
+    [Command]
+    public void CmdOnFlagCaptured()
     {
         score += 100;
     }
+
     
+
+    void setScore(int Score)
+    {
+        score = Score;
+    }
+
 
 }

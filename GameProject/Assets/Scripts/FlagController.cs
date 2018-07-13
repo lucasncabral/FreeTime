@@ -62,12 +62,16 @@ public class FlagController : NetworkBehaviour
         Color flashColour = Color.blue;
         float spawnTimer = 0;
 
+        Resize colorSave = randomTile.GetComponent<Resize>();
         while (spawnTimer < spawnDelay)
         {
             tileMat.color = Color.Lerp(initialColour, flashColour, Mathf.PingPong(spawnTimer * tileFlhshSpeed, 1));
+            colorSave.color = tileMat.color;
             spawnTimer += Time.deltaTime;
             yield return null;
         }
+
+        colorSave.color = tileMat.color;
 
         if (isServer)
         {
@@ -83,16 +87,14 @@ public class FlagController : NetworkBehaviour
     void CmdSpawnFlag()
     {
         randomTile = map.GetRandomOpenTile();
-        RpcDoTileEffect();
+        doTileEffect();
     }
-
-    [ClientRpc]
-    void RpcDoTileEffect()
+    
+    void doTileEffect()
     {
         generatingFlag = true;
         float spawnDelay = 1;
         float tileFlhshSpeed = 4;
-        
         StartCoroutine(spawnFlag(randomTile, spawnDelay, tileFlhshSpeed, FindObjectOfType<Player>().gameObject)); 
     }
 

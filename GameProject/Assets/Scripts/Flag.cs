@@ -25,7 +25,10 @@ public class Flag : NetworkBehaviour
 
     [Command]
     void CmdFlagCaptured() {
+
         FindObjectOfType<FlagController>().captureFlag();
-        score.OnFlagCaptured();
+        score.CmdOnFlagCaptured();
     }
+
+   
 }

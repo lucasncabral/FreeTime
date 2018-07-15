@@ -19,8 +19,7 @@ public class PlayerController : NetworkBehaviour {
         {
             return;
         }
-
-
+        
         myRigidBody.MovePosition(myRigidBody.position + velocity * Time.fixedDeltaTime);
     }
 

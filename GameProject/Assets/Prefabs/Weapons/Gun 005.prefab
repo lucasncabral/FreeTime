@@ -841,7 +841,8 @@ MonoBehaviour:
   - {fileID: 4084017278856992}
   - {fileID: 4436425970810868}
   - {fileID: 4370314254255774}
-  projectile: {fileID: 1606117276887816, guid: 833ffd044899a8b4b904d36d6e1cd452, type: 2}
+  projectile: {fileID: 114090010833080942, guid: 833ffd044899a8b4b904d36d6e1cd452,
+    type: 2}
   msBetweenShots: 100
   muzzleVelocity: 35
   shell: {fileID: 1998724914631378, guid: 507aeba2adfd534498aff4f66fd1e90c, type: 2}

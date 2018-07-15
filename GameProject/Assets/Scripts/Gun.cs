@@ -13,7 +13,7 @@ public class Gun : NetworkBehaviour {
     int shotsRemainingInBurst;
 
     public Transform[] projectileSpawn;
-    public GameObject projectile;
+    public Projectile projectile;
     public float msBetweenShots = 100;
     public float muzzleVelocity;
 
@@ -36,23 +36,25 @@ public class Gun : NetworkBehaviour {
 
     [SyncVar]
     public NetworkInstanceId parentNetId;
+    GameObject parentObject;
 
     public override void OnStartClient()
     {
-        GameObject parentObject = ClientScene.FindLocalObject(parentNetId);
+        parentObject = ClientScene.FindLocalObject(parentNetId);
         transform.SetParent(parentObject.transform.GetChild(0));
         transform.rotation = parentObject.transform.GetChild(0).transform.rotation;
         parentObject.GetComponent<GunController>().equippedGun = this;
-        
+        parentObject.GetComponent<GunController>().updateIndex(this.name);
     }
 
     private void Start()
     {
         fireModeSelect = 0;
         ChangeFireMod();
+
         muzzleFlash = GetComponent<MuzzleFlash>();
         shotsRemainingInBurst = burstCount;
-        projectilesRemainingInMag = projectilesPerMag;
+        projectilesRemainingInMag = parentObject.GetComponent<GunController>().bulletsRemaining();
     }
 
     private void Awake()
@@ -73,11 +75,12 @@ public class Gun : NetworkBehaviour {
     [Command]
     void CmdShoot(Vector3 projectilePosition, Quaternion rotation)
     {
-            GameObject newProjectile = Instantiate(projectile, projectilePosition, rotation) as GameObject;
-            newProjectile.GetComponent<Projectile>().SetSpeed(muzzleVelocity);
-            NetworkServer.Spawn(newProjectile);
+            Projectile newProjectile = Instantiate(projectile, projectilePosition, rotation) as Projectile;
+            newProjectile.gunController = this.transform.parent.transform.parent.GetComponent<GunController>();
+            newProjectile.parentNetId = this.GetComponentInChildren<NetworkIdentity>().netId;
+            NetworkServer.Spawn(newProjectile.gameObject);
 
-            CmdShell();
+        CmdShell();
             // if (!isReloading && projectilesRemainingInMag != projectilesPerMag)
             CmdOnShoot();
         

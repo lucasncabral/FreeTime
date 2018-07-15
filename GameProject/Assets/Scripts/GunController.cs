@@ -10,7 +10,8 @@ public class GunController : NetworkBehaviour
 
     public int[] gunsBullets;
     public Gun equippedGun;
-    int equippedGunIndex = 0;
+    
+    public int equippedGunIndex = 0;
 
     private float numberBullets = 1;
     private float numberHits = 1;
@@ -30,20 +31,27 @@ public class GunController : NetworkBehaviour
 
     private void Update()
     {
-       if(equippedGun != null)
-        gunsBullets[equippedGunIndex] = equippedGun.projectilesRemainingInMag;
-       accuracy = numberHits / (float)numberBullets;
+       if(equippedGun != null) {
+            gunsBullets[equippedGunIndex] = equippedGun.projectilesRemainingInMag;
+        }
+
+        accuracy = numberHits / (float) numberBullets;
     }
+
+    public int bulletsRemaining()
+    {
+        return gunsBullets[equippedGunIndex];
+    }    
 
     [Command]
     public void CmdEquipGun(int gunIndex) {
        equippedGunIndex = gunIndex % allGuns.Length;
-        Gun gunToEquip = allGuns[equippedGunIndex];
-
         if (equippedGun != null)
         {
             Destroy(equippedGun.gameObject);
         }
+
+        Gun gunToEquip = allGuns[equippedGunIndex];
 
         this.equippedGun = Instantiate(gunToEquip, weaponHold.position, weaponHold.rotation) as Gun;
         equippedGun.parentNetId = this.GetComponentInChildren<NetworkIdentity>().netId;
@@ -51,6 +59,18 @@ public class GunController : NetworkBehaviour
         this.equippedGun.projectilesRemainingInMag = gunsBullets[equippedGunIndex];
         
         NetworkServer.SpawnWithClientAuthority(equippedGun.gameObject, FindObjectOfType<Player>().gameObject);
+    }
+
+    public void updateIndex(string name)
+    {
+        for(int i = 0; i < allGuns.Length; i++)
+        {
+            if ((allGuns[i].name + "(Clone)") == name)
+            {
+                equippedGunIndex = i;
+                break;
+            }
+        }
     }
 
 
@@ -93,11 +113,13 @@ public class GunController : NetworkBehaviour
 
     public void moreOneShoot()
     {
-        numberBullets++;
+        if(isLocalPlayer)
+            numberBullets++;
     }
 
     public void moreOnHit()
     {
-        numberHits++;
+        if(isLocalPlayer)
+            numberHits++;
     }
 }

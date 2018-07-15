@@ -10,13 +10,17 @@ public class Projectile : NetworkBehaviour{
 
     float lifeTime = 3;
     float skinWidth = .1f;
+    
+    public GunController gunController;
 
-    GunController gunController;
+    [SyncVar]
+    public NetworkInstanceId parentNetId;
+
     private void Start()
     {
         Destroy(gameObject, lifeTime);
-
-        gunController = FindObjectOfType<GunController>();
+        gunController = ClientScene.FindLocalObject(parentNetId).transform.parent.transform.parent.GetComponent<GunController>();
+        
         gunController.moreOneShoot();
         Collider[] initialCollisions = Physics.OverlapSphere(transform.position, .1f, collisionMask);
         if(initialCollisions.Length > 0)

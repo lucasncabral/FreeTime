@@ -562,7 +562,8 @@ MonoBehaviour:
   burstCount: 5
   projectileSpawn:
   - {fileID: 4032860366553714}
-  projectile: {fileID: 1606117276887816, guid: 833ffd044899a8b4b904d36d6e1cd452, type: 2}
+  projectile: {fileID: 114090010833080942, guid: 833ffd044899a8b4b904d36d6e1cd452,
+    type: 2}
   msBetweenShots: 200
   muzzleVelocity: 25
   shell: {fileID: 1998724914631378, guid: 507aeba2adfd534498aff4f66fd1e90c, type: 2}

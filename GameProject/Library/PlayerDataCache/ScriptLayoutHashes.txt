@@ -1,5 +1,5 @@
 WindowsStandalone
-167ac7733aef84c140e745eebd370d32 Assembly-CSharp.dll:.Projectile
+806ba724a0ef2ce5aabd76b0eb10dc70 Assembly-CSharp.dll:.Projectile
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Item
 dc07d7ad69b399a46e92c483bf1c04ca UnityEngine.Analytics.dll:UnityEngine.Analytics.AnalyticsTracker
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationPlayableAsset
@@ -14,7 +14,7 @@ ff05dcdf90651c3d98a9cad3df5e471e UnityEngine.Timeline.dll:UnityEngine.Timeline.C
 7b848b7feaa524953d09fc1851efa6da UnityEngine.Timeline.dll:UnityEngine.Timeline.GroupTrack
 7b848b7feaa524953d09fc1851efa6da UnityEngine.Timeline.dll:UnityEngine.Timeline.PlayableTrack
 c24a21b131bfa67be1162db2cba4b52b UnityEngine.Timeline.dll:UnityEngine.Timeline.TimelineAsset
-378ea2f6d8e35c5a203fda90c8f64bf2 Assembly-CSharp.dll:.GunController
+44e1071b9f361f2a7693793442b4d8e1 Assembly-CSharp.dll:.GunController
 9c9823195e676aa4aea621510ea0832b Assembly-CSharp.dll:.Player
 a35dc9cca2faebc5f5f1aeb9e8e47bbe UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.UI.dll:UnityEngine.EventSystems.BaseInput
@@ -134,12 +134,12 @@ e9bdabf9265d758d56f01bb188916fa8 UnityEngine.Networking.dll:UnityEngine.Networki
 73843688b51256aed059f049c540bca8 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformChild
 528ea1fd7c01796fc60c4e2f172ea229 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformVisualizer
 9824801c606429e6f3051578de741c5a Assembly-CSharp.dll:.Crosshairs
-87b1e21e13cc5ef2e870095b355977e1 Assembly-CSharp.dll:.GameUI
+7cf0db7678de4ad31efaa45e70241659 Assembly-CSharp.dll:.GameUI
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.PlayModeRunnerCallback
 5f2ad81aa8994e8fbe25d1e57afe6773 UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.PlaymodeTestsController
 64eb32cc721b1cc68a91ed57461e188c UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.RemoteTestResultSender
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.PlayerController
-a3085e7ea481f3e6238079d3594c5064 Assembly-CSharp.dll:.Gun
+a81b86c9db1f103acfd00fa801c900c2 Assembly-CSharp.dll:.Gun
 bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.AudioSpatializerMicrosoft
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInput
 463516d5b5fe8e67a0a24c48f2095b04 UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInputModule

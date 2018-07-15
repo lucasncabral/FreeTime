@@ -7,6 +7,7 @@ public class ScoreKeeper : NetworkBehaviour {
 
     [SyncVar]
     public int score = 0;
+
     float lastEnemyKillTime;
     public static int streakCount;
     float streakExpiryTime = 1f;

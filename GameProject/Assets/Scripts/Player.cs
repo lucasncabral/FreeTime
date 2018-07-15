@@ -25,12 +25,18 @@ public class Player : LivingEntity {
             return;
 
         base.Start();
+
+        GameUI gameUI = FindObjectOfType<GameUI>();
+        gameUI.playerEntitity = this;
+
         
         controller = GetComponent<PlayerController>();
         gunController = GetComponent<GunController>();
         viewCamera = Camera.main;
         
         gunController.CmdEquipGun(gunNumber++);
+
+        gameUI.currentGunController = gunController;
 
         playerUIInstance = Instantiate(playerUIPrefab);
         playerUIInstance.name = playerUIPrefab.name;

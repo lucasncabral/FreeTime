@@ -29,8 +29,8 @@ public class GameUI : NetworkBehaviour
 
     public RectTransform fireModeChange;
     public Text fireModeTxt;
-    Gun currentGun;
-    
+    public GunController currentGunController;
+    public Gun currentGun;
     // Use this for initialization
 
     // Banners
@@ -39,13 +39,12 @@ public class GameUI : NetworkBehaviour
     float endDelayTime;
     bool isChangingFireMode = false;
     bool gameOver = false;
-    ScoreKeeper scoreKeeper;
+    public ScoreKeeper scoreKeeper;
     
     public override void OnStartServer()
     {
-        playerEntitity = FindObjectOfType<Player>();
-        Action OnPlayerDeathAction = () => OnGameOver();
-        playerEntitity.OnDeath += OnPlayerDeathAction;
+        //Action OnPlayerDeathAction = () => OnGameOver();
+        //playerEntitity.OnDeath += OnPlayerDeathAction;
     }
 
     void Awake()
@@ -55,8 +54,10 @@ public class GameUI : NetworkBehaviour
 
     private void Update()
     {
+        if(playerEntitity != null) {
         if (scoreKeeper == null)
             scoreKeeper = FindObjectOfType<ScoreKeeper>();
+        
         if (!gameOver) {
 
         scoreUI.text = scoreKeeper.score.ToString("D6");
@@ -65,18 +66,20 @@ public class GameUI : NetworkBehaviour
             streakUI.text = "";
         else
             streakUI.text = "x" + (ScoreKeeper.streakCount + 1);
+        
+        currentGun = currentGunController.equippedGun;
 
-        currentGun = FindObjectOfType<Gun>();
-        if(currentGun != null)
-            bulletsInMag.text = currentGun.projectilesRemainingInMag + "/" + currentGun.projectilesPerMag;
+        if (currentGun != null)
+           bulletsInMag.text = currentGun.projectilesRemainingInMag + "/" + currentGun.projectilesPerMag;
 
-        accuracyText.text = ((FindObjectOfType<GunController>().accuracy) * 100).ToString("n2") + "%";
+        accuracyText.text = ((currentGunController.accuracy) * 100).ToString("n2") + "%";
 
         float healthPercent = 0;
         if(playerEntitity != null) { 
             healthPercent = playerEntitity.health / playerEntitity.startingHealth;
         }
         healthBar.localScale = new Vector3(healthPercent, 1, 1);
+        }
         }
     }
     

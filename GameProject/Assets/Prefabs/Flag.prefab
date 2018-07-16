@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 65272042478828634}
   - component: {fileID: 114359148623019818}
   - component: {fileID: 114257405307576878}
+  - component: {fileID: 208846539822327442}
   m_Layer: 0
   m_Name: Flag
   m_TagString: Untagged
@@ -367,6 +368,21 @@ MonoBehaviour:
     i15: 72
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!208 &208846539822327442
+NavMeshObstacle:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1345795615863186}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!224 &224073835854143638
 RectTransform:
   m_ObjectHideFlags: 1

@@ -58,14 +58,15 @@ public class Enemy : LivingEntity
     }
 
     // Use this for initialization
-    protected override void Start () {
-        base.Start();
-        
-        if(hasTarget) {
+    //protected override void Start () {
+    public void Start(){
+        //    base.Start();
+
+        if (hasTarget) {
             currentState = State.Chasing;
             Action OnTargetDeathAction = () => OnTargetDeath();
             targetEntity.OnDeath += OnTargetDeathAction;
-        StartCoroutine(UpdatePath());
+            StartCoroutine(UpdatePath());
         }
     }
 

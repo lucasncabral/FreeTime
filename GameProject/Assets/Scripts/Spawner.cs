@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Spawner : MonoBehaviour {
+public class Spawner : NetworkBehaviour
+{
 
     public Mission[] missions;
     Enemy enemy;
@@ -30,8 +32,27 @@ public class Spawner : MonoBehaviour {
     MapGenerator map;
     bool isDisabled;
     GameUI gameUi;
+    
+    public override void OnStartServer()
+    {
+        loadAssets();
 
-    private void Awake()
+        //playerEntitity = FindObjectOfType<Player>();
+        //playerT = playerEntitity.transform;
+
+        //nextCampCheckTime = timeBetweenCampingChecks + Time.time;
+        //campPositionOld = playerT.position;
+        
+        //Action OnPlayerDeathAction = () => OnPlayerDeath();
+        //playerEntitity.OnDeath += OnPlayerDeathAction;
+
+        map = FindObjectOfType<MapGenerator>();
+        gameUi = FindObjectOfType<GameUI>();
+        NextWave();
+    }
+
+    //private void Awake()
+    private void loadAssets()
     {
         currentMissionNumber = PlayerPrefs.GetInt("missionChoose");
         currentMission = missions[currentMissionNumber];
@@ -41,6 +62,7 @@ public class Spawner : MonoBehaviour {
         enemy = currentMission.prefabEnemy;
     }
 
+    /**
     private void Start()
     {
         playerEntitity = FindObjectOfType<Player>();
@@ -55,60 +77,83 @@ public class Spawner : MonoBehaviour {
         gameUi = FindObjectOfType<GameUI>();
         NextWave();
     }
+    **/
 
     private void Update()
     {
+        if (!isServer)
+            return;
+
         if (!isDisabled)
         {
+            /**
             if (Time.time > nextCampCheckTime)
             {
                 nextCampCheckTime = Time.time + timeBetweenCampingChecks;
                 isCamping = (Vector3.Distance(playerT.position, campPositionOld) < campThresholdDistance);
                 campPositionOld = playerT.position;
             }
+            **/
 
             if ((enemiesRemainingToSpawn > 0) && Time.time > nextSpawnTime)
             {
                 enemiesRemainingToSpawn--;
                 nextSpawnTime = Time.time + timeBetweenSpawn;
 
-                StartCoroutine(SpawnEnemy());
+                CmdSpawnEnemy();
             }
         }
     }
 
-    IEnumerator SpawnEnemy()
+    IEnumerator SpawnEnemy(Transform randomTile, float spawnDelay, float tileFlhshSpeed)
     {
-        float spawnDelay = 1;
-        float tileFlhshSpeed = 4;
-
-        Transform randomTile = map.GetRandomOpenTile();
-        if (isCamping)
-        {
-            randomTile = map.GetTileFromPosition(playerT.position);
-            isCamping = false;
-        }
-
-
         Material tileMat = randomTile.GetComponent<Renderer>().material;
-        // Bug de se iniciar enquanto pisca, ele vai entender que a cor initcial é vermelho
-        //Color initialColour = tileMat.color;
         Color initialColour = Color.white;
         Color flashColour = Color.red;
         float spawnTimer = 0;
 
-        while(spawnTimer < spawnDelay) {
+        Resize colorSave = randomTile.GetComponent<Resize>();
+        while (spawnTimer < spawnDelay) {
             tileMat.color = Color.Lerp(initialColour, flashColour, Mathf.PingPong(spawnTimer * tileFlhshSpeed, 1));
             spawnTimer += Time.deltaTime;
+            colorSave.color = tileMat.color;
             yield return null;
         }
 
-        Enemy spawnedEnemy = Instantiate(enemy, randomTile.position + Vector3.up, Quaternion.identity) as Enemy;
-        Action OnEnemyDeathAction = () => OnEnemyDeath();
-        spawnedEnemy.OnDeath += OnEnemyDeathAction;
+        colorSave.color = tileMat.color;
 
-        //spawnedEnemy.SetCharacteristics(currentWave.moveSpeed, currentWave.hitsToKillPlayer, currentWave.enemyHealth);
-    } 
+        if (isServer)
+        {
+            Enemy spawnedEnemy = Instantiate(enemy, randomTile.position + Vector3.up, Quaternion.identity) as Enemy;
+            Action OnEnemyDeathAction = () => OnEnemyDeath();
+            spawnedEnemy.OnDeath += OnEnemyDeathAction;
+            NetworkServer.Spawn(spawnedEnemy.gameObject);
+        }
+    }
+
+    [Command]
+    void CmdSpawnEnemy()
+    {
+        Transform randomTile = map.GetRandomOpenTile();
+        doTileEffect(randomTile);
+    }
+
+    void doTileEffect(Transform randomTile)
+    {
+        float spawnDelay = 1;
+        float tileFlhshSpeed = 4;
+
+        /**
+       if (isCamping)
+       {
+           randomTile = map.GetTileFromPosition(playerT.position);
+           isCamping = false;
+       }
+       **/
+
+        StartCoroutine(SpawnEnemy(randomTile, spawnDelay, tileFlhshSpeed));
+    }
+
 
 
     void OnPlayerDeath()
@@ -131,15 +176,8 @@ public class Spawner : MonoBehaviour {
         enemiesRemainingAlive = enemiesRemainingToSpawn;
         timeBetweenSpawn *= reasonSpawnerTime;
         gameUi.OnNewWave(currentWaveNumber, enemiesRemainingAlive);
-            
-            // changeMap
-            //map.OnNewWave(currentWaveNumber);
-            //ResetPlayerPosition();
-
-         //FindObjectOfType<FlagController>().nextWave();
-        
     }
-
+   
     void ResetPlayerPosition()
     {
         playerT.position = map.GetTileFromPosition(Vector3.zero).position + Vector3.up * 3;

@@ -19,8 +19,11 @@ public class Flag : NetworkBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        CmdFlagCaptured();
-        nextWave();
+        if (collision.gameObject.tag == "Player")
+        {
+            CmdFlagCaptured();
+            nextWave();
+        }
     }
 
     [Command]

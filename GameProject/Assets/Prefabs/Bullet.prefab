@@ -194,7 +194,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionMask:
     serializedVersion: 2
-    m_Bits: 1280
+    m_Bits: 5376
+  gunController: {fileID: 0}
 --- !u!114 &114270922384655808
 MonoBehaviour:
   m_ObjectHideFlags: 1

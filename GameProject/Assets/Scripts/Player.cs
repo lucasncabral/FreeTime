@@ -19,12 +19,12 @@ public class Player : LivingEntity {
     private GameObject playerUIInstance; 
     
     // Use this for initialization
-    protected override void Start ()
-    {
+    //protected override void Start ()
+    public void Start() {
         if (!isLocalPlayer)
             return;
 
-        base.Start();
+        // base.Start();
 
         GameUI gameUI = FindObjectOfType<GameUI>();
         gameUI.playerEntitity = this;

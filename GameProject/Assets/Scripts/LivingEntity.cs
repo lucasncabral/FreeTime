@@ -5,27 +5,36 @@ using UnityEngine.Networking;
 
 public class LivingEntity : NetworkBehaviour , IDamageable{
     public float startingHealth;
-    public float health { get; protected set;}
+
+    [SyncVar]
+    public float health;
+
     protected bool dead;
 
     public event System.Action OnDeath;
 
-    protected virtual void Start()
+    public override void OnStartClient()
     {
         health = startingHealth;
     }
-
+    
     public virtual void TakeHit(float damage, Vector3 hitPoint, Vector3 hitDirection) {
         TakeDamage(damage);
     }
 
     public virtual void TakeDamage(float damage)
     {
+        if (!isServer)
+        {
+            return;
+        }
+        
         health -= damage;
-        if (health <= 0 && !dead)
+        if (health <= 0 && !dead) {
             Die();
+        }
     }
-
+    
     protected void Die() {
         dead = true;
         if (OnDeath != null)

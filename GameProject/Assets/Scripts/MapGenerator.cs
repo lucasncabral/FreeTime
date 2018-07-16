@@ -175,7 +175,7 @@ public class MapGenerator : NetworkBehaviour
         NetworkServer.Spawn(maskTop.gameObject);
         NetworkServer.Spawn(maskBottom.gameObject);
     }
-
+    
     // VERIFICA CONECTIVIDADE DO MAPA
     bool MapIsFullyAccessible(bool[,] obstacleMap, int currentObstacleCount) {
         bool[,] mapFlags = new bool[obstacleMap.GetLength(0), obstacleMap.GetLength(1)];
@@ -220,7 +220,7 @@ public class MapGenerator : NetworkBehaviour
         shuffledTileCoords.Enqueue(randomCoord);
         return randomCoord;
     }
-
+    
     // random spawner
     public Transform GetRandomOpenTile()
     {

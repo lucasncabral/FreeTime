@@ -15,7 +15,7 @@ ff05dcdf90651c3d98a9cad3df5e471e UnityEngine.Timeline.dll:UnityEngine.Timeline.C
 7b848b7feaa524953d09fc1851efa6da UnityEngine.Timeline.dll:UnityEngine.Timeline.PlayableTrack
 c24a21b131bfa67be1162db2cba4b52b UnityEngine.Timeline.dll:UnityEngine.Timeline.TimelineAsset
 44e1071b9f361f2a7693793442b4d8e1 Assembly-CSharp.dll:.GunController
-9c9823195e676aa4aea621510ea0832b Assembly-CSharp.dll:.Player
+4dc892c58402aed0fac65995c1a30236 Assembly-CSharp.dll:.Player
 a35dc9cca2faebc5f5f1aeb9e8e47bbe UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.UI.dll:UnityEngine.EventSystems.BaseInput
 49cd62a578efc0a599b810a2b66cd49c UnityEngine.UI.dll:UnityEngine.UI.Button
@@ -113,7 +113,7 @@ bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.Audi
 463516d5b5fe8e67a0a24c48f2095b04 UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInputModule
 c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingCollider
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingRenderer
-649f3b2d503dd2573f28b92526d7c796 Assembly-CSharp.dll:.Enemy
+ca6636d3679fe7a24eb04217781d7711 Assembly-CSharp.dll:.Enemy
 9628c62534b7b976dbfc7844fd7dc2c2 Assembly-CSharp.dll:.FlagController
 ff9cb1b416c403ba3550b77f3dd2e888 Assembly-CSharp.dll:.Spawner
 90501fec6b978c69e8ffccd9066c53d2 Assembly-CSharp.dll:.ZoomCam
@@ -149,4 +149,5 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.Spa
 ea0653553b8b63dfe7a28eda575a3f11 Assembly-CSharp.dll:.Shell
 4c1df023016730c2f34d49b46b3a0ab5 Assembly-CSharp.dll:.Resize
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Flag
-602b7ca091faff12dd2ad8ce96503051 Assembly-CSharp.dll:.LivingEntity
+26692459fe5abcd81a046e066b614d03 Assembly-CSharp.dll:.LivingEntity
+bfe55aed69d97e5c6ab06b8aae868aed Assembly-CSharp.dll:.DontMove

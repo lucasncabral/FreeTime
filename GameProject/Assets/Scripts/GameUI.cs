@@ -158,8 +158,22 @@ public class GameUI : NetworkBehaviour
             enemyCountString = "Infinite";
         }
         newWaveEnemyCount.text = "Enemies: " + enemyCountString;
+        
+        CmdStartNewWave(newWaveTitle.text, newWaveEnemyCount.text);
+    }
 
+    [Command]
+    public void CmdStartNewWave(String waveName, String enemiesCount)
+    {
+        RpcStartNewWave(waveName, enemiesCount);
+    }
+
+    [ClientRpc]
+    public void RpcStartNewWave(String waveName, String enemiesCount)
+    {
         StopCoroutine("AnimateNewWaveBanner");
+        newWaveTitle.text = waveName;
+        newWaveEnemyCount.text = enemiesCount;
         StartCoroutine("AnimateNewWaveBanner");
     }
 

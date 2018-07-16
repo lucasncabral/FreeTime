@@ -124,8 +124,8 @@ public class FlagController : NetworkBehaviour
 
     float nextFlagTimeCount()
     {
-        //float time = Time.time + spawner.timeFlags() * timeBaseBetweenFlags + Random.Range(minFlagTime, maxFlagTime) * countFlags;
-        float time = Time.time + 3f;
+        float time = Time.time + spawner.timeFlags() * timeBaseBetweenFlags + Random.Range(minFlagTime, maxFlagTime) * countFlags;
+        //float time = Time.time + 3f;
         return time;
     }
 }

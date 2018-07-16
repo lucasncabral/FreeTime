@@ -54,12 +54,16 @@ public class Projectile : NetworkBehaviour{
     void OnHitObject(Collider c, Vector3 hitPoint)
     {
         IDamageable damageableObject = c.GetComponent<IDamageable>();
+
+        GetComponent<MeshRenderer>().enabled = false;
+
         if (damageableObject != null)
         {
             damageableObject.TakeHit(damage, hitPoint, transform.forward);
             gunController.moreOnHit();
         }
-        GameObject.Destroy(gameObject);
+
+        GameObject.Destroy(this);
     }
     
 }

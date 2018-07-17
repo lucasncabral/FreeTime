@@ -11,7 +11,7 @@ public class Enemy : LivingEntity
 {
     public enum State {Idle, Chasing, Attacking};
     State currentState;
-
+    
     NavMeshAgent pathfinder;
     
     float attackDistanceThreshold = .5f;
@@ -38,21 +38,20 @@ public class Enemy : LivingEntity
 
     // itens
     public Transform[] itens;
-    
     float damage = 1;
-
     public int hitsToKill;
     public float speed;
     public float startingHealthBase;
-
     public GameObject playerProx;
     GameObject[] players;
-
     void Awake()
     {
         pathfinder = GetComponent<NavMeshAgent>();
         
         players = GameObject.FindGameObjectsWithTag("Player");
+        if (players.Length == 0)
+            return;
+
         playerProx = players[0];
         float distanceMin = Vector3.Distance(players[0].transform.position, this.transform.position);
         for(int i = 1; i < players.Length;i++)
@@ -83,18 +82,30 @@ public class Enemy : LivingEntity
     }
     
     public void Start(){
-        if (hasTarget) {
+        if (isServer && hasTarget) {
             currentState = State.Chasing;
-           Action OnTargetDeathAction = () => OnTargetDeath();
-           targetEntity.OnDeath += OnTargetDeathAction;
-            StartCoroutine(UpdatePath());
+            CmdMoveEnemie();
         }
     }
 
-    void OnTargetDeath()
+    // THIS IS NOT COOL
+    /**
+    private void FixedUpdate()
+    {
+        if (!isServer)
+        {
+            this.transform.localPosition = location;
+            return;
+        }
+
+        location = this.transform.localPosition;
+    }
+    */
+
+    [Command]
+    public void CmdOnTargetDeath()
     {
         hasTarget = false;
-
         players = GameObject.FindGameObjectsWithTag("Player");
         
         int numIndex = Array.IndexOf(players, playerProx);
@@ -107,7 +118,7 @@ public class Enemy : LivingEntity
             float distanceMin = Vector3.Distance(players[0].transform.position, this.transform.position);
             for (int i = 1; i < players.Length; i++)
             {
-                Debug.Log("Teste");
+                Debug.Log("Teste"); 
                 float newDistance = Vector3.Distance(players[i].transform.position, this.transform.position);
                 if (newDistance < distanceMin)
                 {
@@ -128,9 +139,26 @@ public class Enemy : LivingEntity
             currentState = State.Idle;
        }
     }
+
+    [Command]
+    void CmdMoveEnemie()
+    {
+        RpcMoveEnemie();
+    }
+
+    [ClientRpc]
+    void RpcMoveEnemie()
+    {
+        StartCoroutine(UpdatePath());
+    }
 	
 	// Update is called once per frame
 	void Update () {
+        if (!isServer) {
+            return;
+        }
+        
+
         if (hasTarget) {
         if(Time.time > nextTimeAttack) {
                 try
@@ -153,7 +181,7 @@ public class Enemy : LivingEntity
                 nextTimeAttack = Time.time + timeBetweenAttacks;
                 StartCoroutine(Attack());
              }
-            }
+           }
         }
     }
 
@@ -199,6 +227,7 @@ public class Enemy : LivingEntity
             }
             yield return new WaitForSeconds(refreshRate);
         }
+
     }
     
     public override void TakeHit(float damage, Vector3 hitPoint, Vector3 hitDirection)
@@ -209,19 +238,17 @@ public class Enemy : LivingEntity
                 score.OnEnemyKilled();
             }
             Destroy(Instantiate(deathEffect, hitPoint, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 2);
-
-
-
-            CmdDropItem();
             
+            CmdDropItem();
         }
+
         base.TakeHit(damage, hitPoint, hitDirection);
     }
 
     [Command]
     void CmdDropItem()
     {
-        // Drop Iten
+
         int luckyItem = UnityEngine.Random.Range(0, 30);
 
         if (luckyItem == 3)
@@ -243,6 +270,5 @@ public class Enemy : LivingEntity
         }
 
         startingHealth = enemyHealth;
-
     }
 }

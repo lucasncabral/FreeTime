@@ -117,6 +117,7 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.Spa
 b02930a0c0c503e17e997ad1698d8ae2 Assembly-CSharp.dll:.Enemy
 9628c62534b7b976dbfc7844fd7dc2c2 Assembly-CSharp.dll:.FlagController
 cbecdb8a45d9f24e3825cc842f14de9b Assembly-CSharp.dll:.Spawner
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.SyncPosition
 90501fec6b978c69e8ffccd9066c53d2 Assembly-CSharp.dll:.ZoomCam
 fb4c68b9803378af006f2441a1765412 Assembly-CSharp.dll:.Menu
 b74243dfbb65581e39c529219f3d0369 Assembly-CSharp.dll:.MapGenerator

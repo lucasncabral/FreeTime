@@ -24,9 +24,7 @@ public class Player : LivingEntity {
     public void Start() {
         if (!isLocalPlayer)
             return;
-
-        Action OnTargetDeathAction = () => OnPlayerDeath();
-        this.OnDeath += OnTargetDeathAction;
+    
 
         GameUI gameUI = FindObjectOfType<GameUI>();
         gameUI.playerEntitity = this;
@@ -45,23 +43,13 @@ public class Player : LivingEntity {
 
         CmdAddPlayer();
     }
-
-    void OnPlayerDeath()
-    {
-        CmdRemovePlayer();
-    }
+    
 
     [Command]
     void CmdAddPlayer()
     {
         FindObjectOfType<Spawner>().addPlayer(this);
-    }
-
-    [Command]
-    void CmdRemovePlayer()
-    {
-        FindObjectOfType<Spawner>().RemovePlayer(this);
-    }
+    }    
 
     // Update is called once per frame
     void Update () {

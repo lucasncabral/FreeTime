@@ -62,7 +62,6 @@ public class Projectile : NetworkBehaviour{
             damageableObject.TakeHit(damage, hitPoint, transform.forward);
             gunController.moreOnHit();
         }
-
         GameObject.Destroy(this);
     }
     

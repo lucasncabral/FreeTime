@@ -62,10 +62,10 @@ public class GameUI : NetworkBehaviour
 
         scoreUI.text = scoreKeeper.score.ToString("D6");
 
-        if (ScoreKeeper.streakCount == 0)
+        if (scoreKeeper.streakCount == 0)
             streakUI.text = "";
         else
-            streakUI.text = "x" + (ScoreKeeper.streakCount + 1);
+            streakUI.text = "x" + (scoreKeeper.streakCount + 1);
         
         currentGun = currentGunController.equippedGun;
 
@@ -177,7 +177,8 @@ public class GameUI : NetworkBehaviour
         StartCoroutine("AnimateNewWaveBanner");
     }
 
-    void OnGameOver()
+    [ClientRpc]
+    public void RpcOnGameOver()
     {
         gameOver = true;
         Cursor.visible = true;
@@ -201,16 +202,10 @@ public class GameUI : NetworkBehaviour
             yield return null;
         }
     }
-
-    // UI Input
-    public void StartNewGame()
-    {
-        SceneManager.LoadScene("Main");
-    }
-
+    
     public void BackToMenu()
     {
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("Network");
 
     }
 }

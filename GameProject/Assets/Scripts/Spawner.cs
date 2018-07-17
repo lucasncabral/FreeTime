@@ -10,13 +10,17 @@ public class Spawner : NetworkBehaviour
     public Mission[] missions;
     Enemy enemy;
 
-    LivingEntity playerEntitity;
-    Transform playerT;
+    public LivingEntity[] playerEntitity;
+    Transform[] playerT;
+    float[] nextCampCheckTime;
+    Vector3[] campPositionOld;
+    bool[] isCamping;
+    int indexPlayer = 0;
+    int removePlayers = 0;
+
+
     float timeBetweenCampingChecks = 2;
-    float nextCampCheckTime;
     float campThresholdDistance = 1.5f;
-    Vector3 campPositionOld;
-    bool isCamping;
 
     Mission currentMission;
     int currentMissionNumber;
@@ -36,22 +40,44 @@ public class Spawner : NetworkBehaviour
     public override void OnStartServer()
     {
         loadAssets();
-
-        //playerEntitity = FindObjectOfType<Player>();
-        //playerT = playerEntitity.transform;
-
-        //nextCampCheckTime = timeBetweenCampingChecks + Time.time;
-        //campPositionOld = playerT.position;
-        
-        //Action OnPlayerDeathAction = () => OnPlayerDeath();
-        //playerEntitity.OnDeath += OnPlayerDeathAction;
+        playerEntitity = new LivingEntity[4];
+        playerT = new Transform[4];
+        nextCampCheckTime = new float[4];
+        campPositionOld = new Vector3[4];
+        isCamping = new bool[4];        
 
         map = FindObjectOfType<MapGenerator>();
         gameUi = FindObjectOfType<GameUI>();
         NextWave();
     }
 
-    //private void Awake()
+    public void addPlayer(LivingEntity player)
+    {
+        playerEntitity[indexPlayer] = player;
+        playerT[indexPlayer] = player.transform;
+
+        nextCampCheckTime[indexPlayer] = timeBetweenCampingChecks + Time.time;
+        campPositionOld[indexPlayer] = playerT[indexPlayer].position;
+
+        indexPlayer++;
+    }
+
+    public void RemovePlayer(LivingEntity player)
+    {
+        int index = Array.IndexOf(playerEntitity, player);
+        playerEntitity[index] = null;
+        playerT[index] = null;
+        nextCampCheckTime[index] = 0;
+        campPositionOld[index] = new Vector3(0,0,0);
+        removePlayers++;
+
+        if (removePlayers == indexPlayer) {
+            isDisabled = true;
+            gameUi.RpcOnGameOver();
+        }
+    }
+    
+
     private void loadAssets()
     {
         currentMissionNumber = PlayerPrefs.GetInt("missionChoose");
@@ -62,23 +88,6 @@ public class Spawner : NetworkBehaviour
         enemy = currentMission.prefabEnemy;
     }
 
-    /**
-    private void Start()
-    {
-        playerEntitity = FindObjectOfType<Player>();
-        playerT = playerEntitity.transform;
-
-        nextCampCheckTime = timeBetweenCampingChecks + Time.time;
-        campPositionOld = playerT.position;
-        Action OnPlayerDeathAction = () => OnPlayerDeath();
-        playerEntitity.OnDeath += OnPlayerDeathAction;
-
-        map = FindObjectOfType<MapGenerator>();
-        gameUi = FindObjectOfType<GameUI>();
-        NextWave();
-    }
-    **/
-
     private void Update()
     {
         if (!isServer)
@@ -86,14 +95,15 @@ public class Spawner : NetworkBehaviour
 
         if (!isDisabled)
         {
-            /**
-            if (Time.time > nextCampCheckTime)
+            for(int i = 0; i < indexPlayer; i++)
             {
-                nextCampCheckTime = Time.time + timeBetweenCampingChecks;
-                isCamping = (Vector3.Distance(playerT.position, campPositionOld) < campThresholdDistance);
-                campPositionOld = playerT.position;
+                if (playerEntitity[i] != null && Time.time > nextCampCheckTime[i])
+                {
+                    nextCampCheckTime[i] = Time.time + timeBetweenCampingChecks;
+                    isCamping[i] = (Vector3.Distance(playerT[i].position, campPositionOld[i]) < campThresholdDistance);
+                    campPositionOld[i] = playerT[i].position;
+                }
             }
-            **/
 
             if ((enemiesRemainingToSpawn > 0) && Time.time > nextSpawnTime)
             {
@@ -143,13 +153,16 @@ public class Spawner : NetworkBehaviour
         float spawnDelay = 1;
         float tileFlhshSpeed = 4;
 
-        /**
-       if (isCamping)
-       {
-           randomTile = map.GetTileFromPosition(playerT.position);
-           isCamping = false;
-       }
-       **/
+
+        for(int i = 0; i < indexPlayer; i++)
+        {
+            if (playerEntitity[i] !=null && isCamping[i])
+            {
+                randomTile = map.GetTileFromPosition(playerT[i].position);
+                isCamping[i] = false;
+                break;
+            }
+        }
 
         StartCoroutine(SpawnEnemy(randomTile, spawnDelay, tileFlhshSpeed));
     }
@@ -176,11 +189,6 @@ public class Spawner : NetworkBehaviour
         enemiesRemainingAlive = enemiesRemainingToSpawn;
         timeBetweenSpawn *= reasonSpawnerTime;
         gameUi.OnNewWave(currentWaveNumber, enemiesRemainingAlive);
-    }
-   
-    void ResetPlayerPosition()
-    {
-        playerT.position = map.GetTileFromPosition(Vector3.zero).position + Vector3.up * 3;
     }
 
     // Time Between Flags

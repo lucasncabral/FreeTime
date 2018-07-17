@@ -22,6 +22,8 @@ GameObject:
   - component: {fileID: 65265855366186002}
   - component: {fileID: 114661865897692624}
   - component: {fileID: 54958644610021080}
+  - component: {fileID: 114452855086071746}
+  - component: {fileID: 114689122366940602}
   m_Layer: 0
   m_Name: ItemSample2
   m_TagString: Untagged
@@ -152,6 +154,38 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.33407614, y: 0.3183775, z: 0.31198543}
   m_Center: {x: 0.008923307, y: 0.6480317, z: 0.0025413334}
+--- !u!114 &114452855086071746
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1457537040085324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 15
+    i1: 128
+    i2: 87
+    i3: 247
+    i4: 138
+    i5: 247
+    i6: 201
+    i7: 244
+    i8: 203
+    i9: 147
+    i10: 25
+    i11: 204
+    i12: 89
+    i13: 180
+    i14: 237
+    i15: 130
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114661865897692624
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -163,3 +197,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b9aa430be78e1c448f0fc3f84e69c1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114689122366940602
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1457537040085324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1

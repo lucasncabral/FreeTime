@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -24,11 +25,11 @@ public class Player : LivingEntity {
         if (!isLocalPlayer)
             return;
 
-        // base.Start();
+        Action OnTargetDeathAction = () => OnPlayerDeath();
+        this.OnDeath += OnTargetDeathAction;
 
         GameUI gameUI = FindObjectOfType<GameUI>();
         gameUI.playerEntitity = this;
-
         
         controller = GetComponent<PlayerController>();
         gunController = GetComponent<GunController>();
@@ -41,11 +42,30 @@ public class Player : LivingEntity {
         playerUIInstance = Instantiate(playerUIPrefab);
         playerUIInstance.name = playerUIPrefab.name;
         this.crossHairs = playerUIInstance.GetComponent<Crosshairs>();
+
+        CmdAddPlayer();
+    }
+
+    void OnPlayerDeath()
+    {
+        CmdRemovePlayer();
+    }
+
+    [Command]
+    void CmdAddPlayer()
+    {
+        FindObjectOfType<Spawner>().addPlayer(this);
+    }
+
+    [Command]
+    void CmdRemovePlayer()
+    {
+        FindObjectOfType<Spawner>().RemovePlayer(this);
     }
 
     // Update is called once per frame
     void Update () {
-        if (!isLocalPlayer)
+        if (!isLocalPlayer || this.isDead())
         {
             this.crossHairs.enabled = false;
             return;

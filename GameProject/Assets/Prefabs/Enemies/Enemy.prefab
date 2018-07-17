@@ -114,8 +114,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingHealth: 5
   health: 0
+  targetEntity: {fileID: 0}
+  target: {fileID: 0}
   deathEffect: {fileID: 1358487152957512, guid: 1c840c2e7a791ec40a6499aa6331eb57,
     type: 2}
+  hasTarget: 0
   itens:
   - {fileID: 4594766513118550, guid: c1575a441476f0945947644094913f22, type: 2}
   - {fileID: 4380203194707044, guid: 0f8057f78af7c9f4cb9319cc59b4ed82, type: 2}
@@ -124,6 +127,7 @@ MonoBehaviour:
   hitsToKill: 5
   speed: 3
   startingHealthBase: 1
+  playerProx: {fileID: 0}
 --- !u!114 &114936216102900064
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -168,7 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 3
-  m_SendInterval: 0.071428575
+  m_SendInterval: 0.1
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0
   m_SyncSpin: 0

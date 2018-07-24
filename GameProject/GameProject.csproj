@@ -87,8 +87,10 @@
     <Compile Include="Assets\Scripts\GameUI.cs" />
     <Compile Include="Assets\Scripts\Gun.cs" />
     <Compile Include="Assets\Scripts\GunController.cs" />
+    <Compile Include="Assets\Scripts\HostGame.cs" />
     <Compile Include="Assets\Scripts\IDamageable.cs" />
     <Compile Include="Assets\Scripts\Item.cs" />
+    <Compile Include="Assets\Scripts\JoinGame.cs" />
     <Compile Include="Assets\Scripts\LivingEntity.cs" />
     <Compile Include="Assets\Scripts\MapGenerator.cs" />
     <Compile Include="Assets\Scripts\Menu.cs" />
@@ -97,6 +99,7 @@
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Projectile.cs" />
     <Compile Include="Assets\Scripts\Resize.cs" />
+    <Compile Include="Assets\Scripts\RoomListIten.cs" />
     <Compile Include="Assets\Scripts\ScoreKeeper.cs" />
     <Compile Include="Assets\Scripts\Shell.cs" />
     <Compile Include="Assets\Scripts\Spawner.cs" />

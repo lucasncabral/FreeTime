@@ -72,7 +72,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1284933438184422}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.7841592, y: -2.91759, z: 3.7210987}
+  m_LocalPosition: {x: 16.091356, y: 19.672144, z: -58.311394}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4066741247563156}
@@ -197,6 +197,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7a15ec33a389c746a4ca3d344ae269c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  position: {x: 0, y: 0, z: 0}
+  velocity: {x: 0, y: 0, z: 0}
+  angularVelocity: {x: 0, y: 0, z: 0}
+  isColliding: 0
 --- !u!114 &114281118617929616
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -213,8 +217,6 @@ MonoBehaviour:
   - {fileID: 114752516110355902, guid: 78554fc55b9e4b34d85c02f5baa52fb8, type: 2}
   - {fileID: 114921094612733994, guid: 561e81b7c5ec37d40b29a1f32bbd94bc, type: 2}
   - {fileID: 114347273258528056, guid: 012b7e8ea868817409a8d43dd17f941b, type: 2}
-  - {fileID: 114701177830230452, guid: c3544722432a06d4e88792ed09969ea8, type: 2}
-  - {fileID: 114634973084686538, guid: db14ee5a69580544baa8d4c57c6f6d12, type: 2}
   gunsBullets: 
   equippedGun: {fileID: 0}
   equippedGunIndex: 0

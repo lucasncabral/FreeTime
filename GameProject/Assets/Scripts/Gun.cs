@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 
 public class Gun : NetworkBehaviour {
     public enum FireMode {Auto, Burst, Single};
+    public Sprite image;
     public FireMode fireMode;
     int fireModeSelect;
     bool triggerReleasedSinceLastShot;

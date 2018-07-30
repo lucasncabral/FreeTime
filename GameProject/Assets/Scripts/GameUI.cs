@@ -205,7 +205,7 @@ public class GameUI : NetworkBehaviour
     
     public void BackToMenu()
     {
+        FindObjectOfType<HostGame>().FinishRoom();
         SceneManager.LoadScene("Network");
-
     }
 }

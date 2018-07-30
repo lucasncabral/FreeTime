@@ -8,6 +8,7 @@ public class Menu : MonoBehaviour {
 
     public GameObject mainMenuHolder;
     public GameObject optionsMenuHolder;
+    public GameObject InventoryMenuHolder;
 
     public Slider[] volumeSliders;
     public Toggle[] resolutionToggles;
@@ -45,14 +46,22 @@ public class Menu : MonoBehaviour {
     public void OptionsMenu()
     {
         mainMenuHolder.SetActive(false);
+        InventoryMenuHolder.SetActive(false);
         optionsMenuHolder.SetActive(true);
     }
 
     public void MainMenu()
     {
         mainMenuHolder.SetActive(true);
+        InventoryMenuHolder.SetActive(false);
         optionsMenuHolder.SetActive(false);
+    }
 
+    public void InventoryMenu()
+    {
+        mainMenuHolder.SetActive(false);
+        InventoryMenuHolder.SetActive(true);
+        optionsMenuHolder.SetActive(false);
     }
 
     public void SetScreenResolution(int i)
@@ -74,7 +83,6 @@ public class Menu : MonoBehaviour {
             isFullscreen = !isFullscreen;
 
         fullscreenToggle.isOn = isFullscreen;
-        Debug.Log(isFullscreen);
         for (int i = 0; i < resolutionToggles.Length; i++)
         {
             resolutionToggles[i].interactable = !isFullscreen;

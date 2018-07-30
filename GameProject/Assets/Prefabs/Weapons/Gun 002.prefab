@@ -698,6 +698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 060745caea0a1ef499646bdc6cb68687, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  image: {fileID: 21300000, guid: 9400038ccce152f4e81884eab9ac1a92, type: 3}
   fireMode: 0
   burstCount: 5
   projectileSpawn:

@@ -20,10 +20,12 @@ public class JoinGame : MonoBehaviour {
 
     void Start()
     {
+        /**
         networkManager = NetworkManager.singleton;
         if (networkManager.matchMaker == null)
             networkManager.StartMatchMaker();
         RefreshRoomList();
+        **/
     }
 
     public void RefreshRoomList()

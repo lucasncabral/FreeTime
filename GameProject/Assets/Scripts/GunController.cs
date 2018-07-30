@@ -16,16 +16,62 @@ public class GunController : NetworkBehaviour
     private float numberBullets = 1;
     private float numberHits = 1;
     public float accuracy;
-
+    
+    private GameObject[] containers;
+    private GunContainer[] containersOrdered;
 
     private void Awake()
     {
-        gunsBullets = new int[allGuns.Length];
-        int i = 0;
-        foreach (Gun gun in allGuns)
+        setGunUI(0);
+    }
+
+    private void setGunUI(int jValue)
+    {
+        //containers = FindObjectsOfType<GunContainer>();
+        containers = GameObject.FindGameObjectsWithTag("GunContainer");
+        containersOrdered = new GunContainer[containers.Length];
+
+        int j = jValue;
+        foreach (GameObject gun in containers)
         {
-            gunsBullets[i] = gun.projectilesPerMag;
-            i++;
+            GunContainer gunContainer = gun.GetComponent<GunContainer>();
+            if (gunContainer.index == j)
+            {
+                containersOrdered[j] = gunContainer;
+                j++;
+            }
+        }
+        
+        if(j < containers.Length)
+        {
+            setGunUI(j);
+        } else
+        {
+            gunsBullets = new int[allGuns.Length];
+            int i = 0;
+            foreach (Gun gun in allGuns)
+            {
+                gunsBullets[i] = gun.projectilesPerMag;
+
+                containersOrdered[i].setImage(gun.image);
+                i++;
+            }
+        }
+
+        updateGunUISelect();
+    }
+
+    private void updateGunUISelect()
+    {
+        foreach(GunContainer gunUI in containersOrdered)
+        {
+            if(gunUI.index == (equippedGunIndex % allGuns.Length))
+            {
+                gunUI.selectContainer();
+            } else
+            {
+                gunUI.unselectContainer();
+            }
         }
     }
 
@@ -68,6 +114,7 @@ public class GunController : NetworkBehaviour
             if ((allGuns[i].name + "(Clone)") == name)
             {
                 equippedGunIndex = i;
+                updateGunUISelect();
                 break;
             }
         }

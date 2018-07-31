@@ -8,10 +8,14 @@ public class GunDataSet : MonoBehaviour
     public Gun[] GunBase;
     public Gun[] allGuns;
 
-    private Gun[] usedWeapons;
+    public int[] preferedGuns;
+    public Gun[] usedWeapons;
     // Use this for initialization
     void Start ()
     {
+        preferedGuns = new int[3];
+        loadGuns();
+
         GunBase = Resources.FindObjectsOfTypeAll<Gun>();
         allGuns = new Gun[GunBase.Length];
         orderGuns(0);
@@ -37,16 +41,27 @@ public class GunDataSet : MonoBehaviour
     public Gun[] UsedWeapons()
     {
         usedWeapons = new Gun[3];
-        usedWeapons[0] = allGuns[0];
-        usedWeapons[1] = allGuns[1];
-        usedWeapons[2] = allGuns[3];
+        usedWeapons[0] = allGuns[preferedGuns[0]];
+        usedWeapons[1] = allGuns[preferedGuns[1]];
+        usedWeapons[2] = allGuns[preferedGuns[2]];
 
         return usedWeapons;
     }
 
-    public void UpdateWeapons()
+    public void UpdateWeapons(String[] guns)
     {
+        int saveGun1 = preferedGuns[0];
+        int index = 0;
+        foreach (String name in guns)
+        {
+            preferedGuns[index] = Int32.Parse(name.Substring(name.Length - 3)) - 1;
+            index++;
+        }
 
+        saveGuns();
+
+        if (saveGun1 != preferedGuns[0])
+            FindObjectOfType<GunInventory>().setGunActive();
     }
 
     private void orderGuns(int last)
@@ -64,5 +79,20 @@ public class GunDataSet : MonoBehaviour
         {
           orderGuns(j);
         }
+    }
+
+    private void loadGuns()
+    {
+        preferedGuns[0] = PlayerPrefs.GetInt("FirstGun", 0);
+        preferedGuns[1] = PlayerPrefs.GetInt("SecondGun", 1);
+        preferedGuns[2] = PlayerPrefs.GetInt("ThirdGun", 2);
+    }
+
+    private void saveGuns()
+    {
+        PlayerPrefs.SetInt("FirstGun", preferedGuns[0]);
+        PlayerPrefs.SetInt("SecondGun", preferedGuns[1]);
+        PlayerPrefs.SetInt("ThirdGun", preferedGuns[2]);
+        UsedWeapons();
     }
 }

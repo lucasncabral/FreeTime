@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class GunController : NetworkBehaviour
 {
     public Transform weaponHold;
-    public Gun[] allGuns;
+    Gun[] allGuns;
 
     public int[] gunsBullets;
     public Gun equippedGun;
@@ -24,6 +24,7 @@ public class GunController : NetworkBehaviour
     {
         containers = GameObject.FindGameObjectsWithTag("GunContainer");
         containersOrdered = new GunContainer[containers.Length];
+        allGuns = FindObjectOfType<GunDataSet>().UsedWeapons();
         setGunUI(0);
     }
 

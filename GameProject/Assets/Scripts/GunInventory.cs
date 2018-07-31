@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GunInventory : MonoBehaviour {
-    public GunContainer[] usedGunsContainers;
+    public DragAndDropCell[] usedGunsContainers;
     public Transform weaponHold;
     GunDataSet dataSet;
     Gun[] usedGuns;
@@ -20,25 +21,31 @@ public class GunInventory : MonoBehaviour {
         setGunUI();
     }
 
-    private void setGunUI()
+    public void setGunUI()
     {
         int i = 0;
         usedGuns = dataSet.UsedWeapons();
         foreach (Gun gun in usedGuns)
-            {
-            usedGunsContainers[i].setImage(gun.image);
+        {
+            usedGunsContainers[i].transform.GetChild(0).GetComponent<Image>().sprite =  gun.image;
             i++;
         }
 
         setGunActive();
 
         otherGuns = dataSet.BoughtWeapons();
+        int index;
+        for(index = 0;  index < panelGuns.transform.childCount; index++)
+        {
+            Destroy(panelGuns.transform.GetChild(index).gameObject);
+        }
+        
         foreach(Gun g in otherGuns)
         {
             if(g != null) {
-            GameObject gun = Instantiate(prefabGun, panelGuns.transform.position, panelGuns.transform.rotation) as GameObject;
-            gun.GetComponent<Image>().sprite = g.image;
-            gun.transform.parent = panelGuns.transform;
+                GameObject gun = Instantiate(prefabGun, panelGuns.transform.position, panelGuns.transform.rotation) as GameObject;
+                gun.transform.GetChild(0).GetComponent<Image>().sprite = g.image;
+                gun.transform.parent = panelGuns.transform;
                 gun.transform.position = Vector3.zero;
                 gun.transform.localScale = Vector3.one;
             }
@@ -51,10 +58,19 @@ public class GunInventory : MonoBehaviour {
 		
 	}
 
-    void setGunActive()
+    public void setGunActive()
     {
+        usedGuns = dataSet.UsedWeapons();
         Gun used = Instantiate(usedGuns[0], weaponHold.position, weaponHold.rotation) as Gun;
         used.GetComponent<Gun>().enabled = false;
+
+        try
+        {
+            Destroy(weaponHold.transform.GetChild(0).gameObject);
+        } catch (Exception e)
+        {
+        }
+
         used.transform.parent = weaponHold;
     }
 }

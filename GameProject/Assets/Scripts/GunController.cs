@@ -22,15 +22,13 @@ public class GunController : NetworkBehaviour
 
     private void Awake()
     {
+        containers = GameObject.FindGameObjectsWithTag("GunContainer");
+        containersOrdered = new GunContainer[containers.Length];
         setGunUI(0);
     }
 
     private void setGunUI(int jValue)
     {
-        //containers = FindObjectsOfType<GunContainer>();
-        containers = GameObject.FindGameObjectsWithTag("GunContainer");
-        containersOrdered = new GunContainer[containers.Length];
-
         int j = jValue;
         foreach (GameObject gun in containers)
         {

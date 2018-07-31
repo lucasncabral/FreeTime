@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GunContainer : MonoBehaviour {
     private Image image;
-
+    
     public int index;
 
 	// Use this for initialization
@@ -20,6 +21,7 @@ public class GunContainer : MonoBehaviour {
 
     public void setImage(Sprite GunImage)
     {
+        this.image = this.GetComponent<Image>();
         image.sprite = GunImage;
     }
 

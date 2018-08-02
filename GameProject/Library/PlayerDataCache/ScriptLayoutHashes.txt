@@ -18,7 +18,7 @@ c24a21b131bfa67be1162db2cba4b52b UnityEngine.Timeline.dll:UnityEngine.Timeline.T
 02b5e32a6a0d6d3603d9f298962dd843 Assembly-CSharp.dll:.GunController
 1e1ea9786832cbcdd512db2efc39e9b8 Assembly-CSharp.dll:.PlayerInventory
 7c98814e2502a5cb8da55584533ce942 Assembly-CSharp.dll:.HostGame
-4dc892c58402aed0fac65995c1a30236 Assembly-CSharp.dll:.Player
+d847d7591fc5e70bcca8de767ff8e7e2 Assembly-CSharp.dll:.Player
 a35dc9cca2faebc5f5f1aeb9e8e47bbe UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.UI.dll:UnityEngine.EventSystems.BaseInput
 49cd62a578efc0a599b810a2b66cd49c UnityEngine.UI.dll:UnityEngine.UI.Button
@@ -97,7 +97,6 @@ ff05dcdf90651c3d98a9cad3df5e471e UnityEngine.Timeline.dll:UnityEngine.Timeline.C
 7b848b7feaa524953d09fc1851efa6da UnityEngine.Timeline.dll:UnityEngine.Timeline.GroupTrack
 7b848b7feaa524953d09fc1851efa6da UnityEngine.Timeline.dll:UnityEngine.Timeline.PlayableTrack
 c24a21b131bfa67be1162db2cba4b52b UnityEngine.Timeline.dll:UnityEngine.Timeline.TimelineAsset
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.NewBehaviourScript
 fc1e0f4d8439d9928083474691511a13 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
 60b2bb652410a5867a5ab9a01cd38461 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkDiscovery
@@ -113,6 +112,7 @@ e9bdabf9265d758d56f01bb188916fa8 UnityEngine.Networking.dll:UnityEngine.Networki
 73843688b51256aed059f049c540bca8 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformChild
 528ea1fd7c01796fc60c4e2f172ea229 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformVisualizer
 bfe55aed69d97e5c6ab06b8aae868aed Assembly-CSharp.dll:.DontMove
+acdd796eef82bba9627fc70831dbccb2 Assembly-CSharp.dll:.PlayerStatesMenu
 7ebdc70bc0f6bdf5d5088dfa00250254 Assembly-CSharp.dll:.RoomListIten
 782155584b486247c2079f380bdd92b5 Assembly-CSharp.dll:.GunContainer
 bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.AudioSpatializerMicrosoft
@@ -125,10 +125,10 @@ cf4120fd741f232080794d330166b410 Assembly-CSharp.dll:.GunInventory
 9628c62534b7b976dbfc7844fd7dc2c2 Assembly-CSharp.dll:.FlagController
 cbecdb8a45d9f24e3825cc842f14de9b Assembly-CSharp.dll:.Spawner
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.SyncPosition
-90501fec6b978c69e8ffccd9066c53d2 Assembly-CSharp.dll:.ZoomCam
-8dfb86d2e1c1714f40a14109026ad32d Assembly-CSharp.dll:.Menu
+4057286eab91111ca84e82cf26363a36 Assembly-CSharp.dll:.ZoomCam
+b9c7faff69e1cd3281cb44598c1b2c37 Assembly-CSharp.dll:.Menu
 8e1dd31ddef69057d2fd2994de5f85ec Assembly-CSharp.dll:.DummyControlUnit
-059ac50c859c8da4a0343da788ae3650 Assembly-CSharp.dll:.MapGenerator
+98f18bd36792544533880aaf5ec30e21 Assembly-CSharp.dll:.MapGenerator
 fc1e0f4d8439d9928083474691511a13 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
 60b2bb652410a5867a5ab9a01cd38461 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkDiscovery
@@ -143,6 +143,7 @@ e9bdabf9265d758d56f01bb188916fa8 UnityEngine.Networking.dll:UnityEngine.Networki
 3f32f08a64daf40b09ed864d96fe3840 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransform
 73843688b51256aed059f049c540bca8 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformChild
 528ea1fd7c01796fc60c4e2f172ea229 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformVisualizer
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ObstacleClass
 9824801c606429e6f3051578de741c5a Assembly-CSharp.dll:.Crosshairs
 9b6b057506eade89980fd5e391a519d9 Assembly-CSharp.dll:.GunDataSet
 7cf0db7678de4ad31efaa45e70241659 Assembly-CSharp.dll:.GameUI
@@ -162,3 +163,5 @@ ea0653553b8b63dfe7a28eda575a3f11 Assembly-CSharp.dll:.Shell
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Flag
 26692459fe5abcd81a046e066b614d03 Assembly-CSharp.dll:.LivingEntity
 80274af12d0078444c348ca73d01fdbf Assembly-CSharp.dll:.DragAndDropCell
+874e732d459534dcf419b52a38af3b5c Assembly-CSharp.dll:.BuildMapManager
+cba52d53e012cdce3ac33036137ef799 Assembly-CSharp.dll:.DragTransform

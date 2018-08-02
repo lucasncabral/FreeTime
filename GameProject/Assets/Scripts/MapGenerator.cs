@@ -30,8 +30,7 @@ public class MapGenerator : NetworkBehaviour
     public float tileSize;
     
 
-    public Transform tilePrefab;
-    public Transform obstaclePrefab;
+    Transform tilePrefab;
     public override void OnStartServer()
     {
         mapIndex = PlayerPrefs.GetInt("missionChoose", 0);
@@ -40,12 +39,11 @@ public class MapGenerator : NetworkBehaviour
 
     public void GenerateMap()
     {
-        Debug.Log("Aqui");
         currentMap = maps[mapIndex];
         // AQUI
         currentMap.UpdateObstacleTileCoords();
-        Debug.Log("Aqui 2");
         tileSize = currentMap.tileSize;
+        tilePrefab = currentMap.tilePrefab;
 
         tileMap = new Transform[currentMap.mapSize.x, currentMap.mapSize.y];
 
@@ -58,8 +56,7 @@ public class MapGenerator : NetworkBehaviour
                 allTilesCoords.Add(new Coord(x, y));
             }
         }
-
-        Debug.Log("Aqui 3");
+        
 
         System.Random prng = new System.Random();
         shuffledTileCoords = new Queue<Coord>(Utility.ShuffleArray(allTilesCoords.ToArray(), prng.Next(1, 20)));
@@ -96,18 +93,23 @@ public class MapGenerator : NetworkBehaviour
         int currentObstacleCount = 0;
 
         List<Coord> allOpenCoords = new List<Coord>(allTilesCoords);
-        for (int i = 0; i < obstacleCount; i++)
+        foreach (ObstacleClass obstacle in currentMap.ObstacleTileCoords)
         {
-            Coord randomCoord = GetObstacleCoord();
-            obstacleMap[randomCoord.x, randomCoord.y] = true;
-            currentObstacleCount++;
+            //ObstacleClass obstacle = GetObstacleCoord();
+            
+            Coord randomCoord = obstacle.centerCoord();
+            
+            foreach(Coord coord in obstacle.getCoord()) {
+                obstacleMap[coord.x, coord.y] = true;
+                currentObstacleCount++;
+            }
 
             if ((randomCoord != currentMap.mapCenter) && MapIsFullyAccessible(obstacleMap, currentObstacleCount))
             {
                 Vector3 obstaclePosition = CoordToPosition(randomCoord.x, randomCoord.y);
-                Transform newObstacle = Instantiate(obstaclePrefab, obstaclePosition + (Vector3.up * 2f / 2), Quaternion.identity) as Transform;
+                Transform newObstacle = Instantiate(obstacle.getPrefab(), obstaclePosition + (Vector3.up * 2f / 2), Quaternion.identity) as Transform;
                 newObstacle.parent = mapHolder;
-                newObstacle.localScale = new Vector3(currentMap.tileSize, 2f, currentMap.tileSize);
+                //newObstacle.localScale = new Vector3(currentMap.tileSize, 2f, currentMap.tileSize);
 
                 // COR DOS OBSTACULOS
                 Renderer obstacleRenderer = newObstacle.GetComponent<Renderer>();
@@ -146,7 +148,7 @@ public class MapGenerator : NetworkBehaviour
         Transform maskBottom = Instantiate(navmeshMaskPrefab, Vector3.back * (currentMap.mapSize.y + maxMapSize.y) / 4f * currentMap.tileSize, Quaternion.identity) as Transform;
         maskBottom.parent = mapHolder;
         maskBottom.localScale = new Vector3(maxMapSize.x, 1, (maxMapSize.y - currentMap.mapSize.y) / 2f) * currentMap.tileSize;
-
+        
         Transform navMeshFloor = Instantiate(navMeshFloorPrefab, navMeshFloorPrefab.transform.position, navMeshFloorPrefab.transform.rotation) as Transform;
         Transform mapFloor = Instantiate(mapFloorPrefab, mapFloorPrefab.transform.position, mapFloorPrefab.transform.rotation) as Transform;
 
@@ -181,14 +183,16 @@ public class MapGenerator : NetworkBehaviour
         x = Mathf.Clamp(x, 0, tileMap.GetLength(0) - 1);
         y = Mathf.Clamp(y, 0, tileMap.GetLength(1) - 1);
         return tileMap[x, y];
-
     }
 
-    Coord GetObstacleCoord()
+    void GetObstacleCoord()
     {
-        Coord randomCoord = currentMap.ObstacleTileCoords.Dequeue();
-        currentMap.ObstacleTileCoords.Enqueue(randomCoord);
-        return randomCoord;
+        /**
+        ObstacleClass obstacle = currentMap.ObstacleTileCoords.Dequeue();
+        //Coord randomCoord = obstacle.getCoord();
+        currentMap.ObstacleTileCoords.Enqueue(obstacle);
+        return obstacle;
+        **/
     }
 
     public Transform GetRandomOpenTile()
@@ -280,13 +284,12 @@ public class MapGenerator : NetworkBehaviour
     public class Map
     {
         public Coord mapSize;
-        /**
         public Transform tilePrefab;
         public Transform obstaclePrefab;
-        **/
+        public Transform obstaclePrefab2;
 
         public float tileSize;
-        public Queue<Coord> ObstacleTileCoords;
+        public List<ObstacleClass> ObstacleTileCoords;
 
         public Coord mapCenter
         {
@@ -298,27 +301,27 @@ public class MapGenerator : NetworkBehaviour
 
         public void UpdateObstacleTileCoords()
         {
-            ObstacleTileCoords = new Queue<Coord>();
-            ObstacleTileCoords.Enqueue(new Coord(0, 3));
-            ObstacleTileCoords.Enqueue(new Coord(1, 3));
-            ObstacleTileCoords.Enqueue(new Coord(1, 5));
-            ObstacleTileCoords.Enqueue(new Coord(2, 8));
-            ObstacleTileCoords.Enqueue(new Coord(3, 4));
-            ObstacleTileCoords.Enqueue(new Coord(4, 0));
-            ObstacleTileCoords.Enqueue(new Coord(4, 2));
-            ObstacleTileCoords.Enqueue(new Coord(4, 3));
-            ObstacleTileCoords.Enqueue(new Coord(4, 9));
-            ObstacleTileCoords.Enqueue(new Coord(5, 9));
-            ObstacleTileCoords.Enqueue(new Coord(6, 1));
-            ObstacleTileCoords.Enqueue(new Coord(6, 2));
-            ObstacleTileCoords.Enqueue(new Coord(7, 2));
-            ObstacleTileCoords.Enqueue(new Coord(7, 7));
-            ObstacleTileCoords.Enqueue(new Coord(9, 6));
-            ObstacleTileCoords.Enqueue(new Coord(12, 1));
-            ObstacleTileCoords.Enqueue(new Coord(12, 3));
-            ObstacleTileCoords.Enqueue(new Coord(12, 5));
-            ObstacleTileCoords.Enqueue(new Coord(12, 7));
-            ObstacleTileCoords.Enqueue(new Coord(13, 9));
+            ObstacleTileCoords = new List<ObstacleClass>();
+            ObstacleTileCoords.Add(new ObstacleClass(0, 3, obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(1, 3, obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(1, 5, obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(2, 8, obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(3, 4, obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(4, 0, obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(4, 2, obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(4, 3, obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(4, 9, obstaclePrefab2));
+            ObstacleTileCoords.Add(new ObstacleClass(5, 9, obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(6, 1, obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(6, 2, obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(7, 2, obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(7, 7, obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(9, 6, obstaclePrefab2));
+            ObstacleTileCoords.Add(new ObstacleClass(12, 1, obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(12, 3, obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(12, 5, obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(12, 7, obstaclePrefab2));
+            ObstacleTileCoords.Add(new ObstacleClass(13, 9, obstaclePrefab));
         }
     }
 }

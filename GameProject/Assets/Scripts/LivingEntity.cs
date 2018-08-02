@@ -15,6 +15,8 @@ public class LivingEntity : NetworkBehaviour , IDamageable{
 
     public override void OnStartClient()
     {
+        if (this.name.Contains("Player"))
+            startingHealth = PlayerPrefs.GetInt("PlayerLifeStart");
         health = startingHealth;
     }
     

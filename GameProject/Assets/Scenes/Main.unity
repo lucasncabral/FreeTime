@@ -2688,29 +2688,56 @@ MonoBehaviour:
   - mapSize:
       x: 15
       y: 10
+    tilePrefab: {fileID: 4013155816799194, guid: e817a1053048287499d878e280c9053f,
+      type: 2}
+    obstaclePrefab: {fileID: 4477967809216792, guid: e659223b05c08834f97aa38f7cbcaa47,
+      type: 2}
+    obstaclePrefab2: {fileID: 4830550755592838, guid: a3f377c78622c1040884228d509f4f6b,
+      type: 2}
     tileSize: 1.4
+    ObstacleTileCoords: []
   - mapSize:
       x: 15
       y: 5
+    tilePrefab: {fileID: 0}
+    obstaclePrefab: {fileID: 0}
+    obstaclePrefab2: {fileID: 0}
     tileSize: 1
+    ObstacleTileCoords: []
   - mapSize:
       x: 20
       y: 10
+    tilePrefab: {fileID: 0}
+    obstaclePrefab: {fileID: 0}
+    obstaclePrefab2: {fileID: 0}
     tileSize: 0
+    ObstacleTileCoords: []
   - mapSize:
       x: 10
       y: 5
+    tilePrefab: {fileID: 0}
+    obstaclePrefab: {fileID: 0}
+    obstaclePrefab2: {fileID: 0}
     tileSize: 0
+    ObstacleTileCoords: []
   - mapSize:
       x: 20
       y: 10
+    tilePrefab: {fileID: 0}
+    obstaclePrefab: {fileID: 0}
+    obstaclePrefab2: {fileID: 0}
     tileSize: 0
+    ObstacleTileCoords: []
   mapIndex: 0
   currentMap:
     mapSize:
       x: 15
       y: 10
+    tilePrefab: {fileID: 0}
+    obstaclePrefab: {fileID: 0}
+    obstaclePrefab2: {fileID: 0}
     tileSize: 0
+    ObstacleTileCoords: []
   mapFloorPrefab: {fileID: 4055283371097406, guid: f79b981ac4bcd994bb6bdbd1e98bc826,
     type: 2}
   navmeshMaskPrefab: {fileID: 4672440224219682, guid: 0afe1e1d977ed8c4aaf4ef7d73454d46,
@@ -2720,9 +2747,6 @@ MonoBehaviour:
   outlinePercent: 0.06
   maxMapSize: {x: 25, y: 20}
   tileSize: 1.4
-  tilePrefab: {fileID: 4013155816799194, guid: e817a1053048287499d878e280c9053f, type: 2}
-  obstaclePrefab: {fileID: 4477967809216792, guid: e659223b05c08834f97aa38f7cbcaa47,
-    type: 2}
 --- !u!4 &211976044
 Transform:
   m_ObjectHideFlags: 0

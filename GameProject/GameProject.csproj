@@ -78,11 +78,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Prefabs\NewBehaviourScript.cs" />
+    <Compile Include="Assets\Scripts\BuildMapManager.cs" />
     <Compile Include="Assets\Scripts\Crosshairs.cs" />
     <Compile Include="Assets\Scripts\DontMove.cs" />
     <Compile Include="Assets\Scripts\DragAndDropCell.cs" />
     <Compile Include="Assets\Scripts\DragAndDropItem.cs" />
+    <Compile Include="Assets\Scripts\DragTransform.cs" />
     <Compile Include="Assets\Scripts\DummyControlUnit.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
     <Compile Include="Assets\Scripts\Flag.cs" />
@@ -101,9 +102,11 @@
     <Compile Include="Assets\Scripts\MapGenerator.cs" />
     <Compile Include="Assets\Scripts\Menu.cs" />
     <Compile Include="Assets\Scripts\MuzzleFlash.cs" />
+    <Compile Include="Assets\Scripts\ObstacleClass.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\PlayerInventory.cs" />
+    <Compile Include="Assets\Scripts\PlayerStatesMenu.cs" />
     <Compile Include="Assets\Scripts\Projectile.cs" />
     <Compile Include="Assets\Scripts\Resize.cs" />
     <Compile Include="Assets\Scripts\RoomListIten.cs" />

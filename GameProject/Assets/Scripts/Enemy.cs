@@ -249,9 +249,9 @@ public class Enemy : LivingEntity
     void CmdDropItem()
     {
 
-        int luckyItem = UnityEngine.Random.Range(0, 30);
+        int luckyItem = UnityEngine.Random.Range(0, 100);
 
-        if (luckyItem == 3)
+        if (luckyItem < PlayerPrefs.GetInt("PlayerLucky"))
         //if (luckyItem >= 0)
         {
             Transform item = Instantiate(itens[UnityEngine.Random.Range(0, itens.Length)], this.transform.position, this.transform.rotation);

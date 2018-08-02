@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 [RequireComponent(typeof(GunController))]
 public class Player : LivingEntity {
 
-    public float moveSpeed = 5;
+    float moveSpeed;
     Camera viewCamera;
     PlayerController controller;
     GunController gunController;
@@ -24,8 +24,8 @@ public class Player : LivingEntity {
     public void Start() {
         if (!isLocalPlayer)
             return;
-    
 
+        moveSpeed = PlayerPrefs.GetFloat("PlayerSpeed");
         GameUI gameUI = FindObjectOfType<GameUI>();
         gameUI.playerEntitity = this;
         

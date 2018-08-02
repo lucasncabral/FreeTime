@@ -11,3 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 293d7985e253c4f489b2503bfc7ea831
+  - enabled: 1
+    path: Assets/Scenes/BuildMap.unity
+    guid: 8a6204b964fb2a14ebaed2560567a961

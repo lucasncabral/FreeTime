@@ -9,6 +9,8 @@ public class Menu : MonoBehaviour {
     public GameObject mainMenuHolder;
     public GameObject optionsMenuHolder;
     public GameObject InventoryMenuHolder;
+    public GameObject playerStatsMenuHolder;
+
     public GameObject PlayerUI;
 
     public Slider[] volumeSliders;
@@ -39,6 +41,11 @@ public class Menu : MonoBehaviour {
         SceneManager.LoadScene("Main");
     }
 
+    public void BuildMap()
+    {
+        SceneManager.LoadScene("BuildMap");
+    }
+
     public void Quit()
     {
         Application.Quit();
@@ -50,6 +57,7 @@ public class Menu : MonoBehaviour {
         InventoryMenuHolder.SetActive(false);
         optionsMenuHolder.SetActive(true);
         PlayerUI.SetActive(false);
+        playerStatsMenuHolder.SetActive(false);
     }
 
     public void MainMenu()
@@ -58,6 +66,7 @@ public class Menu : MonoBehaviour {
         InventoryMenuHolder.SetActive(false);
         optionsMenuHolder.SetActive(false);
         PlayerUI.SetActive(false);
+        playerStatsMenuHolder.SetActive(false);
     }
 
     public void InventoryMenu()
@@ -66,6 +75,16 @@ public class Menu : MonoBehaviour {
         InventoryMenuHolder.SetActive(true);
         optionsMenuHolder.SetActive(false);
         PlayerUI.SetActive(true);
+        playerStatsMenuHolder.SetActive(false);
+    }
+
+    public void PlayerStatsMenu()
+    {
+        mainMenuHolder.SetActive(false);
+        InventoryMenuHolder.SetActive(false);
+        optionsMenuHolder.SetActive(false);
+        PlayerUI.SetActive(true);
+        playerStatsMenuHolder.SetActive(true);
     }
 
     public void SetScreenResolution(int i)

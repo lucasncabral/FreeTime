@@ -23,6 +23,8 @@ public class BuildMapManager : MonoBehaviour {
     public int currentObstacleCount;
     Transform mapHolder;
 
+    Vector3 position;
+
     // Use this for initialization
     void Start () {
         GenerateBaseMap();
@@ -126,6 +128,11 @@ public class BuildMapManager : MonoBehaviour {
         mapFloor.GetComponent<Resize>().localScaleVec = mapFloor.transform.localScale;
     }
 
+    public void UpdatePosition(Transform transform)
+    {
+        position = transform.position;
+    }
+
     bool MapIsFullyAccessible(bool[,] obstacleMap, int currentObstacleCount)
     {
         bool[,] mapFlags = new bool[obstacleMap.GetLength(0), obstacleMap.GetLength(1)];
@@ -184,8 +191,11 @@ public class BuildMapManager : MonoBehaviour {
         {
             Vector3 temp = Input.mousePosition;
             temp.z = 10f;
-            currentObject.transform.position = Camera.main.ScreenToWorldPoint(temp);
-            //currentObject.transform.position = new Vector3(currentObject.transform.position.x, 1f, currentObject.transform.position.z);
+            
+            //currentObject.transform.position = position;
+            currentObject.transform.position = new Vector3(position.x, 1.5f, position.z);
+             //   currentObject.transform.position = Camera.main.ScreenToWorldPoint(temp);
+            //currentObject.transform.position = new Vector3(currentObject.transform.position.x, currentObject.transform.position.y * 0.5f, currentObject.transform.position.z);
             //Cursor.visible = false;
 
             if (Input.GetKeyDown(KeyCode.Delete))

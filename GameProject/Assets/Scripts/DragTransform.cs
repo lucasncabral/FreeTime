@@ -31,4 +31,15 @@ class DragTransform : MonoBehaviour, IPointerClickHandler
                 break;
         }
     }
+
+    void OnMouseEnter()
+    {
+        mapManager.UpdatePosition(this.gameObject.transform);
+    }
+
+    void OnMouseExit()
+    {
+
+    }
+
 }

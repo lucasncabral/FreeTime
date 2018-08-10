@@ -14,4 +14,5 @@ public class zzzInstantiatePlayer : MonoBehaviour {
 	void Update () {
 		
 	}
+    
 }

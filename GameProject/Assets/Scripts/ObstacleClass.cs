@@ -4,24 +4,25 @@ using System.Linq;
 using UnityEngine;
 
 public class ObstacleClass : MonoBehaviour {
-    List<MapGenerator.Coord> coord;
+    Vector3 position;
+    Vector3 rotation;
     Transform prefab;
 
-    public ObstacleClass(int _x, int _y, Transform _prefab)
+    public ObstacleClass(Vector3 _position, Vector3 _rotation, Transform _prefab)
     {
-        coord = new List< MapGenerator.Coord > ();
-        coord.Add(new MapGenerator.Coord(_x, _y));
+        this.position = _position;
+        this.rotation = _rotation;
         this.prefab = _prefab;
     }
-
-    public List<MapGenerator.Coord> getCoord()
+    
+    public Vector3 getPosition()
     {
-        return this.coord;
+        return this.position;
     }
 
-    public MapGenerator.Coord centerCoord()
+    public Vector3 getRotation()
     {
-        return coord.First();
+        return this.rotation;
     }
 
     public Transform getPrefab()

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class BuildMapManager : MonoBehaviour {
-
+    /**
     GameObject currentObject;
 
     public MapGenerator.Map currentMap;
@@ -275,5 +275,5 @@ public class BuildMapManager : MonoBehaviour {
     {
         SceneManager.LoadScene("Network");
     }
-
+    **/
 }

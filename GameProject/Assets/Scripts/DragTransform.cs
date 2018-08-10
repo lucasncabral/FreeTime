@@ -15,31 +15,34 @@ class DragTransform : MonoBehaviour, IPointerClickHandler
     {
         mapManager = FindObjectOfType<BuildMapManager>();
     }
-
-    public void OnPointerClick(PointerEventData eventData)
+    
+public void OnPointerClick(PointerEventData eventData)
+{
+    /**
+    switch (currentMode)
     {
-        switch (currentMode)
-        {
-            case Mode.NewObject:
-                mapManager.NewObject(objectPrefab);
-                break;
-            case Mode.MoveObject:
-                mapManager.MoveObject(this.gameObject, coord);
-                break;
-            case Mode.DropObject:
-                mapManager.DropObject(coord);
-                break;
-        }
+        case Mode.NewObject:
+            mapManager.NewObject(objectPrefab);
+            break;
+        case Mode.MoveObject:
+            mapManager.MoveObject(this.gameObject, coord);
+            break;
+        case Mode.DropObject:
+            mapManager.DropObject(coord);
+            break;
     }
+        **/
+}
 
-    void OnMouseEnter()
-    {
-        mapManager.UpdatePosition(this.gameObject.transform);
-    }
+    /**
+void OnMouseEnter()
+{
+mapManager.UpdatePosition(this.gameObject.transform);
+}
 
-    void OnMouseExit()
-    {
+void OnMouseExit()
+{
 
-    }
-
+}
+**/
 }

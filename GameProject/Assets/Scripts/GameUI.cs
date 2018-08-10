@@ -198,7 +198,7 @@ public class GameUI : MonoBehaviour
     
     public void BackToMenu()
     {
-        FindObjectOfType<HostGame>().FinishRoom();
+        //FindObjectOfType<HostGame>().FinishRoom();
         SceneManager.LoadScene("Network");
     }
 }

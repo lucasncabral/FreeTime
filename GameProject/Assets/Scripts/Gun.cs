@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Networking;
 
-public class Gun : NetworkBehaviour {
+
+public class Gun : MonoBehaviour {
     public enum FireMode {Auto, Burst, Single};
     public Sprite image;
     public FireMode fireMode;
@@ -34,11 +34,10 @@ public class Gun : NetworkBehaviour {
 
     GameUI gameUi;
     bool flagFirstTime = true;
-
-    [SyncVar]
-    public NetworkInstanceId parentNetId;
-    GameObject parentObject;
-
+    
+    public GameObject parentObject;
+    
+    /**
     public override void OnStartClient()
     {
         parentObject = ClientScene.FindLocalObject(parentNetId);
@@ -47,9 +46,16 @@ public class Gun : NetworkBehaviour {
         parentObject.GetComponent<GunController>().equippedGun = this;
         parentObject.GetComponent<GunController>().updateIndex(this.name);
     }
+    **/
 
     private void Start()
     {
+        transform.SetParent(parentObject.transform.GetChild(0));
+        transform.rotation = parentObject.transform.GetChild(0).transform.rotation;
+        parentObject.GetComponent<GunController>().equippedGun = this;
+        parentObject.GetComponent<GunController>().updateIndex(this.name);
+
+
         fireModeSelect = 0;
         ChangeFireMod();
 
@@ -69,60 +75,44 @@ public class Gun : NetworkBehaviour {
 
         if(!isReloading && projectilesRemainingInMag == 0)
         {
-                CmdReload();
+                OnReload();
         }
     }
-
-    [Command]
-    void CmdShoot(Vector3 projectilePosition, Quaternion rotation)
+    
+    void Shoot(Vector3 projectilePosition, Quaternion rotation)
     {
             Projectile newProjectile = Instantiate(projectile, projectilePosition, rotation) as Projectile;
             newProjectile.gunController = this.transform.parent.transform.parent.GetComponent<GunController>();
-            newProjectile.parentNetId = this.GetComponentInChildren<NetworkIdentity>().netId;
-            NetworkServer.Spawn(newProjectile.gameObject);
 
-        CmdShell();
+        Shell();
             // if (!isReloading && projectilesRemainingInMag != projectilesPerMag)
-            CmdOnShoot();
+            OnShoot();
         
     }
-
-    [Command]
-    void CmdShell()
+    
+    void Shell()
     {
-        GameObject shellObject = Instantiate(shell, shellEjection.position, shellEjection.rotation) as GameObject;
-        NetworkServer.Spawn(shellObject);
+        Instantiate(shell, shellEjection.position, shellEjection.rotation);
     }
+    
 
-    [Command]
-    void CmdRecoil()
-    {
-        RpcDoRecoilEffect();
-    }
-
-    [ClientRpc]
-    void RpcDoRecoilEffect()
+    void Recoil()
     {
         transform.localPosition -= Vector3.forward * .2f;
     }
-
-    [Command]
-    void CmdOnShoot()
-    {
-        RpcDoShootEffect();
-    }
-
-    [ClientRpc]
-    void RpcDoShootEffect()
+    
+    
+    void OnShoot()
     {
         muzzleFlash.Activate();
     }
+    
+    
 
-    [Command]
-    public void CmdReload()
+    public void OnReload()
     {
-        RpcDoReloadEffect();
-        CmdShell();
+        StartCoroutine(AnimateReload());
+        Shell();
     }
 
     public void Reload()
@@ -130,18 +120,11 @@ public class Gun : NetworkBehaviour {
         if(projectilesRemainingInMag != projectilesPerMag && !isReloading)
         {
             isReloading = true;
-            CmdReload();
+            OnReload();
         }
         isReloading = false;
     }
-
-
-    [ClientRpc]
-    void RpcDoReloadEffect()
-    {
-        StartCoroutine(AnimateReload());
-    }
-
+    
 
     IEnumerator AnimateReload()
     {
@@ -194,14 +177,14 @@ public class Gun : NetworkBehaviour {
                 projectilesRemainingInMag--;
 
                 nextShotTime = Time.time + msBetweenShots / 1000;
-                CmdShoot(projectileSpawn[i].position, projectileSpawn[i].rotation);
+                Shoot(projectileSpawn[i].position, projectileSpawn[i].rotation);
             }
 
-            CmdShell();
+            Shell();
 
             if (!isReloading && projectilesRemainingInMag != projectilesPerMag)
-                CmdOnShoot();
-            CmdRecoil();
+                OnShoot();
+            Recoil();
         }
         triggerReleasedSinceLastShot = false;
     }

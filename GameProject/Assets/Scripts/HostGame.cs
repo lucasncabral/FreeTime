@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class HostGame : MonoBehaviour {
 
@@ -20,7 +21,7 @@ public class HostGame : MonoBehaviour {
             networkManager.StartMatchMaker();
         **/
 
-        networkManager = FindObjectOfType<NetworkManager>();
+        // networkManager = FindObjectOfType<NetworkManager>();
     }
 
     public void SetRoomName()
@@ -30,13 +31,16 @@ public class HostGame : MonoBehaviour {
 
     public void CreateRoom()
     {
-        if(roomName != null && roomName != "")
-        {
+      //  if(roomName != null && roomName != "")
+      //  {
             Debug.Log("Creating Room: " + roomName + " with room for " + roomSize + " players.");
             // Create room
             // networkManager.matchMaker.CreateMatch(roomName, roomSize, true, "", "", "", 0, 0, networkManager.OnMatchCreate);
-            networkManager.StartHost();
-        }
+            //networkManager.StartHost();
+
+
+            SceneManager.LoadScene("Main");
+      //  }
     }
 
     public void EnterRoom()

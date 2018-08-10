@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class GunController : NetworkBehaviour
+public class GunController : MonoBehaviour
 {
     public Transform weaponHold;
     Gun[] allGuns;
@@ -87,9 +86,9 @@ public class GunController : NetworkBehaviour
     {
         return gunsBullets[equippedGunIndex];
     }    
+    
 
-    [Command]
-    public void CmdEquipGun(int gunIndex) {
+    public void EquipGun(int gunIndex) {
        equippedGunIndex = gunIndex % allGuns.Length;
         if (equippedGun != null)
         {
@@ -99,11 +98,9 @@ public class GunController : NetworkBehaviour
         Gun gunToEquip = allGuns[equippedGunIndex];
 
         this.equippedGun = Instantiate(gunToEquip, weaponHold.position, weaponHold.rotation) as Gun;
-        equippedGun.parentNetId = this.GetComponentInChildren<NetworkIdentity>().netId;
+        equippedGun.parentObject = this.gameObject;
 
         this.equippedGun.projectilesRemainingInMag = gunsBullets[equippedGunIndex];
-        
-        NetworkServer.SpawnWithClientAuthority(equippedGun.gameObject, FindObjectOfType<Player>().gameObject);
     }
 
     public void updateIndex(string name)
@@ -159,13 +156,11 @@ public class GunController : NetworkBehaviour
 
     public void moreOneShoot()
     {
-        if(isLocalPlayer)
             numberBullets++;
     }
 
     public void moreOnHit()
     {
-        if(isLocalPlayer)
             numberHits++;
     }
 }

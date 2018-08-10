@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class Flag : NetworkBehaviour
+public class Flag : MonoBehaviour
 {
     private ScoreKeeper score;
 
@@ -21,16 +20,15 @@ public class Flag : NetworkBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            CmdFlagCaptured();
+            FlagCaptured();
             nextWave();
         }
     }
-
-    [Command]
-    void CmdFlagCaptured() {
+    
+    void FlagCaptured() {
 
         FindObjectOfType<FlagController>().captureFlag();
-        score.CmdOnFlagCaptured();
+        score.OnFlagCaptured();
     }
 
    

@@ -2,9 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class MapGenerator : NetworkBehaviour
+public class MapGenerator : MonoBehaviour
 {
     public Map[] maps;
     public int mapIndex;
@@ -31,7 +30,7 @@ public class MapGenerator : NetworkBehaviour
     
 
     Transform tilePrefab;
-    public override void OnStartServer()
+    void Start()
     {
         mapIndex = PlayerPrefs.GetInt("missionChoose", 0);
         GenerateMap();
@@ -82,8 +81,6 @@ public class MapGenerator : NetworkBehaviour
                 tileMap[x, y] = newTile;
 
                 newTile.GetComponent<Resize>().localScaleVec = newTile.transform.localScale;
-                //AQUI
-                NetworkServer.Spawn(newTile.gameObject);
             }
         }
 
@@ -112,14 +109,13 @@ public class MapGenerator : NetworkBehaviour
                 //newObstacle.localScale = new Vector3(currentMap.tileSize, 2f, currentMap.tileSize);
 
                 // COR DOS OBSTACULOS
+
                 Renderer obstacleRenderer = newObstacle.GetComponent<Renderer>();
                 Material obstacleMaterial = new Material(obstacleRenderer.sharedMaterial);
-                float colourPercent = randomCoord.y / (float)currentMap.mapSize.y;
-                // obstacleMaterial.color = Color.Lerp(currentMap.foregroundColour, currentMap.backgroundColour, colourPercent);
+                //float colourPercent = randomCoord.y / (float)currentMap.mapSize.y;
+                //obstacleMaterial.color = Color.Lerp(currentMap.foregroundColour, currentMap.backgroundColour, colourPercent);
                 obstacleRenderer.sharedMaterial = obstacleMaterial;
                 newObstacle.GetComponent<Resize>().localScaleVec = newObstacle.transform.localScale;
-
-                NetworkServer.Spawn(newObstacle.gameObject);
 
                 allOpenCoords.Remove(randomCoord);
             }
@@ -160,19 +156,12 @@ public class MapGenerator : NetworkBehaviour
 
         navMeshFloor.GetComponent<Resize>().localScaleVec = navMeshFloor.transform.localScale;
         mapFloor.GetComponent<Resize>().localScaleVec = mapFloor.transform.localScale;
-
-        NetworkServer.Spawn(navMeshFloor.gameObject);
-        NetworkServer.Spawn(mapFloor.gameObject);
+        
 
         maskLeft.GetComponent<Resize>().localScaleVec = maskLeft.transform.localScale;
         maskRight.GetComponent<Resize>().localScaleVec = maskRight.transform.localScale;
         maskTop.GetComponent<Resize>().localScaleVec = maskTop.transform.localScale;
         maskBottom.GetComponent<Resize>().localScaleVec = maskBottom.transform.localScale;
-
-        NetworkServer.Spawn(maskLeft.gameObject);
-        NetworkServer.Spawn(maskRight.gameObject);
-        NetworkServer.Spawn(maskTop.gameObject);
-        NetworkServer.Spawn(maskBottom.gameObject);
     }
 
     public Transform GetTileFromPosition(Vector3 position)
@@ -317,11 +306,8 @@ public class MapGenerator : NetworkBehaviour
             ObstacleTileCoords.Add(new ObstacleClass(7, 2, obstaclePrefab));
             ObstacleTileCoords.Add(new ObstacleClass(7, 7, obstaclePrefab));
             ObstacleTileCoords.Add(new ObstacleClass(9, 6, obstaclePrefab2));
-            ObstacleTileCoords.Add(new ObstacleClass(12, 1, obstaclePrefab));
-            ObstacleTileCoords.Add(new ObstacleClass(12, 3, obstaclePrefab));
-            ObstacleTileCoords.Add(new ObstacleClass(12, 5, obstaclePrefab));
-            ObstacleTileCoords.Add(new ObstacleClass(12, 7, obstaclePrefab2));
-            ObstacleTileCoords.Add(new ObstacleClass(13, 9, obstaclePrefab));
         }
+
+
     }
 }

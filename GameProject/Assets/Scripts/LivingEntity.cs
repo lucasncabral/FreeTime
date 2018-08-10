@@ -1,22 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class LivingEntity : NetworkBehaviour , IDamageable{
+public class LivingEntity : MonoBehaviour , IDamageable{
     public float startingHealth;
-
-    [SyncVar]
+    
     public float health;
-
     protected bool dead;
-
     public event System.Action OnDeath;
 
-    public override void OnStartClient()
+    public void OnStart()
     {
-        if (this.name.Contains("Player"))
+        if (this.name.Contains("Player")) {
             startingHealth = PlayerPrefs.GetInt("PlayerLifeStart");
+        }
+
         health = startingHealth;
     }
     
@@ -25,53 +23,34 @@ public class LivingEntity : NetworkBehaviour , IDamageable{
     }
 
     public virtual void TakeDamage(float damage)
-    {
-        if (!isServer)
-            return;
-        
+    {        
         health -= damage;
         if (health <= 0 && !dead) {
             dead = true;
             if (OnDeath != null)
                 OnDeath();
-
-            
-                CmdDie();
+                Die();
         }
-        
     }
-
-    [Command]
-    void CmdDie()
+    
+    void Die()
     {
         if (this.name.Contains("Enemy"))
         {
-            //   GameObject.Destroy(gameObject);
-            NetworkServer.Destroy(gameObject);
+            GameObject.Destroy(gameObject);
         }
         else
         {
             FindObjectOfType<Spawner>().RemovePlayer(this);
+            GameObject.Destroy(gameObject);
             foreach (Enemy e in FindObjectsOfType<Enemy>())
             {
                 if (e.targetEntity.Equals(this))
-                    e.CmdOnTargetDeath();
+                    e.OnTargetDeath();
             }
-            RpcDie();
         }
     }
     
-    [ClientRpc]
-    void RpcDie() {
-            this.GetComponent<MeshRenderer>().enabled = false;
-            this.GetComponent<Rigidbody>().isKinematic = true;
-            this.tag = "Untagged";
-            this.GetComponent<CapsuleCollider>().enabled = false;
-            transform.GetChild(0).gameObject.SetActive(false);
-            this.GetComponent<PlayerController>().enabled = false;
-                    //GameObject.Destroy(gameObject);
-    }
-
     public void getItem()
     {
         health = Mathf.Min(health + 10, startingHealth);

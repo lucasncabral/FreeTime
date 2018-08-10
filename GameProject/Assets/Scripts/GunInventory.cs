@@ -69,6 +69,7 @@ public class GunInventory : MonoBehaviour {
             Destroy(weaponHold.transform.GetChild(0).gameObject);
         } catch (Exception e)
         {
+            Debug.Log(e);
         }
 
         used.transform.parent = weaponHold;

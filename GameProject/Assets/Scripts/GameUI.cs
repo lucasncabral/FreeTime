@@ -4,9 +4,8 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityEngine.Networking;
 
-public class GameUI : NetworkBehaviour
+public class GameUI : MonoBehaviour
 {
     public Player playerEntitity;
 
@@ -41,7 +40,7 @@ public class GameUI : NetworkBehaviour
     bool gameOver = false;
     public ScoreKeeper scoreKeeper;
     
-    public override void OnStartServer()
+    void Start()
     {
         //Action OnPlayerDeathAction = () => OnGameOver();
         //playerEntitity.OnDeath += OnPlayerDeathAction;
@@ -159,26 +158,20 @@ public class GameUI : NetworkBehaviour
         }
         newWaveEnemyCount.text = "Enemies: " + enemyCountString;
         
-        CmdStartNewWave(newWaveTitle.text, newWaveEnemyCount.text);
+        StartNewWave(newWaveTitle.text, newWaveEnemyCount.text);
     }
+    
 
-    [Command]
-    public void CmdStartNewWave(String waveName, String enemiesCount)
-    {
-        RpcStartNewWave(waveName, enemiesCount);
-    }
-
-    [ClientRpc]
-    public void RpcStartNewWave(String waveName, String enemiesCount)
+    public void StartNewWave(String waveName, String enemiesCount)
     {
         StopCoroutine("AnimateNewWaveBanner");
         newWaveTitle.text = waveName;
         newWaveEnemyCount.text = enemiesCount;
         StartCoroutine("AnimateNewWaveBanner");
     }
-
-    [ClientRpc]
-    public void RpcOnGameOver()
+    
+    
+    public void OnGameOver()
     {
         gameOver = true;
         Cursor.visible = true;

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
 [RequireComponent (typeof (PlayerController))]
 [RequireComponent(typeof(GunController))]
@@ -21,10 +20,9 @@ public class Player : LivingEntity {
     
     // Use this for initialization
     //protected override void Start ()
-    public void Start() {
-        if (!isLocalPlayer)
-            return;
-
+    public void Start()
+    {
+        this.GetComponent<LivingEntity>().OnStart();
         moveSpeed = PlayerPrefs.GetFloat("PlayerSpeed");
         GameUI gameUI = FindObjectOfType<GameUI>();
         gameUI.playerEntitity = this;
@@ -33,7 +31,7 @@ public class Player : LivingEntity {
         gunController = GetComponent<GunController>();
         viewCamera = Camera.main;
         
-        gunController.CmdEquipGun(gunNumber++);
+        gunController.EquipGun(gunNumber++);
 
         gameUI.currentGunController = gunController;
 
@@ -41,19 +39,17 @@ public class Player : LivingEntity {
         playerUIInstance.name = playerUIPrefab.name;
         this.crossHairs = playerUIInstance.GetComponent<Crosshairs>();
 
-        CmdAddPlayer();
+        AddPlayer();
     }
     
-
-    [Command]
-    void CmdAddPlayer()
+    void AddPlayer()
     {
         FindObjectOfType<Spawner>().addPlayer(this);
     }    
 
     // Update is called once per frame
     void Update () {
-        if (!isLocalPlayer || this.isDead())
+        if (this.isDead())
         {
             this.crossHairs.enabled = false;
             return;
@@ -97,7 +93,7 @@ public class Player : LivingEntity {
         }
         if (Input.GetKeyDown(KeyCode.T))
         {
-            gunController.CmdEquipGun(gunNumber++);
+            gunController.EquipGun(gunNumber++);
         }
 
         if(transform.position.y < -10)

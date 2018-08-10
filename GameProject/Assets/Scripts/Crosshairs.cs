@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class Crosshairs : NetworkBehaviour
+public class Crosshairs : MonoBehaviour
 {
     public LayerMask targetMask;
     public SpriteRenderer dot;
@@ -15,6 +14,7 @@ public class Crosshairs : NetworkBehaviour
         Cursor.visible = false;
         originalDotColour = dot.color;
     }
+
     // Update is called once per frame
     void Update () {      
         transform.Rotate(Vector3.forward * 40 * Time.deltaTime);

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Networking;
 
 [RequireComponent (typeof (NavMeshAgent))]
 public class Enemy : LivingEntity
@@ -20,11 +19,7 @@ public class Enemy : LivingEntity
     float nextTimeAttack;
     
     public LivingEntity targetEntity;
-
-    [SyncVar]
-    public NetworkInstanceId targetNetId;
-
-    [SyncVar]
+    
     public Transform target;
 
     float myCollisionRadius;
@@ -32,8 +27,7 @@ public class Enemy : LivingEntity
 
     public GameObject deathEffect;
     private ScoreKeeper score;
-
-    [SyncVar]
+    
     public bool hasTarget;
 
     // itens
@@ -44,6 +38,7 @@ public class Enemy : LivingEntity
     public float startingHealthBase;
     public GameObject playerProx;
     GameObject[] players;
+
     void Awake()
     {
         pathfinder = GetComponent<NavMeshAgent>();
@@ -71,7 +66,6 @@ public class Enemy : LivingEntity
 
             target = playerProx.transform;
             targetEntity = target.GetComponent<LivingEntity>();
-            targetNetId = targetEntity.netId;
 
             myCollisionRadius = GetComponent<CapsuleCollider>().radius;
             targetCollisionRadius = target.GetComponent<CapsuleCollider>().radius;
@@ -82,28 +76,16 @@ public class Enemy : LivingEntity
     }
     
     public void Start(){
-        if (isServer && hasTarget) {
+        this.GetComponent<LivingEntity>().OnStart();
+        if (hasTarget) {
             currentState = State.Chasing;
-            CmdMoveEnemie();
+
+            StartCoroutine(UpdatePath());
         }
     }
 
-    // THIS IS NOT COOL
-    /**
-    private void FixedUpdate()
-    {
-        if (!isServer)
-        {
-            this.transform.localPosition = location;
-            return;
-        }
-
-        location = this.transform.localPosition;
-    }
-    */
-
-    [Command]
-    public void CmdOnTargetDeath()
+    
+    public void OnTargetDeath()
     {
         hasTarget = false;
         players = GameObject.FindGameObjectsWithTag("Player");
@@ -130,7 +112,6 @@ public class Enemy : LivingEntity
 
             target = playerProx.transform;
             targetEntity = target.GetComponent<LivingEntity>();
-            targetNetId = targetEntity.netId;
             
             targetCollisionRadius = target.GetComponent<CapsuleCollider>().radius;
         }
@@ -139,43 +120,13 @@ public class Enemy : LivingEntity
             currentState = State.Idle;
        }
     }
-
-    [Command]
-    void CmdMoveEnemie()
-    {
-        RpcMoveEnemie();
-    }
-
-    [ClientRpc]
-    void RpcMoveEnemie()
-    {
-        StartCoroutine(UpdatePath());
-    }
-	
+    
 	// Update is called once per frame
-	void Update () {
-        if (!isServer) {
-            return;
-        }
-        
+	void Update () {       
 
         if (hasTarget) {
         if(Time.time > nextTimeAttack) {
-                try
-                {
-                   Vector3 teste = target.position;
-                } catch(Exception ex)
-                {
-                    try
-                    {
-                        target = ClientScene.FindLocalObject(targetNetId).transform;
-                    }
-                    catch (Exception ex1)
-                    {
-                        return;
-                    }
-                }
-
+            Vector3 teste = target.position;
         float sqrDsToTarget = (target.position - this.transform.position).sqrMagnitude;
         if(sqrDsToTarget < Mathf.Pow(attackDistanceThreshold + myCollisionRadius + targetCollisionRadius, 2)){
                 nextTimeAttack = Time.time + timeBetweenAttacks;
@@ -239,14 +190,13 @@ public class Enemy : LivingEntity
             }
             Destroy(Instantiate(deathEffect, hitPoint, Quaternion.FromToRotation(Vector3.forward, hitDirection)) as GameObject, 2);
             
-            CmdDropItem();
+            DropItem();
         }
 
         base.TakeHit(damage, hitPoint, hitDirection);
     }
-
-    [Command]
-    void CmdDropItem()
+    
+    void DropItem()
     {
 
         int luckyItem = UnityEngine.Random.Range(0, 100);
@@ -254,8 +204,7 @@ public class Enemy : LivingEntity
         if (luckyItem < PlayerPrefs.GetInt("PlayerLucky"))
         //if (luckyItem >= 0)
         {
-            Transform item = Instantiate(itens[UnityEngine.Random.Range(0, itens.Length)], this.transform.position, this.transform.rotation);
-            NetworkServer.Spawn(item.gameObject);
+            Instantiate(itens[UnityEngine.Random.Range(0, itens.Length)], this.transform.position, this.transform.rotation);
         }
 
     }

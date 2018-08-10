@@ -1,15 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class ScoreKeeper : NetworkBehaviour {
-
-    [SyncVar]
+public class ScoreKeeper : MonoBehaviour {
+    
     public int score = 0;
-
     float lastEnemyKillTime;
-    [SyncVar]
     public int streakCount;
     float streakExpiryTime = 1f;
 
@@ -38,9 +34,8 @@ public class ScoreKeeper : NetworkBehaviour {
             score += 3 + 2 * streakCount;
         }
     }
-
-    [Command]
-    public void CmdOnFlagCaptured()
+    
+    public void OnFlagCaptured()
     {
         score += 100;
     }

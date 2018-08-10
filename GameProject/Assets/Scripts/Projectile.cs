@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class Projectile : NetworkBehaviour{
+public class Projectile : MonoBehaviour{
     float speed = 35;
     float damage = 1;
     public LayerMask collisionMask;
@@ -12,17 +11,13 @@ public class Projectile : NetworkBehaviour{
     float skinWidth = .1f;
     
     public GunController gunController;
-
-    [SyncVar]
-    public NetworkInstanceId parentNetId;
-
+    
     private void Start()
     {
-        Destroy(gameObject, lifeTime);
-        gunController = ClientScene.FindLocalObject(parentNetId).transform.parent.transform.parent.GetComponent<GunController>();
-        
+        Destroy(gameObject, lifeTime);        
         gunController.moreOneShoot();
         Collider[] initialCollisions = Physics.OverlapSphere(transform.position, .1f, collisionMask);
+
         if(initialCollisions.Length > 0)
         {
             OnHitObject(initialCollisions[0], transform.position);

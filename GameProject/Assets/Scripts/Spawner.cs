@@ -2,9 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class Spawner : NetworkBehaviour
+public class Spawner : MonoBehaviour
 {
 
     public Mission[] missions;
@@ -37,7 +36,7 @@ public class Spawner : NetworkBehaviour
     bool isDisabled;
     GameUI gameUi;
     
-    public override void OnStartServer()
+    void Start()
     {
         loadAssets();
         playerEntitity = new LivingEntity[4];
@@ -73,7 +72,7 @@ public class Spawner : NetworkBehaviour
 
         if (removePlayers == indexPlayer) {
             isDisabled = true;
-            gameUi.RpcOnGameOver();
+            gameUi.OnGameOver();
         }
     }
     
@@ -90,9 +89,6 @@ public class Spawner : NetworkBehaviour
 
     private void Update()
     {
-        if (!isServer)
-            return;
-
         if (!isDisabled)
         {
             for(int i = 0; i < indexPlayer; i++)
@@ -110,7 +106,7 @@ public class Spawner : NetworkBehaviour
                 enemiesRemainingToSpawn--;
                 nextSpawnTime = Time.time + timeBetweenSpawn;
 
-                CmdSpawnEnemy();
+                SpawnEnemy();
             }
         }
     }
@@ -132,17 +128,14 @@ public class Spawner : NetworkBehaviour
 
         colorSave.color = tileMat.color;
 
-        if (isServer)
-        {
+        
             Enemy spawnedEnemy = Instantiate(enemy, randomTile.position + Vector3.up, Quaternion.identity) as Enemy;
             Action OnEnemyDeathAction = () => OnEnemyDeath();
             spawnedEnemy.OnDeath += OnEnemyDeathAction;
-            NetworkServer.Spawn(spawnedEnemy.gameObject);
-        }
+        
     }
-
-    [Command]
-    void CmdSpawnEnemy()
+    
+    void SpawnEnemy()
     {
         Transform randomTile = map.GetRandomOpenTile();
         doTileEffect(randomTile);

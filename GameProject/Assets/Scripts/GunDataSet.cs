@@ -5,22 +5,30 @@ using UnityEngine;
 
 public class GunDataSet : MonoBehaviour
 {
-    public Gun[] GunBase;
     public Gun[] allGuns;
 
     public int[] preferedGuns;
     public Gun[] usedWeapons;
+
+    void Awake()
+    {
+        DontDestroyOnLoad(transform.gameObject);
+    }
+
     // Use this for initialization
     void Start ()
     {
+
         preferedGuns = new int[3];
         loadGuns();
+                
+        //allGuns = new Gun[GunBase.Length];
+        
 
-        GunBase = Resources.FindObjectsOfTypeAll<Gun>();
-        allGuns = new Gun[GunBase.Length];
-        orderGuns(0);
-
+        //orderGuns(0);
+        
         usedWeapons = UsedWeapons();
+
     }
 	
     public Gun[] BoughtWeapons()
@@ -64,11 +72,13 @@ public class GunDataSet : MonoBehaviour
             FindObjectOfType<GunInventory>().setGunActive();
     }
 
+    /**
     private void orderGuns(int last)
     {
         int j = last;
         foreach (Gun gun in GunBase)
         {
+            Debug.Log(gun.name);
             if (gun.name.Equals("Gun 00" + (j+1)))
             {
                 allGuns[j] = gun;
@@ -80,6 +90,7 @@ public class GunDataSet : MonoBehaviour
           orderGuns(j);
         }
     }
+    **/
 
     private void loadGuns()
     {

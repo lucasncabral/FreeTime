@@ -1,22 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class Resize : NetworkBehaviour
+public class Resize : MonoBehaviour
 {
-    [SyncVar]
     public Vector3 localScaleVec;
-    [SyncVar]
     public Color color;
 
     // Use this for initialization
 
-    public override void OnStartClient()
+    void Start()
     {
         this.transform.localScale = localScaleVec;
-        if (this.name.Contains("Tile"))
+        if (this.name.Contains("Tile")) {
             color = Color.white;
+            this.name = "Tile";
+         }
     }
 
     private void Update()
@@ -25,6 +24,7 @@ public class Resize : NetworkBehaviour
             this.GetComponent<Renderer>().material.color = color;
     }
 
+    /**
     void Start()
     {
         if (this.name == "Tile(Clone)")
@@ -32,4 +32,5 @@ public class Resize : NetworkBehaviour
             this.name = "Tile" + this.netId;
         }
     }
+    **/
 }

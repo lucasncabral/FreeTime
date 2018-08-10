@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 public class BuildMapManager : MonoBehaviour {
@@ -59,9 +58,7 @@ public class BuildMapManager : MonoBehaviour {
             {
                 Vector3 tilePosition = CoordToPosition(x, y);
                 Transform newTile = Instantiate(currentMap.tilePrefab, tilePosition, Quaternion.Euler(Vector3.right * 90)) as Transform;
-                Destroy(newTile.GetComponent<NetworkTransform>());
                 Destroy(newTile.GetComponent<Resize>());
-                Destroy(newTile.GetComponent<NetworkIdentity>());
                 newTile.gameObject.AddComponent<DragTransform>();
                 newTile.gameObject.AddComponent<BoxCollider>();
                 newTile.GetComponent<DragTransform>().currentMode = DragTransform.Mode.DropObject;
@@ -96,9 +93,7 @@ public class BuildMapManager : MonoBehaviour {
             {
                 Vector3 obstaclePosition = CoordToPosition(randomCoord.x, randomCoord.y);
                 Transform newObstacle = Instantiate(obstacle.getPrefab(), obstaclePosition + (Vector3.up * 2f / 2), Quaternion.identity) as Transform;
-                Destroy(newObstacle.GetComponent<NetworkTransform>());
                 Destroy(newObstacle.GetComponent<Resize>());
-                Destroy(newObstacle.GetComponent<NetworkIdentity>());
                 newObstacle.gameObject.AddComponent<DragTransform>();
                 newObstacle.GetComponent<DragTransform>().currentMode = DragTransform.Mode.MoveObject;
 
@@ -107,7 +102,7 @@ public class BuildMapManager : MonoBehaviour {
                 // COR DOS OBSTACULOS
                 Renderer obstacleRenderer = newObstacle.GetComponent<Renderer>();
                 Material obstacleMaterial = new Material(obstacleRenderer.sharedMaterial);
-                float colourPercent = randomCoord.y / (float)currentMap.mapSize.y;
+                // float colourPercent = randomCoord.y / (float)currentMap.mapSize.y;
                 obstacleRenderer.sharedMaterial = obstacleMaterial;
                 newObstacle.GetComponent<Resize>().localScaleVec = newObstacle.transform.localScale;
                 
@@ -210,7 +205,7 @@ public class BuildMapManager : MonoBehaviour {
     {
         if(currentObject != null)
         {
-            DestroyObject(currentObject);
+            Destroy(currentObject);
         }
 
         currentObject = Instantiate(ObjectPrefab.gameObject, this.transform);
@@ -244,9 +239,7 @@ public class BuildMapManager : MonoBehaviour {
                 Vector3 obstaclePosition = CoordToPosition(coord.x, coord.y);
                 Transform newObstacle = Instantiate(currentObject.transform, obstaclePosition + (Vector3.up * 2f / 2), Quaternion.identity) as Transform;
                 newObstacle.parent = mapHolder;
-                Destroy(newObstacle.GetComponent<NetworkTransform>());
                 Destroy(newObstacle.GetComponent<Resize>());
-                Destroy(newObstacle.GetComponent<NetworkIdentity>());
 
                 if(newObstacle.GetComponent<DragTransform>() == null)
                     newObstacle.gameObject.AddComponent<DragTransform>();
@@ -260,7 +253,7 @@ public class BuildMapManager : MonoBehaviour {
                 // COR DOS OBSTACULOS
                 Renderer obstacleRenderer = newObstacle.GetComponent<Renderer>();
                 Material obstacleMaterial = new Material(obstacleRenderer.sharedMaterial);
-                float colourPercent = coord.y / (float)currentMap.mapSize.y;
+                // float colourPercent = coord.y / (float)currentMap.mapSize.y;
                 obstacleRenderer.sharedMaterial = obstacleMaterial;
                 //newObstacle.GetComponent<Resize>().localScaleVec = newObstacle.transform.localScale;
 

@@ -1,13 +1,12 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class FlagController : NetworkBehaviour
+public class FlagController : MonoBehaviour
 {
     public Flag flag;
-    MapGenerator map;
+
+    public MapGenerator map;
 
     public float minFlagTime;
     public float maxFlagTime;
@@ -22,9 +21,8 @@ public class FlagController : NetworkBehaviour
    
     public Transform randomTile;
 
-    public override void OnStartServer()
+    void Start()
     {
-        map = FindObjectOfType<MapGenerator>();
         spawner = FindObjectOfType<Spawner>();
 
         generatingFlag = false;
@@ -40,14 +38,13 @@ public class FlagController : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isServer)
-            return;
-
         if (Time.time > nextFlagTime && FindObjectOfType<Flag>() == null && !generatingFlag)
         {
             generatingFlag = true;
-            
-            CmdSpawnFlag();
+            if(map == null)
+                map = FindObjectOfType<MapGenerator>();
+
+            SpawnFlag();
         }
     }
     
@@ -72,19 +69,15 @@ public class FlagController : NetworkBehaviour
         }
 
         colorSave.color = tileMat.color;
-
-        if (isServer)
-        {
-            Flag currentFlag = Instantiate(flag, randomTile.position, Quaternion.identity) as Flag;
-            currentFlag.GetComponent<Transform>().rotation = Quaternion.Euler(new Vector3(0, Random.Range(0, 360), 0));
-            NetworkServer.SpawnWithClientAuthority(currentFlag.gameObject, player);
-        }
+        
+        Flag currentFlag = Instantiate(flag, randomTile.position, Quaternion.identity) as Flag;
+        currentFlag.GetComponent<Transform>().rotation = Quaternion.Euler(new Vector3(0, Random.Range(0, 360), 0));
+        
         generatingFlag = false;
     }
     
-
-    [Command]
-    void CmdSpawnFlag()
+    
+    void SpawnFlag()
     {
         randomTile = map.GetRandomOpenTile();
         doTileEffect();
@@ -124,6 +117,9 @@ public class FlagController : NetworkBehaviour
 
     float nextFlagTimeCount()
     {
+        if(spawner == null)
+            spawner = FindObjectOfType<Spawner>();
+
         float time = Time.time + spawner.timeFlags() * timeBaseBetweenFlags + Random.Range(minFlagTime, maxFlagTime) * countFlags;
         //float time = Time.time + 3f;
         return time;

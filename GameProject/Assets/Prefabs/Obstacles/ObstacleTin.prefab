@@ -55,7 +55,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1568267644027550}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.508, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children: []
   m_Father: {fileID: 4565988411886290}
@@ -68,7 +68,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1534231895451478}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.034523487, y: 9.79118, z: 3.1759892}
+  m_LocalPosition: {x: -0.7149598, y: -1.1114898, z: 6.126549}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4484881996452310}
@@ -177,8 +177,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.7436832, y: 1.0328121, z: 0.83983994}
-  m_Center: {x: -0.04455501, y: -0.04227352, z: -0.012155533}
+  m_Size: {x: 0.65138423, y: 0.99592435, z: 0.7206668}
+  m_Center: {x: 0.0015944839, y: 0.5136494, z: -0.014616102}
 --- !u!114 &114655819564777190
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -205,5 +205,5 @@ NavMeshObstacle:
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0}
   m_TimeToStationary: 0.5

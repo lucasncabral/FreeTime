@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class BuildMapManager : MonoBehaviour {
-    /**
     GameObject currentObject;
 
     public MapGenerator.Map currentMap;
@@ -24,20 +23,28 @@ public class BuildMapManager : MonoBehaviour {
 
     Vector3 position;
 
+    public int mapSizex;
+    public int mapSizey;
+    public float tileSize;
+
+    int lastCount = 0;
     // Use this for initialization
     void Start () {
+        mapSizex = currentMap.mapSize.x * 1;
+        mapSizey = currentMap.mapSize.y * 1;
+        tileSize = currentMap.tileSize / 1f;
         GenerateBaseMap();
     }
 
     void GenerateBaseMap()
     {
-        tileMap = new Transform[currentMap.mapSize.x, currentMap.mapSize.y];
+        tileMap = new Transform[mapSizex, mapSizey];
 
         // ADICIONA NA LISTA TODAS AS COORDENADAS POSSÍVEIS, COM BASE NO TAMANHO DO MAPA
         allTilesCoords = new List<MapGenerator.Coord>();
-        for (int x = 0; x < currentMap.mapSize.x; x++)
+        for (int x = 0; x < mapSizex; x++)
         {
-            for (int y = 0; y < currentMap.mapSize.y; y++)
+            for (int y = 0; y < mapSizey; y++)
             {
                 allTilesCoords.Add(new MapGenerator.Coord(x, y));
             }
@@ -52,84 +59,61 @@ public class BuildMapManager : MonoBehaviour {
         mapHolder.parent = transform;
 
         // GERANDO O TILE
-        for (int x = 0; x < currentMap.mapSize.x; x++)
+        for (int x = 0; x < mapSizex; x++)
         {
-            for (int y = 0; y < currentMap.mapSize.y; y++)
+            for (int y = 0; y < mapSizey; y++)
             {
                 Vector3 tilePosition = CoordToPosition(x, y);
                 Transform newTile = Instantiate(currentMap.tilePrefab, tilePosition, Quaternion.Euler(Vector3.right * 90)) as Transform;
+
                 Destroy(newTile.GetComponent<Resize>());
                 newTile.gameObject.AddComponent<DragTransform>();
+                newTile.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, 0.2f);
                 newTile.gameObject.AddComponent<BoxCollider>();
                 newTile.GetComponent<DragTransform>().currentMode = DragTransform.Mode.DropObject;
                 newTile.GetComponent<DragTransform>().coord = new MapGenerator.Coord(x, y);
-                newTile.localScale = Vector3.one * (1 - outlinePercent) * currentMap.tileSize;
+                newTile.localScale = Vector3.one * (1) * tileSize * (0.94f);
                 newTile.parent = mapHolder;
                 newTile.name = "Tile " + x + y;
+                newTile.GetComponent<Tile>().coord = new MapGenerator.Coord(x, y);
                 tileMap[x, y] = newTile;
 
                 newTile.GetComponent<Resize>().localScaleVec = newTile.transform.localScale;
             }
         }
 
-
-        obstacleMap = new bool[(int)currentMap.mapSize.x, (int)currentMap.mapSize.y];
-        int obstacleCount = currentMap.ObstacleTileCoords.Count;
-        currentObstacleCount = 0;
-        
-        foreach (ObstacleClass obstacle in currentMap.ObstacleTileCoords)
-        {
-            //ObstacleClass obstacle = GetObstacleCoord();
-
-            MapGenerator.Coord randomCoord = obstacle.centerCoord();
-
-            foreach (MapGenerator.Coord coord in obstacle.getCoord())
-            {
-                obstacleMap[coord.x, coord.y] = true;
-                currentObstacleCount++;
-            }
-
-            if ((randomCoord != currentMap.mapCenter) && MapIsFullyAccessible(obstacleMap, currentObstacleCount))
-            {
-                Vector3 obstaclePosition = CoordToPosition(randomCoord.x, randomCoord.y);
-                Transform newObstacle = Instantiate(obstacle.getPrefab(), obstaclePosition + (Vector3.up * 2f / 2), Quaternion.identity) as Transform;
-                Destroy(newObstacle.GetComponent<Resize>());
-                newObstacle.gameObject.AddComponent<DragTransform>();
-                newObstacle.GetComponent<DragTransform>().currentMode = DragTransform.Mode.MoveObject;
-
-                newObstacle.parent = mapHolder;
-
-                // COR DOS OBSTACULOS
-                Renderer obstacleRenderer = newObstacle.GetComponent<Renderer>();
-                Material obstacleMaterial = new Material(obstacleRenderer.sharedMaterial);
-                // float colourPercent = randomCoord.y / (float)currentMap.mapSize.y;
-                obstacleRenderer.sharedMaterial = obstacleMaterial;
-                newObstacle.GetComponent<Resize>().localScaleVec = newObstacle.transform.localScale;
-                
-            }
-            else
-            {
-                obstacleMap[randomCoord.x, randomCoord.y] = false;
-                currentObstacleCount--;
-            }
-        }
+        obstacleMap = new bool[mapSizex, mapSizey];
 
         Transform mapFloor = Instantiate(mapFloorPrefab, mapFloorPrefab.transform.position, mapFloorPrefab.transform.rotation) as Transform;
         
         mapFloor.parent = mapHolder;
         
-        mapFloor.localScale = new Vector3(currentMap.mapSize.x * currentMap.tileSize, currentMap.mapSize.y * currentMap.tileSize);
+        mapFloor.localScale = new Vector3(mapSizex * tileSize, mapSizey * tileSize);
         
         mapFloor.GetComponent<Resize>().localScaleVec = mapFloor.transform.localScale;
     }
 
-    public void UpdatePosition(Transform transform)
+    bool MapIsFullyAccessible(bool[,] obstacleMap)
     {
-        position = transform.position;
-    }
+        int currentObstacleCount = 0;
+        
+        for (int x = 0; x < currentMap.mapSize.x; x++)
+        {
+            for (int y = 0; y < currentMap.mapSize.y; y++)
+            {
+                Tile tile = tileMap[x, y].GetComponent<Tile>();
+                if (tile.isOccuped)
+                {
+                    obstacleMap[x, y] = true;
+                    currentObstacleCount++;
+                }
+                else
+                    obstacleMap[x, y] = false;
+            }
+        }
 
-    bool MapIsFullyAccessible(bool[,] obstacleMap, int currentObstacleCount)
-    {
+
+
         bool[,] mapFlags = new bool[obstacleMap.GetLength(0), obstacleMap.GetLength(1)];
         Queue<MapGenerator.Coord> queue = new Queue<MapGenerator.Coord>();
         queue.Enqueue(currentMap.mapCenter);
@@ -161,19 +145,20 @@ public class BuildMapManager : MonoBehaviour {
             }
         }
 
-        int targetAccessibleTileCount = (int)(currentMap.mapSize.x * currentMap.mapSize.y - currentObstacleCount);
+        int targetAccessibleTileCount = (int)(mapSizex * mapSizey - currentObstacleCount);
+        Debug.Log(targetAccessibleTileCount + " - " + accessibleTileCount);
         return targetAccessibleTileCount == accessibleTileCount;
     }
 
     Vector3 CoordToPosition(int x, int y)
     {
-        return new Vector3(-currentMap.mapSize.x / 2f + 0.5f + x, 0, -currentMap.mapSize.y / 2f + 0.5f + y) * currentMap.tileSize;
+        return new Vector3(-mapSizex / 2f + 0.5f + x, 0, -mapSizey / 2f + 0.5f + y) * tileSize;
     }
 
     public Transform GetTileFromPosition(Vector3 position)
     {
-        int x = Mathf.RoundToInt(position.x / 1.4f + (currentMap.mapSize.x - 1) / 2f);
-        int y = Mathf.RoundToInt(position.z / 1.4f + (currentMap.mapSize.y - 1) / 2f);
+        int x = Mathf.RoundToInt(position.x / 1.4f + (mapSizex - 1) / 2f);
+        int y = Mathf.RoundToInt(position.z / 1.4f + (mapSizey - 1) / 2f);
 
         x = Mathf.Clamp(x, 0, tileMap.GetLength(0) - 1);
         y = Mathf.Clamp(y, 0, tileMap.GetLength(1) - 1);
@@ -184,20 +169,28 @@ public class BuildMapManager : MonoBehaviour {
     void Update () {
         if (currentObject != null)
         {
-            Vector3 temp = Input.mousePosition;
-            temp.z = 10f;
-            
-            //currentObject.transform.position = position;
-            currentObject.transform.position = new Vector3(position.x, 1.5f, position.z);
-             //   currentObject.transform.position = Camera.main.ScreenToWorldPoint(temp);
-            //currentObject.transform.position = new Vector3(currentObject.transform.position.x, currentObject.transform.position.y * 0.5f, currentObject.transform.position.z);
-            //Cursor.visible = false;
-
             if (Input.GetKeyDown(KeyCode.Delete))
             {
                 Cursor.visible = true;
                 Destroy(currentObject);
             }
+
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Plane groundPlane = new Plane(Vector3.up, Vector3.up * 0.2f);
+            float rayDistance;
+            if (groundPlane.Raycast(ray, out rayDistance))
+            {
+                Vector3 point = ray.GetPoint(rayDistance);
+                Debug.DrawLine(ray.origin, point, Color.red);
+                position = point;
+            }
+
+
+            Vector3 temp = Input.mousePosition;
+            temp.z = 10f;
+            
+            currentObject.transform.position = new Vector3(position.x, 0.2f, position.z);
         }
     }
 
@@ -209,7 +202,13 @@ public class BuildMapManager : MonoBehaviour {
         }
 
         currentObject = Instantiate(ObjectPrefab.gameObject, this.transform);
-        Destroy(currentObject.GetComponent<BoxCollider>());
+
+        BoxCollider[] colliders;
+        colliders = currentObject.GetComponents<BoxCollider>();
+
+        foreach (BoxCollider box in colliders)
+            box.enabled = false;
+
         currentObject.transform.position = new Vector3(0,0,0);
     }
 
@@ -217,50 +216,51 @@ public class BuildMapManager : MonoBehaviour {
     {
         if (currentObject == null)
         {
+            updateObstaclesOccupation();
             currentObject = objectMove;
             //objectMove.GetComponent<DragTransform>().currentMode = DragTransform.Mode.NewObject; 
             currentObject.transform.parent = this.transform;
-            Destroy(currentObject.GetComponent<BoxCollider>());
+            BoxCollider[] colliders;
+            colliders = currentObject.GetComponents<BoxCollider>();
 
-            obstacleMap[coord.x, coord.y] = false;
-            currentObstacleCount--;
+            foreach (BoxCollider box in colliders)
+                box.enabled = false;
         }
     }
 
     public void DropObject(MapGenerator.Coord coord)
     {
+        float startTime = Time.time;
         if (currentObject != null && !obstacleMap[coord.x, coord.y])
         {
-            obstacleMap[coord.x, coord.y] = true;
-            currentObstacleCount++;
-
-            if ((coord != currentMap.mapCenter) && MapIsFullyAccessible(obstacleMap, currentObstacleCount))
+            if ((coord != currentMap.mapCenter))
             {
-                Vector3 obstaclePosition = CoordToPosition(coord.x, coord.y);
-                Transform newObstacle = Instantiate(currentObject.transform, obstaclePosition + (Vector3.up * 2f / 2), Quaternion.identity) as Transform;
+                Vector3 obstaclePosition = new Vector3(position.x, 0, position.z);
+                Transform newObstacle = Instantiate(currentObject.transform, obstaclePosition, Quaternion.identity) as Transform;
                 newObstacle.parent = mapHolder;
+                newObstacle.GetComponent<Rigidbody>().isKinematic = true;
                 Destroy(newObstacle.GetComponent<Resize>());
 
-                if(newObstacle.GetComponent<DragTransform>() == null)
-                    newObstacle.gameObject.AddComponent<DragTransform>();
+                BoxCollider[] colliders;
+                colliders = newObstacle.GetComponents<BoxCollider>();
 
-                if (newObstacle.GetComponent<BoxCollider>() == null)
-                    newObstacle.gameObject.AddComponent<BoxCollider>();
+                foreach (BoxCollider box in colliders)
+                    box.enabled = true;
+
+                if (newObstacle.GetComponent<DragTransform>() == null)
+                    newObstacle.gameObject.AddComponent<DragTransform>();
 
                 newObstacle.GetComponent<DragTransform>().coord = new MapGenerator.Coord(coord.x, coord.y);
                 newObstacle.GetComponent<DragTransform>().currentMode = DragTransform.Mode.MoveObject;
-
-                // COR DOS OBSTACULOS
-                Renderer obstacleRenderer = newObstacle.GetComponent<Renderer>();
-                Material obstacleMaterial = new Material(obstacleRenderer.sharedMaterial);
-                // float colourPercent = coord.y / (float)currentMap.mapSize.y;
-                obstacleRenderer.sharedMaterial = obstacleMaterial;
-                //newObstacle.GetComponent<Resize>().localScaleVec = newObstacle.transform.localScale;
-
-                currentMap.ObstacleTileCoords.Add(new ObstacleClass(coord.x, coord.y, currentObject.transform));
-
-                Destroy(currentObject);
-                currentObject = null;
+                
+                // TODO AQUI...
+                if (MapIsFullyAccessible(obstacleMap)) {
+                    Destroy(currentObject);
+                    currentObject = null;
+                } else
+                {
+                    Debug.Log("Não pode");
+                }
             }
             else
             {
@@ -275,5 +275,20 @@ public class BuildMapManager : MonoBehaviour {
     {
         SceneManager.LoadScene("Network");
     }
-    **/
+
+
+    void updateObstaclesOccupation()
+    {
+        System.Random prng = new System.Random();
+
+        for (int x = 0; x < currentMap.mapSize.x; x++)
+        {
+            for (int y = 0; y < currentMap.mapSize.y; y++)
+            {
+                Tile tile = tileMap[x, y].GetComponent<Tile>();
+                tile.isOccuped = false;
+            }
+        }
+        
+    }
 }

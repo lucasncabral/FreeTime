@@ -15,7 +15,12 @@ public class Tile : MonoBehaviour {
 	void Update () {
 
     }
-    
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == 10)
+            isOccuped = true;
+    }
 
     void OnTriggerStay(Collider other)
     {

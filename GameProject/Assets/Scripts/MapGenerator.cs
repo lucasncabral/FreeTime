@@ -180,15 +180,13 @@ public class MapGenerator : MonoBehaviour
     {
         Coord randomCoord = new Coord();
         updateObstaclesPosition();
-        
-        for (int i = 0; i < shuffledOpenTileCoords.Count; i++)
+
+        int randomNumber = UnityEngine.Random.Range(1, 10);
+        for (int i = 0; i < randomNumber; i++)
         {
             randomCoord = shuffledOpenTileCoords.Dequeue();
             shuffledOpenTileCoords.Enqueue(randomCoord);
         }
-        
-        randomCoord = shuffledOpenTileCoords.Dequeue();
-        shuffledOpenTileCoords.Enqueue(randomCoord);
 
         return tileMap[randomCoord.x, randomCoord.y];
     }
@@ -254,24 +252,24 @@ public class MapGenerator : MonoBehaviour
         public void UpdateObstacleTileCoords()
         {
             ObstacleTileCoords = new List<ObstacleClass>();
-            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(-2.81f, 0.54f, -3.79f), new Vector3(-89.98f,0,0), obstaclePrefab));
-            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(4.23f, 0.54f, -3.79f), new Vector3(-89.98f, 0, 0), obstaclePrefab));
-            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(4.23f, 0.54f, 4.63f), new Vector3(-89.98f, 0, 0), obstaclePrefab));
-            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(-2.81f, 0.54f, 4.63f), new Vector3(-89.98f, 0, 0), obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(-2.81f, 0f, -3.79f), new Vector3(-89.98f,0,0), obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(4.23f, 0f, -3.79f), new Vector3(-89.98f, 0, 0), obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(4.23f, 0f, 4.63f), new Vector3(-89.98f, 0, 0), obstaclePrefab));
+            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(-2.81f, 0f, 4.63f), new Vector3(-89.98f, 0, 0), obstaclePrefab));
 
 
-            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(-6.53f, 0.35f, 0.5392f), new Vector3(0, 0, 0), obstaclePrefab2));
-            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(-6.33f, 0.35f,-0.86f), new Vector3(0, 0, 0), obstaclePrefab2));
+            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(-6.53f, 0f, 0.5392f), new Vector3(0, 0, 0), obstaclePrefab2));
+            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(-6.33f, 0f,-0.86f), new Vector3(0, 0, 0), obstaclePrefab2));
 
-            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(-1.37f, 0.59f, -1.42f), new Vector3(0, 0, 0), obstaclePrefab3));
+            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(-1.37f, 0f, -1.42f), new Vector3(0, 0, 0), obstaclePrefab3));
 
-            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(-6.27f, 0.25f, -6.32f), new Vector3(0, 0, 0), obstaclePrefab4));
-            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(6.22f, 0.25f, 0.49f), new Vector3(0, 0, 0), obstaclePrefab4));
-            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(6.22f, 0.25f, -0.82f), new Vector3(0, 0, 0), obstaclePrefab4));
-            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(6.22f, 0.67f,-0.08f), new Vector3(0, 0, 0), obstaclePrefab4));
+            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(-6.27f, 0f, -6.32f), new Vector3(0, 0, 0), obstaclePrefab4));
+            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(6.22f, 0f, 0.49f), new Vector3(0, 0, 0), obstaclePrefab4));
+            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(6.22f, 0f, -0.82f), new Vector3(0, 0, 0), obstaclePrefab4));
+            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(6.22f, 0.67f,-0.1f), new Vector3(0, 0, 0), obstaclePrefab4));
             
-            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(0.67f, 0.85f, 6.35f), new Vector3(0, 0, 0), obstaclePrefab5));
-            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(0.67f, 0.85f, -6.35f), new Vector3(0, 0, 0), obstaclePrefab5));
+            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(0.67f, 0f, 6.35f), new Vector3(0, 0, 0), obstaclePrefab5));
+            ObstacleTileCoords.Add(new ObstacleClass(new Vector3(0.67f, 0f, -6.35f), new Vector3(0, 0, 0), obstaclePrefab5));
         }
 
 

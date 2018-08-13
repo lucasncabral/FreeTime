@@ -18153,7 +18153,7 @@ MonoBehaviour:
   map: {fileID: 211976043}
   minFlagTime: 5
   maxFlagTime: 10
-  timeBaseBetweenFlags: 5
+  timeBaseBetweenFlags: 3
   generatingFlag: 0
   randomTile: {fileID: 0}
 --- !u!4 &1586712680

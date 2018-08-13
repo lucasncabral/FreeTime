@@ -18,7 +18,6 @@ class DragTransform : MonoBehaviour, IPointerClickHandler
     
 public void OnPointerClick(PointerEventData eventData)
 {
-    /**
     switch (currentMode)
     {
         case Mode.NewObject:
@@ -31,18 +30,5 @@ public void OnPointerClick(PointerEventData eventData)
             mapManager.DropObject(coord);
             break;
     }
-        **/
 }
-
-    /**
-void OnMouseEnter()
-{
-mapManager.UpdatePosition(this.gameObject.transform);
-}
-
-void OnMouseExit()
-{
-
-}
-**/
 }

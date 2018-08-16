@@ -1,15 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2017
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameProject", "GameProject.csproj", "{7B9E1B97-7546-D102-C9F3-07395352CE2E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameProject", "GameProject.csproj", "{7B9E1B97-7546-D102-C9F3-07395352CE2E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameProject.Editor", "GameProject.Editor.csproj", "{E6CE7944-E58E-C88A-2EDC-1A147FD606FA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameProject.Editor", "GameProject.Editor.csproj", "{E6CE7944-E58E-C88A-2EDC-1A147FD606FA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameProject.Editor", "GameProject.Editor.csproj", "{E6CE7944-E58E-C88A-2EDC-1A147FD606FA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameProject.Editor", "GameProject.Editor.csproj", "{E6CE7944-E58E-C88A-2EDC-1A147FD606FA}"
 EndProject
@@ -23,22 +17,6 @@ Global
 		{7B9E1B97-7546-D102-C9F3-07395352CE2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B9E1B97-7546-D102-C9F3-07395352CE2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B9E1B97-7546-D102-C9F3-07395352CE2E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B9E1B97-7546-D102-C9F3-07395352CE2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B9E1B97-7546-D102-C9F3-07395352CE2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B9E1B97-7546-D102-C9F3-07395352CE2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B9E1B97-7546-D102-C9F3-07395352CE2E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E6CE7944-E58E-C88A-2EDC-1A147FD606FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6CE7944-E58E-C88A-2EDC-1A147FD606FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E6CE7944-E58E-C88A-2EDC-1A147FD606FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E6CE7944-E58E-C88A-2EDC-1A147FD606FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E6CE7944-E58E-C88A-2EDC-1A147FD606FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6CE7944-E58E-C88A-2EDC-1A147FD606FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E6CE7944-E58E-C88A-2EDC-1A147FD606FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E6CE7944-E58E-C88A-2EDC-1A147FD606FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E6CE7944-E58E-C88A-2EDC-1A147FD606FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6CE7944-E58E-C88A-2EDC-1A147FD606FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E6CE7944-E58E-C88A-2EDC-1A147FD606FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E6CE7944-E58E-C88A-2EDC-1A147FD606FA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E6CE7944-E58E-C88A-2EDC-1A147FD606FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E6CE7944-E58E-C88A-2EDC-1A147FD606FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6CE7944-E58E-C88A-2EDC-1A147FD606FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -46,5 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4EE5E9B5-DE8A-46E8-9F05-22ECCBC39E52}
 	EndGlobalSection
 EndGlobal

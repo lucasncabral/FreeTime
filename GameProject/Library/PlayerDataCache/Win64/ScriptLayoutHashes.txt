@@ -95,7 +95,7 @@ e90403eeda069970e0b9de1533de13a6 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 2d58ca16854b99daea8c45e9c0f367b7 UnityEngine.UI.dll:UnityEngine.EventSystems.TouchInputModule
 16da51d1b62ef6d4ee1849350434023b UnityEngine.UI.dll:UnityEngine.UI.VerticalLayoutGroup
 98f0dfd2378729c082be8d0dd8ea0d71 Assembly-CSharp.dll:UnityEngine.PostProcessing.PostProcessingBehaviour
-ea695e29fff3f5cf18a1e31379f3be2d Assembly-CSharp.dll:.BuildMapManager
+2d070469eedc17476bb6b4a93b1891a1 Assembly-CSharp.dll:.BuildMapManager
 84cbcfffe767cee366943ea5547b62cf Assembly-CSharp.dll:.ScoreKeeper
 3237ba3327af0f7b917be8ee7df571f9 Assembly-CSharp.dll:.JoinGame
 486cd95c82d8305219c352c06b776e1f UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationPlayableAsset

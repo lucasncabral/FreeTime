@@ -158,8 +158,11 @@ MonoBehaviour:
     type: 2}
   currentObstacleCount: 0
   mapSizex: 0
+  maxMapSize: {x: 20, y: 20}
   mapSizey: 0
   tileSize: 0
+  navmeshMaskPrefab: {fileID: 4672440224219682, guid: 0afe1e1d977ed8c4aaf4ef7d73454d46,
+    type: 2}
 --- !u!4 &134980034
 Transform:
   m_ObjectHideFlags: 0

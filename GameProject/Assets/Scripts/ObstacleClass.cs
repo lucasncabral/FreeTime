@@ -8,6 +8,8 @@ public class ObstacleClass : MonoBehaviour {
     Vector3 rotation;
     Transform prefab;
 
+
+
     public ObstacleClass(Vector3 _position, Vector3 _rotation, Transform _prefab)
     {
         this.position = _position;

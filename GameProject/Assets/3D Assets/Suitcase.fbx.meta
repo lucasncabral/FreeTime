@@ -11,7 +11,22 @@ ModelImporter:
     2300000: //RootNode
     3300000: //RootNode
     4300000: Cube.019
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black
+    second: {fileID: 2100000, guid: 5916e32e6eca47649878b16e2a4c8202, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Stamp
+    second: {fileID: 2100000, guid: 2c15f4724af60bf4581c9b073fdf1c7f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Suitcase
+    second: {fileID: 2100000, guid: a8d0a494eba4bb54f9ce9bcdb2865541, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

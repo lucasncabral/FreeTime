@@ -17,7 +17,7 @@ class DragTransform : MonoBehaviour, IPointerClickHandler
 
     public bool isBase;
     public bool isPortable;
-    DragTransform otherObject;
+    public DragTransform otherObject;
     private void Start()
     {
         mapManager = FindObjectOfType<BuildMapManager>();
@@ -72,15 +72,20 @@ class DragTransform : MonoBehaviour, IPointerClickHandler
 
     public float getHeight()
     {
-        if (isColliding && isAvailable())
+        if (isColliding)
         {
-            return height;
+            if(isAvailable())
+                return height;
         }
         return 0.01f;
     }
 
     public bool isAvailable()
     {
-        return isPortable && otherObject.isBase;
+        if (otherObject != null)
+        {
+            return isPortable && otherObject.isBase;
+        } else
+            return false;
     }
 }

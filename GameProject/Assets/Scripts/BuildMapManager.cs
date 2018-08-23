@@ -282,8 +282,8 @@ public class BuildMapManager : MonoBehaviour {
 
                 // PROBLEMA --> OS TILES DEMORAM MUITO A RECONHECER A COLISÃO COM O MEU NOVO OBJETO INSTANCIADO
                 lastObjectDropped = newObstacle;
-
-                if (MapIsFullyAccessible(obstacleMap) && isInsideMap() && !isInsideOtherObject(newObstacle)) {
+            
+                if (MapIsFullyAccessible(obstacleMap) && isInsideMap() && isInsideOtherObject(currentObject.transform)) {
                     Destroy(currentObject.gameObject);
                     currentObject = null;
                 } else
@@ -298,9 +298,10 @@ public class BuildMapManager : MonoBehaviour {
     {
         if (newObstacle.gameObject.GetComponent<DragTransform>().isColliding)
         {
+            
             return newObstacle.gameObject.GetComponent<DragTransform>().isAvailable();
         }
-        return false;
+        return true;
     }
 
     bool isInsideMap()

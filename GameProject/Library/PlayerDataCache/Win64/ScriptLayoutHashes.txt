@@ -190,7 +190,7 @@ d75dc834c5dec688db75a55a1724c90f UnityEngine.HoloLens.dll:UnityEngine.Audio.Audi
 e1ea12ca952c81d81a9a21fdf34446ed UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInputModule
 98d69a140ec0084cde3b6a5e09aea295 UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingCollider
 dfd33ff9ae3ce8d7ca1f22b475ec2387 UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
-bc538396a64defa917693d65191898f2 Assembly-CSharp.dll:.DragTransform
+5294c41bb6d0748b56c3c4df906b0cfe Assembly-CSharp.dll:.DragTransform
 aac9c55ae7ba4b95b852a7d9c191acd1 Unity.TextMeshPro.dll:TMPro.TextMeshProUGUI
 713f094d38dde97adcca89d1fad847c0 Assembly-CSharp.dll:UnityEngine.PostProcessing.PostProcessingProfile
 d9ac7b16767da63f3b1684d2a3589cf6 Assembly-CSharp.dll:.MuzzleFlash

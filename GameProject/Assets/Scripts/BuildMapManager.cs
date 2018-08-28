@@ -209,7 +209,8 @@ public class BuildMapManager : MonoBehaviour {
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             dragObject = currentObject.gameObject.GetComponent<DragTransform>();
-            Plane groundPlane = new Plane(Vector3.up, Vector3.up * 0.01f);
+            Plane groundPlane = new Plane(Vector3.up, Vector3.up * dragObject.getHeight());
+
             float rayDistance;
             if (groundPlane.Raycast(ray, out rayDistance))
             {

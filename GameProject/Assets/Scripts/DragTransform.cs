@@ -48,24 +48,28 @@ class DragTransform : MonoBehaviour, IPointerClickHandler
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 10)
+        if (other.gameObject.layer == 10) {
             isColliding = true;
+        }
     }
+    
 
     void OnTriggerStay(Collider other)
     {
         if (other.gameObject.layer == 10) {
+            if (other.bounds.size.y + other.GetComponent<Transform>().position.y > height) {
             otherObject = other.gameObject.GetComponent<DragTransform>();
             height = (other.bounds.size.y);
             isColliding = true;
+            }
         }
-        
     }
 
     void OnTriggerExit(Collider other)
     {
         if (other.gameObject.layer == 10) {
             otherObject = null;
+            height = 0;
             isColliding = false;
         }
     }
@@ -74,8 +78,9 @@ class DragTransform : MonoBehaviour, IPointerClickHandler
     {
         if (isColliding)
         {
-            if(isAvailable())
-                return height;
+            if (isAvailable()) {
+                return otherObject.GetComponent<Transform>().position.y +  height;
+        }
         }
         return 0.01f;
     }

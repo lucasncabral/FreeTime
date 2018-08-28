@@ -100,5 +100,10 @@ public class Player : LivingEntity {
         {
             TakeDamage(health);
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            controller.Jump();
+        }
     }
 }

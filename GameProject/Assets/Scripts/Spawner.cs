@@ -117,16 +117,13 @@ public class Spawner : MonoBehaviour
         Color initialColour = Color.white;
         Color flashColour = Color.red;
         float spawnTimer = 0;
-
-        Resize colorSave = randomTile.GetComponent<Resize>();
+        
         while (spawnTimer < spawnDelay) {
             tileMat.color = Color.Lerp(initialColour, flashColour, Mathf.PingPong(spawnTimer * tileFlhshSpeed, 1));
             spawnTimer += Time.deltaTime;
-            colorSave.color = tileMat.color;
             yield return null;
         }
-
-        colorSave.color = tileMat.color;
+        
 
         
             Enemy spawnedEnemy = Instantiate(enemy, randomTile.position + Vector3.up, Quaternion.identity) as Enemy;

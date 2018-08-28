@@ -39,7 +39,6 @@ GameObject:
   - component: {fileID: 65621598016873632}
   - component: {fileID: 23409944226754252}
   - component: {fileID: 208246752132256594}
-  - component: {fileID: 114562325025189006}
   - component: {fileID: 54573481607907954}
   m_Layer: 10
   m_Name: ObstaclePlant
@@ -181,19 +180,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.84593654, y: 2.6877952, z: 0.8559885}
   m_Center: {x: -0.10299528, y: 1.3575842, z: 0.08018923}
---- !u!114 &114562325025189006
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1847604909603416}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9024f8ec0b9616c41ae36a08c640f625, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localScaleVec: {x: 0, y: 0, z: 0}
-  color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!208 &208246752132256594
 NavMeshObstacle:
   m_ObjectHideFlags: 1

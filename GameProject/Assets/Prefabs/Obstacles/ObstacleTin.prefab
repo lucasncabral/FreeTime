@@ -39,7 +39,6 @@ GameObject:
   - component: {fileID: 65855678698582924}
   - component: {fileID: 23440553237814840}
   - component: {fileID: 208649838889152740}
-  - component: {fileID: 114655819564777190}
   - component: {fileID: 54583034077370600}
   m_Layer: 10
   m_Name: ObstacleTin
@@ -179,19 +178,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.65138423, y: 0.99592435, z: 0.7206668}
   m_Center: {x: 0.0015944839, y: 0.5136494, z: -0.014616102}
---- !u!114 &114655819564777190
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1534231895451478}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9024f8ec0b9616c41ae36a08c640f625, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localScaleVec: {x: 0, y: 0, z: 0}
-  color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!208 &208649838889152740
 NavMeshObstacle:
   m_ObjectHideFlags: 1

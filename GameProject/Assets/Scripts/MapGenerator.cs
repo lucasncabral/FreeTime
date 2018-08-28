@@ -81,8 +81,6 @@ public class MapGenerator : MonoBehaviour
                 newTile.GetComponent<Tile>().coord = new Coord(x, y);
                 tileMap[x, y] = newTile;
                 newTile.name = "Tile " + x + y;
-
-                newTile.GetComponent<Resize>().localScaleVec = newTile.transform.localScale;
             }
         }
 
@@ -102,7 +100,6 @@ public class MapGenerator : MonoBehaviour
             //float colourPercent = randomCoord.y / (float)currentMap.mapSize.y;
             //obstacleMaterial.color = Color.Lerp(currentMap.foregroundColour, currentMap.backgroundColour, colourPercent);
             obstacleRenderer.sharedMaterial = obstacleMaterial;
-            newObstacle.GetComponent<Resize>().localScaleVec = newObstacle.transform.localScale;
             
             // --> AQUI NÃO SEI OQ FAZER
             // allOpenCoords.Remove(randomCoord);
@@ -136,14 +133,7 @@ public class MapGenerator : MonoBehaviour
 
         navMeshFloor.localScale = new Vector3(maxMapSize.x, maxMapSize.y) * currentMap.tileSize;
         mapFloor.localScale = new Vector3(currentMap.mapSize.x * currentMap.tileSize, currentMap.mapSize.y * currentMap.tileSize);
-
-        navMeshFloor.GetComponent<Resize>().localScaleVec = navMeshFloor.transform.localScale;
-        mapFloor.GetComponent<Resize>().localScaleVec = mapFloor.transform.localScale;
         
-        maskLeft.GetComponent<Resize>().localScaleVec = maskLeft.transform.localScale;
-        maskRight.GetComponent<Resize>().localScaleVec = maskRight.transform.localScale;
-        maskTop.GetComponent<Resize>().localScaleVec = maskTop.transform.localScale;
-        maskBottom.GetComponent<Resize>().localScaleVec = maskBottom.transform.localScale;
     }
 
     public Transform GetTileFromPosition(Vector3 position)

@@ -72,7 +72,6 @@ public class BuildMapManager : MonoBehaviour {
             {
                 Vector3 tilePosition = CoordToPosition(x, y);
                 Transform newTile = Instantiate(currentMap.tilePrefab, tilePosition, Quaternion.Euler(Vector3.right * 90)) as Transform;
-                Destroy(newTile.GetComponent<Resize>());
                 newTile.localScale = Vector3.one * (1) * tileSize * (0.94f);
 
                 newTile.parent = mapHolder;
@@ -86,7 +85,6 @@ public class BuildMapManager : MonoBehaviour {
         
         Transform maskLeft = Instantiate(navmeshMaskPrefab, Vector3.left * (mapSizex + maxMapSize.x) / 4f * tileSize, Quaternion.identity) as Transform;
         maskLeft.parent = mapHolder;
-        Destroy(maskLeft.GetComponent<Resize>());
         maskLeft.gameObject.AddComponent<BoxCollider>();
         maskLeft.gameObject.GetComponent<BoxCollider>().isTrigger = true;
         maskLeft.gameObject.AddComponent<Tile>();
@@ -94,7 +92,6 @@ public class BuildMapManager : MonoBehaviour {
 
         Transform maskRight = Instantiate(navmeshMaskPrefab, Vector3.right * (mapSizex + maxMapSize.x) / 4f * tileSize, Quaternion.identity) as Transform;
         maskRight.parent = mapHolder;
-        Destroy(maskRight.GetComponent<Resize>());
         maskRight.gameObject.AddComponent<BoxCollider>();
         maskRight.gameObject.GetComponent<BoxCollider>().isTrigger = true;
         maskRight.gameObject.AddComponent<Tile>();
@@ -102,7 +99,6 @@ public class BuildMapManager : MonoBehaviour {
 
         Transform maskTop = Instantiate(navmeshMaskPrefab, Vector3.forward * (mapSizey + maxMapSize.y) / 4f * tileSize, Quaternion.identity) as Transform;
         maskTop.parent = mapHolder;
-        Destroy(maskTop.GetComponent<Resize>());
         maskTop.gameObject.AddComponent<BoxCollider>();
         maskTop.gameObject.GetComponent<BoxCollider>().isTrigger = true;
         maskTop.gameObject.AddComponent<Tile>();
@@ -110,7 +106,6 @@ public class BuildMapManager : MonoBehaviour {
 
         Transform maskBottom = Instantiate(navmeshMaskPrefab, Vector3.back * (mapSizey + maxMapSize.y) / 4f * tileSize, Quaternion.identity) as Transform;
         maskBottom.parent = mapHolder;
-        Destroy(maskBottom.GetComponent<Resize>());
         maskBottom.gameObject.AddComponent<BoxCollider>();
         maskBottom.gameObject.GetComponent<BoxCollider>().isTrigger = true;
         maskBottom.gameObject.AddComponent<Tile>();
@@ -119,7 +114,6 @@ public class BuildMapManager : MonoBehaviour {
         Transform mapFloor = Instantiate(mapFloorPrefab, mapFloorPrefab.transform.position, mapFloorPrefab.transform.rotation) as Transform;
         mapFloor.parent = mapHolder;
         mapFloor.localScale = new Vector3(mapSizex * tileSize, mapSizey * tileSize);
-        mapFloor.GetComponent<Resize>().localScaleVec = mapFloor.transform.localScale;
 
         masks[0] = maskLeft;
         masks[1] = maskRight;
@@ -271,7 +265,6 @@ public class BuildMapManager : MonoBehaviour {
                 Vector3 obstaclePosition = new Vector3(position.x, dragObject.getHeight(), position.z);
                 Transform newObstacle = Instantiate(currentObject.transform, obstaclePosition, Quaternion.identity) as Transform;
                 newObstacle.gameObject.layer = 10;
-                Destroy(newObstacle.GetComponent<Resize>());
             
                 if (newObstacle.GetComponent<DragTransform>() == null)
                     newObstacle.gameObject.AddComponent<DragTransform>();

@@ -58,17 +58,15 @@ public class FlagController : MonoBehaviour
         Color initialColour = Color.white;
         Color flashColour = Color.blue;
         float spawnTimer = 0;
-
-        Resize colorSave = randomTile.GetComponent<Resize>();
+        
         while (spawnTimer < spawnDelay)
         {
             tileMat.color = Color.Lerp(initialColour, flashColour, Mathf.PingPong(spawnTimer * tileFlhshSpeed, 1));
-            colorSave.color = tileMat.color;
+    
             spawnTimer += Time.deltaTime;
             yield return null;
         }
-
-        colorSave.color = tileMat.color;
+        
         
         Flag currentFlag = Instantiate(flag, randomTile.position, Quaternion.identity) as Flag;
         currentFlag.GetComponent<Transform>().rotation = Quaternion.Euler(new Vector3(0, Random.Range(0, 360), 0));

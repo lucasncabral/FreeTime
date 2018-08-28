@@ -15,6 +15,8 @@ public class ScoreKeeper : MonoBehaviour {
         {
             streakCount = 0;
         }
+
+       
     }
 
     public void OnEnemyKilled()
@@ -24,6 +26,11 @@ public class ScoreKeeper : MonoBehaviour {
             if (Time.time < lastEnemyKillTime + streakExpiryTime)
             {
                 streakCount++;
+
+                if (streakCount >= 1)
+                {
+                    StartCoroutine(Shake(1.5f, 0.05f));
+                }
             }
             else
             {
@@ -47,5 +54,24 @@ public class ScoreKeeper : MonoBehaviour {
         score = Score;
     }
 
+    IEnumerator Shake(float duration, float magnitude)
+    {
+        Vector3 originalPos = transform.localPosition;
 
+        float elapsed = 0.0f;
+
+        while (elapsed < duration)
+        {
+            float x = Random.Range(-1f, 1f) * magnitude;
+            float y = Random.Range(-1f, 1f) * magnitude;
+
+            Camera.main.transform.localPosition = new Vector3(x, y, originalPos.z);
+
+            elapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        transform.localPosition = originalPos;
+    }
 }
